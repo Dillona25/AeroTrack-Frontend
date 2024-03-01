@@ -17,15 +17,13 @@ export const Navbar = () => {
   return (
     <>
       <div className="flex justify-between p-4 border-b-[1px] border-white text-white font-RobotoSlab">
-        <p>AviNews Explorer</p>
+        <p className="text-white font-RobotoSlab">AviNews Explorer</p>
         <button
           onClick={openDrownDown}
-          className="bg-menu h-6 w-6 hover:scale-105 ease-in-out duration-500"
+          className="bg-menu border-none h-6 w-6"
         ></button>
       </div>
       {dropDown && <NavDropDown closeDropDown={closeDropDown} />}
     </>
   );
 };
-
-//Todo: Close the dropdown

@@ -5,9 +5,11 @@ import "../../Vendor/Fonts.css";
 export const Hero = () => {
   return (
     <div className="mt-7 px-4 py-[32px] flex flex-col gap-[122px]">
-      <div className="gap-4 flex flex-col font-RobotoSlab font-medium text-white text-[36px]">
-        <h1>Whats going on in aviation?</h1>
-        <p className="text-[18px] font-Roboto">
+      <div className="gap-4 flex flex-col">
+        <h1 className="text-white text-[36px] font-normal leading-[44px] max-w-[288px]">
+          Whats going on in aviation?
+        </h1>
+        <p className="text-white font-normal max-w-[288px]">
           We are your source for the most recent aviation news. Find articles
           and save them for later.
         </p>

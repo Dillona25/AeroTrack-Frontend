@@ -1,4 +1,4 @@
-import "../../vendor/fonts.css";
+import "../../Vendor/Fonts.css";
 
 // Creating an object to specify the type of each prop, this ensure we dont pass the wrong type down the line
 type Props = {
@@ -11,7 +11,7 @@ export const Button = ({ text, className }: Props) => {
   return (
     <button
       type="submit"
-      className={`w-[288px] m-auto py-4 text-center bg-[#2F71E5] text-white font-Roboto rounded-[20px] hover:scale-105 ease-in-out duration-500 ${className}`}
+      className={`w-full m-auto py-4 text-center bg-[#2F71E5] text-white rounded-[20px] ${className}`}
     >
       {text}
     </button>

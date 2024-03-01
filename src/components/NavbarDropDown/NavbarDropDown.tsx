@@ -16,20 +16,26 @@ export const NavDropDown = ({ closeDropDown }: NavDropDownProps) => {
         transition={{ duration: 0.2 }}
         className="absolute top-0 z-10 py-5 w-full bg-[#fcfcfc] rounded-b-lg"
       >
-        <div className="mx-4 mb-4 text-black font-Roboto flex justify-between">
-          <h1>Hello, Dillon</h1>
+        <div className="mx-4 mb-4 flex justify-between">
+          <h1 className="text-[18px] font-normal">Hello...</h1>
+          {/* If user is logged in disyapled their name */}
+          {/* <h1 className=" text-black text-[18px] font-normal">Hello, Dillon</h1> */}
           <button
             onClick={closeDropDown}
-            className="bg-closeIcon h-6 w-6 hover:scale-[130%] ease-in-out duration-500"
+            className="bg-closeIcon h-6 w-6"
           ></button>
         </div>
-        <ul className="flex flex-col gap-2 font-Roboto text-black">
+        <ul className="flex flex-col gap-2 text-black">
           <NavButton text="Home" onClick={closeDropDown} />
           <NavButton text="Your Profile" />
-          <NavButton text="Suggested Reads" />
-          <NavButton text="About the creator" />
+          <NavButton text="Saved Articles" />
           <NavButton text="Contact" />
-          <Button text="Sign in" className="bg-black font-Roboto" />
+          <NavButton text="About the creator" />
+          {/* Only display this button to unauthorized users */}
+          <Button text="Sign in" className="bg-black max-w-[288px]" />
+          <p className="text-[14px] font-normal text-center">
+            No Account? Signup here
+          </p>
         </ul>
       </motion.div>
     </div>
@@ -46,7 +52,7 @@ export const NavButton = ({ text, onClick }: ButtonProps) => {
     <button
       type="submit"
       onClick={onClick}
-      className="p-2 font-Roboto text-[14px] bg-[#dbdbdb] mx-4 rounded-[10px] hover:scale-[103%] ease-in-out duration-500"
+      className="p-2 text-[14px] bg-[#dbdbdb] mx-4 rounded-[10px]"
     >
       {text}
     </button>
