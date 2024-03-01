@@ -9,7 +9,7 @@ export const SearchBar = ({ placeholder }: Props) => {
     <input
       type="text"
       placeholder={placeholder}
-      className="w-full bg-white rounded-[20px] p-4 m-auto"
+      className="w-full bg-white rounded-[20px] p-4 m-auto shadow-[rgba(0,_0,_0,_0.24)_0px_3px_8px]"
     ></input>
   );
 };

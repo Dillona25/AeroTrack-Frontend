@@ -32,7 +32,7 @@ export const NavDropDown = ({ closeDropDown }: NavDropDownProps) => {
           <NavButton text="Contact" />
           <NavButton text="About the creator" />
           {/* Only display this button to unauthorized users */}
-          <Button text="Sign in" className="bg-black max-w-[288px]" />
+          <Button text="Sign in" className="bg-black mt-2 max-w-[288px]" />
           <p className="text-[14px] font-normal text-center">
             No Account? Signup here
           </p>
@@ -52,7 +52,7 @@ export const NavButton = ({ text, onClick }: ButtonProps) => {
     <button
       type="submit"
       onClick={onClick}
-      className="p-2 text-[14px] bg-[#dbdbdb] mx-4 rounded-[10px]"
+      className="p-2 text-[14px] bg-[#dbdbdb] mx-4 rounded-[10px] shadow-[rgba(0,_0,_0,_0.24)_0px_3px_8px]"
     >
       {text}
     </button>

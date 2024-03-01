@@ -1,5 +1,4 @@
 import "../../Vendor/Fonts.css";
-import linkedIn from "../../Assets/linkedIn.svg";
 
 export const Footer = () => {
   const currentYear = new Date().getFullYear();
@@ -14,7 +13,10 @@ export const Footer = () => {
           Contact
         </p>
       </div>
-      <img src={linkedIn} alt="linkedIn logo" className="h-12 w-12" />
+      <a
+        href="https://www.linkedin.com/in/dillonarnold/"
+        className="h-12 w-12 bg-LinkedInIcon"
+      ></a>
     </div>
   );
 };

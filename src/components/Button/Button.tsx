@@ -11,7 +11,7 @@ export const Button = ({ text, className }: Props) => {
   return (
     <button
       type="submit"
-      className={`w-full m-auto py-4 text-center bg-[#2F71E5] text-white rounded-[20px] ${className}`}
+      className={`w-full m-auto py-4 text-center bg-[#2F71E5] text-white rounded-[20px] shadow-[rgba(0,_0,_0,_0.24)_0px_3px_8px] ${className}`}
     >
       {text}
     </button>

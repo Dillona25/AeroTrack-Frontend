@@ -15,6 +15,7 @@ export default {
       menu: "url('./Src/Assets/menu.svg')",
       closeIcon: "url('./Src/Assets/close.svg')",
       saveIcon: "url('./Src/Assets/bookmark.svg')",
+      LinkedInIcon: "url('./Src/Assets/linkedIn.svg')",
     },
   },
   plugins: [],
