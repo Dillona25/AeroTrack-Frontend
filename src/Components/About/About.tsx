@@ -1,4 +1,5 @@
-import portrait from "../../Images/Portrait.png";
+import React from "react";
+import portrait from "../../images/Portrait.png";
 
 export const About = () => {
   return (

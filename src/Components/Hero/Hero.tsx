@@ -1,6 +1,6 @@
 import { SearchBar } from "../SearchBar/SearchBar";
 import { Button } from "../Button/Button";
-import "../../Vendor/Fonts.css";
+import "../../vendor/fonts.css";
 
 export const Hero = () => {
   return (

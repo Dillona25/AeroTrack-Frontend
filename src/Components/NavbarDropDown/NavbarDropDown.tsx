@@ -1,13 +1,19 @@
-import "../../Vendor/Fonts.css";
+import { MouseEventHandler } from "react";
+import "../../vendor/fonts.css";
 import { Button } from "../Button/Button";
 import { motion } from "framer-motion";
 
-// When passing a function prop, on the recieving end, set the type as void
-type NavDropDownProps = {
-  closeDropDown: () => void;
+type ModalProps = {
+  closeModal?: () => void;
+  toggle?: () => void;
 };
 
-export const NavDropDown = ({ closeDropDown }: NavDropDownProps) => {
+type NavProps = {
+  text?: string;
+  onClick?: MouseEventHandler;
+};
+
+export const NavDropDown = (props: ModalProps) => {
   return (
     <div className="fixed inset-0 z-50 backdrop-blur-lg">
       <motion.div
@@ -21,18 +27,18 @@ export const NavDropDown = ({ closeDropDown }: NavDropDownProps) => {
           {/* If user is logged in disyapled their name */}
           {/* <h1 className=" text-black text-[18px] font-normal">Hello, Dillon</h1> */}
           <button
-            onClick={closeDropDown}
+            onClick={props.closeModal}
             className="bg-closeIcon h-6 w-6"
           ></button>
         </div>
         <ul className="flex flex-col gap-2 text-black">
-          <NavButton text="Home" onClick={closeDropDown} />
+          <NavButton text="Home" />
           <NavButton text="Your Profile" />
           <NavButton text="Saved Articles" />
           <NavButton text="Contact" />
           <NavButton text="About the creator" />
           {/* Only display this button to unauthorized users */}
-          <Button text="Sign in" className="bg-black mt-2 max-w-[288px]" />
+          <Button text="Signin" className="bg-black mt-2 max-w-[288px]" />
           <p className="text-[14px] font-normal text-center">
             No Account? Signup here
           </p>
@@ -42,12 +48,7 @@ export const NavDropDown = ({ closeDropDown }: NavDropDownProps) => {
   );
 };
 
-type ButtonProps = {
-  text: string;
-  onClick?: () => void;
-};
-
-export const NavButton = ({ text, onClick }: ButtonProps) => {
+export const NavButton = ({ text, onClick }: NavProps) => {
   return (
     <button
       type="submit"

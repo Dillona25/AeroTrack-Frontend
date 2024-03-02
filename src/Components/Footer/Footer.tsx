@@ -1,4 +1,4 @@
-import "../../Vendor/Fonts.css";
+import "../../vendor/fonts.css";
 
 export const Footer = () => {
   const currentYear = new Date().getFullYear();

@@ -1,4 +1,4 @@
-import Nature from "../../Images/Nature.png";
+import Nature from "../../images/Nature.png";
 
 export const NewsCard = () => {
   return (

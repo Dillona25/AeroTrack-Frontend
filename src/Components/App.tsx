@@ -3,8 +3,12 @@ import { Hero } from "./Hero/Hero";
 import { SugesstedArticles } from "./SuggestedArticles/SugesstedArticles";
 import { Footer } from "./Footer/Footer";
 import { About } from "./About/About";
+import { SignInModal } from "./SignInModal/SignInModal";
+import { useModal } from "../hooks/useModal";
 
 function App() {
+  const { isOpen } = useModal();
+
   return (
     <div>
       <div className="bg-MobileHeaderImage bg-cover bg-center">
@@ -13,8 +17,8 @@ function App() {
       </div>
       <SugesstedArticles />
       <About />
-      {/* this needs to be last at all times */}
       <Footer />
+      {isOpen && <SignInModal />}
     </div>
   );
 }

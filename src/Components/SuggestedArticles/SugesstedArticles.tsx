@@ -1,4 +1,4 @@
-import "../../Vendor/Fonts.css";
+import "../../vendor/fonts.css";
 import { Button } from "../Button/Button";
 import { NewsCard } from "../NewsCard/NewsCard";
 
