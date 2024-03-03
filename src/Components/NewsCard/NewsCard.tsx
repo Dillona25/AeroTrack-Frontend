@@ -1,11 +1,19 @@
 import Nature from "../../images/Nature.png";
 
-export const NewsCard = () => {
+type Props = {
+  isLoggedIn?: boolean;
+};
+
+export const NewsCard = (props: Props) => {
   return (
     <div className="relative flex flex-col gap-4 h-[440px] w-[288px] rounded-[10px] bg-white shadow-[rgba(0,_0,_0,_0.24)_0px_3px_8px]">
-      <div className="bg-white h-10 w-10 absolute right-[16px] top-[16px] rounded-[10px] flex">
-        <button className="bg-saveIcon h-6 w-6 m-auto"></button>
-      </div>
+      {props.isLoggedIn ? (
+        <div className="bg-white h-10 w-10 absolute right-[16px] top-[16px] rounded-[10px] flex">
+          <button className="bg-saveIcon h-6 w-6 m-auto"></button>
+        </div>
+      ) : (
+        ""
+      )}
       <img
         src={Nature}
         alt="Nature Image"
