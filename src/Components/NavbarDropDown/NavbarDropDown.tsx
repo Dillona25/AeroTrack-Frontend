@@ -2,6 +2,9 @@ import { MouseEventHandler } from "react";
 import "../../vendor/fonts.css";
 import { Button } from "../Button/Button";
 import { motion } from "framer-motion";
+import Avatar from "../../images/Hiker.avif";
+import { Link } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 
 type navProps = {
   text?: string;
@@ -14,9 +17,11 @@ type menuProps = {
   closeModal?: () => void;
   handleSignInModal?: () => void;
   handleSignUpModal?: () => void;
+  handleContactModal?: () => void;
 };
 
 export const NavDropDown = (props: menuProps) => {
+  let location = useLocation();
   return (
     <div className="fixed inset-0 z-50 backdrop-blur-lg">
       <motion.div
@@ -27,7 +32,14 @@ export const NavDropDown = (props: menuProps) => {
       >
         <div className="mx-4 mb-6 flex justify-between">
           {props.isLoggedIn ? (
-            <h1 className="text-[18px] font-normal">Hello, Dillon</h1>
+            <div className="flex items-center gap-4">
+              <img
+                src={Avatar}
+                alt="profile Image"
+                className="w-14 h-14 rounded-[50%]"
+              ></img>
+              <h1 className="text-[18px] font-normal">Hello, Dillon</h1>
+            </div>
           ) : (
             <h1 className="text-[18px] font-normal">Hello...</h1>
           )}
@@ -42,17 +54,20 @@ export const NavDropDown = (props: menuProps) => {
           {/* Only display this button to unauthorized users */}
           {props.isLoggedIn ? (
             <>
-              <NavButton text="Home" />
-              <NavButton text="Your Profile" />
-              <NavButton text="Saved Articles" />
-              <NavButton text="Contact" />
+              <Link
+                to="/SavedArticles"
+                className="p-2 text-[14px] text-center bg-[#dbdbdb] mx-4 rounded-[10px] shadow-[rgba(0,_0,_0,_0.24)_0px_3px_8px]"
+              >
+                Saved Articles
+              </Link>
+              <NavButton text="Your profile" />
+              <NavButton onClick={props.handleContactModal} text="Contact" />
               <NavButton text="About the creator" />
               <Button text="Logout" className="max-w-[288px] bg-red-500" />
             </>
           ) : (
             <>
-              <NavButton text="Home" />
-              <NavButton text="Contact" />
+              <NavButton onClick={props.handleContactModal} text="Contact" />
               <NavButton text="About the creator" />
               <Button
                 onClick={props.handleSignInModal}

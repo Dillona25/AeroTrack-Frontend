@@ -20,3 +20,16 @@ export const Button = ({ text, className, onClick }: Props) => {
     </button>
   );
 };
+
+export const ButtonDisabled = ({ text, className, onClick }: Props) => {
+  return (
+    <button
+      disabled
+      type="submit"
+      onClick={onClick}
+      className={`w-full m-auto opacity-50 py-4 text-center bg-[#2F71E5] text-white rounded-[20px] shadow-[rgba(0,_0,_0,_0.24)_0px_3px_8px] cursor-not-allowed ${className}`}
+    >
+      {text}
+    </button>
+  );
+};

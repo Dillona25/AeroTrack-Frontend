@@ -1,25 +1,24 @@
+import { motion } from "framer-motion";
 import { Modal } from "../Modal/Modal";
 import { Form } from "../Form/Form";
 import { Button, ButtonDisabled } from "../Button/Button";
 import { useForm } from "react-hook-form";
-import { motion } from "framer-motion";
 import useEmailValidation from "../../ValidationHooks/EmailValidation";
+import useMessageValidation from "../../ValidationHooks/TextAreaValidation";
 import useNameValidation from "../../ValidationHooks/NameValidation";
-import usePasswordValidation from "../../ValidationHooks/PasswordValidation";
 
 type Props = {
-  handleSignInModal?: () => void;
   closeModal?: () => void;
 };
 
-export const SignUpModal = (props: Props) => {
-  const { passwordValidation, handlePasswordChange, passwordError } =
-    usePasswordValidation();
-
+export const ContactModal = (props: Props) => {
   const { emailValidation, handleEmailChange, emailError } =
     useEmailValidation();
 
   const { nameValidation, handleNameChange, nameError } = useNameValidation();
+
+  const { messageValidation, handleMessageChange, messageError } =
+    useMessageValidation();
 
   const {
     formState: { isValid },
@@ -27,9 +26,10 @@ export const SignUpModal = (props: Props) => {
     defaultValues: {
       name: "",
       email: "",
-      password: "",
+      message: "",
     },
   });
+
   return (
     <Modal>
       <motion.div
@@ -37,7 +37,7 @@ export const SignUpModal = (props: Props) => {
         animate={{ scale: 1 }}
         transition={{ duration: 0.2 }}
       >
-        <h1 className="font-normal">Signup</h1>
+        <h1 className="font-normal">Contact us</h1>
         <button
           onClick={props.closeModal}
           className="bg-closeIcon h-6 w-6 absolute right-[15px] top-[15px]"
@@ -57,25 +57,19 @@ export const SignUpModal = (props: Props) => {
             placeholder="Email"
           />
           {emailError && <Form.ErrorMessage message={emailError} />}
-          <Form.TextInput
-            register={passwordValidation}
-            onChange={handlePasswordChange}
-            labelText="Password"
-            placeholder="Password"
+          <Form.TextArea
+            register={messageValidation}
+            onChange={handleMessageChange}
+            labelText="Message"
+            placeholder="Message"
           />
-          {passwordError && <Form.ErrorMessage message={passwordError} />}
+          {messageError && <Form.ErrorMessage message={messageError} />}
           {isValid ? (
-            <Button text="Signup" className="bg-black mt-3" />
+            <Button text="Send" className="bg-black mt-3" />
           ) : (
-            <ButtonDisabled className="bg-black" text="Signup" />
+            <ButtonDisabled className="bg-black" text="Send" />
           )}
         </Form>
-        <p className="text-[14px] font-normal text-center pt-4">
-          Have an Account? Login{" "}
-          <button onClick={props.handleSignInModal} className="underline">
-            here
-          </button>
-        </p>
       </motion.div>
     </Modal>
   );

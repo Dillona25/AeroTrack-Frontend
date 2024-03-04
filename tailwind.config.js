@@ -7,12 +7,16 @@ export default {
         Roboto: ["Roboto", "sans-serif"],
         RobotoSlab: ["Roboto Slab", "sans-serif"],
       },
-      screens: {},
+      animation: {
+        bounce200: "bounce 1s infinite 200ms",
+        bounce400: "bounce 1s infinite 400ms",
+      },
     },
     backgroundImage: {
       DesktopPlane: "url('./Src/Images/DesktopPlane.avif')",
       MobileHeaderImage: "url('./Src/Images/MobileHeaderImage.png')",
       menu: "url('./Src/Assets/menu.svg')",
+      menuBlack: "url('./Src/Assets/menuBlack.svg')",
       closeIcon: "url('./Src/Assets/close.svg')",
       saveIcon: "url('./Src/Assets/bookmark.svg')",
       LinkedInIcon: "url('./Src/Assets/linkedIn.svg')",
