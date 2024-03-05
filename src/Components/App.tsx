@@ -44,8 +44,11 @@ function App() {
           path="/"
           element={
             <div>
-              <div className="bg-MobileHeaderImage bg-cover bg-center">
-                <Navbar handleNavMenu={handleNavMenu} />
+              <div className={`bg-MobileHeaderImage bg-cover bg-center`}>
+                <Navbar
+                  handleNavMenu={handleNavMenu}
+                  handleContactModal={handleContactModal}
+                />
                 {activeModal === "navMenu" && (
                   <NavDropDown
                     isLoggedIn={isLoggedIn}

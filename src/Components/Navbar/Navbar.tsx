@@ -3,6 +3,7 @@ import { useLocation } from "react-router-dom";
 
 type Props = {
   handleNavMenu?: () => void;
+  handleContactModal?: () => void;
 };
 
 export const Navbar = (props: Props) => {
@@ -12,12 +13,26 @@ export const Navbar = (props: Props) => {
     <div>
       {location.pathname === "/" && (
         <>
-          <div className="flex justify-between p-4 border-b-[1px] border-white text-white font-RobotoSlab">
-            <p className="text-white font-RobotoSlab">AviNews Explorer</p>
+          <div className="flex justify-between p-4 border-b-[1px] border-white text-white font-RobotoSlab sm:px-[104px] sm:items-center sm:border-opacity-50">
+            <p className="text-white font-RobotoSlab sm:text-[20px]">
+              AviNews Explorer
+            </p>
             <button
               onClick={props.handleNavMenu}
-              className="bg-menu border-none h-6 w-6"
+              className="bg-menu border-none h-6 w-6 sm:hidden"
             ></button>
+            {/* These buttons only appear on small screens or larger */}
+            <div className="hidden sm:flex">
+              <button className="hidden sm:block font-Roboto mr-[42px] sm:text-[18px]">
+                Home
+              </button>
+              <button
+                onClick={props.handleContactModal}
+                className="hidden sm:block border-white border-[1px] py-3 w-40 rounded-full font-Roboto sm:text-[18px]"
+              >
+                Sign in
+              </button>
+            </div>
           </div>
         </>
       )}

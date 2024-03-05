@@ -6,6 +6,7 @@ import { motion } from "framer-motion";
 import useEmailValidation from "../../ValidationHooks/EmailValidation";
 import useNameValidation from "../../ValidationHooks/NameValidation";
 import usePasswordValidation from "../../ValidationHooks/PasswordValidation";
+import useImageURLValidation from "../../ValidationHooks/AvatarValidation";
 
 type Props = {
   handleSignInModal?: () => void;
@@ -20,6 +21,9 @@ export const SignUpModal = (props: Props) => {
     useEmailValidation();
 
   const { nameValidation, handleNameChange, nameError } = useNameValidation();
+
+  const { imageURLValidation, handleImageURLChange, imageURLError } =
+    useImageURLValidation();
 
   const {
     formState: { isValid },
@@ -50,6 +54,13 @@ export const SignUpModal = (props: Props) => {
             placeholder="Name"
           />
           {nameError && <Form.ErrorMessage message={nameError} />}
+          <Form.TextInput
+            register={imageURLValidation}
+            onChange={handleImageURLChange}
+            labelText="Avatar"
+            placeholder="Avatar Url"
+          />
+          {imageURLError && <Form.ErrorMessage message={imageURLError} />}
           <Form.TextInput
             register={emailValidation}
             onChange={handleEmailChange}
