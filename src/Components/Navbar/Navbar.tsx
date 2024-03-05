@@ -22,10 +22,10 @@ export const Navbar = (props: Props) => {
               className="bg-menu border-none h-6 w-6 sm:hidden"
             ></button>
             {/* These buttons only appear on small screens or larger */}
-            <div className="hidden sm:flex">
-              <button className="hidden sm:block font-Roboto mr-[42px] sm:text-[18px]">
-                Home
-              </button>
+            <div className="hidden sm:flex font-Roboto sm:text-[18px]">
+              <button className="hidden sm:block mr-[42px] ">Home</button>
+              <button className="hidden sm:block mr-[42px]">About</button>
+              <button className="hidden sm:block mr-[42px]">Contact</button>
               <button
                 onClick={props.handleContactModal}
                 className="hidden sm:block border-white border-[1px] py-3 w-40 rounded-full font-Roboto sm:text-[18px]"

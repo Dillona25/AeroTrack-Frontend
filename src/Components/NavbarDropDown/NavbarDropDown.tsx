@@ -36,7 +36,7 @@ export const NavDropDown = (props: menuProps) => {
               <img
                 src={Avatar}
                 alt="profile Image"
-                className="w-14 h-14 rounded-[50%]"
+                className="w-[50px] h-[50px] rounded-[50%]"
               ></img>
               <h1 className="text-[18px] font-normal">Hello, Dillon</h1>
             </div>

@@ -15,7 +15,7 @@ import { SavedArticles } from "../routes/SavedArticles/SavedArticles";
 
 function App() {
   const [activeModal, setActiveModal] = useState("");
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [isLoggedIn, setIsLoggedIn] = useState(true);
 
   const handleNavMenu = () => {
     setActiveModal("navMenu");
