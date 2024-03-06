@@ -2,7 +2,8 @@ import { useState } from "react";
 // Component imports
 import { Navbar } from "./Navbar/Navbar";
 import { Hero } from "./Hero/Hero";
-import { SugesstedArticles } from "./SuggestedArticles/SugesstedArticles";
+import { SearchArticles } from "./SearchArticles/SearchArticles";
+import { NotFound } from "./NotFound/Notfound";
 import { Footer } from "./Footer/Footer";
 import { About } from "./About/About";
 import { SignInModal } from "./SignInModal/SignInModal";
@@ -60,7 +61,9 @@ function App() {
                 )}
                 <Hero />
               </div>
-              <SugesstedArticles isLoggedIn={isLoggedIn} />
+              {/* These will only appear for the user when they search and get
+              results */}
+              <SearchArticles isLoggedIn={isLoggedIn} />
               <About />
               <Footer />
               {activeModal === "signIn" && (
@@ -87,7 +90,7 @@ function App() {
             <>
               <Navbar />
               <SavedArticlesHeader />
-              <SavedArticles isLoggedIn={isLoggedIn} />
+              <SavedArticles />
               <Footer />{" "}
             </>
           }

@@ -1,26 +1,28 @@
-import React from "react";
-import portrait from "../../images/Portrait.png";
+import hiker from "../../images/Hiker.avif";
 
 export const About = () => {
   return (
-    <div className="flex flex-col m-auto mb-[125px] max-w-[288px] mt-8">
+    <div className="flex flex-col gap-4 sm:flex-row sm:justify-center sm:gap-14 m-auto w-[288px] sm:w-full my-8 sm:my-[80px]">
       <img
-        src={portrait}
+        src={hiker}
         alt="portrait of self"
-        className="h-fit w-[225px] m-auto rounded-[50px] bg-[#f5f6f7] shadow-[rgba(0,_0,_0,_0.24)_0px_3px_8px]"
+        className=" w-[350px] sm:h-[300px] rounded-[20px] sm:w-fit m-auto sm:m-0 shadow-[rgba(0,_0,_0,_0.24)_0px_3px_8px]"
       />
-      <h1 className="font-normal mt-6 mb-4">About the Author</h1>
-      <p className="font-normal">
-        Hello 👋 Im Dillon, a full-stack engineer proficient in
-        JavaScript/TypeScript, React, Node, and Express.
-        <br />
-        <br />
-        In March of 2024 I graduated TripleTens Software engineering bootcamp.
-        Im passionate about problem solving through code and a relentless
-        pursuit of non-stop learning. I have work history that brings a wealth
-        of experience in leadership, project management and collaboration with a
-        proven track record of delivering efficient, and impactful solutions.
-      </p>
+      <div className="flex flex-col gap-4">
+        <h1 className="font-normal sm:text-[40px]">About the Author</h1>
+        <p className="font-normal text-[16px] sm:text-[18px] sm:max-w-[600px]">
+          Hello 👋 Im Dillon, a full-stack engineer proficient in
+          JavaScript/TypeScript, React, Node, and Express.
+          <br />
+          <br />
+          In March of 2024 I graduated TripleTens Software engineering bootcamp.
+          Im passionate about problem solving through code and a relentless
+          pursuit of non-stop learning. I have work history that brings a wealth
+          of experience in leadership, project management and collaboration with
+          a proven track record of delivering efficient, and impactful
+          solutions.
+        </p>
+      </div>
     </div>
   );
 };
