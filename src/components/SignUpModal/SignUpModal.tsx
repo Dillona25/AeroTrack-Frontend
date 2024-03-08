@@ -1,12 +1,8 @@
 import { Modal } from "../Modal/Modal";
 import { Form } from "../Form/Form";
-import { Button, ButtonDisabled } from "../Button/Button";
+import { Button } from "../Button/Button";
 import { useForm } from "react-hook-form";
 import { motion } from "framer-motion";
-import useEmailValidation from "../../ValidationHooks/EmailValidation";
-import useNameValidation from "../../ValidationHooks/NameValidation";
-import usePasswordValidation from "../../ValidationHooks/PasswordValidation";
-import useImageURLValidation from "../../ValidationHooks/AvatarValidation";
 
 type Props = {
   handleSignInModal?: () => void;
@@ -14,26 +10,19 @@ type Props = {
 };
 
 export const SignUpModal = (props: Props) => {
-  const { passwordValidation, handlePasswordChange, passwordError } =
-    usePasswordValidation();
-
-  const { emailValidation, handleEmailChange, emailError } =
-    useEmailValidation();
-
-  const { nameValidation, handleNameChange, nameError } = useNameValidation();
-
-  const { imageURLValidation, handleImageURLChange, imageURLError } =
-    useImageURLValidation();
-
   const {
-    formState: { isValid },
+    register,
+    setValue,
+    formState: { errors, isValid },
   } = useForm({
     defaultValues: {
       name: "",
+      avatar: "",
       email: "",
       password: "",
     },
   });
+
   return (
     <Modal>
       <motion.div
@@ -41,45 +30,93 @@ export const SignUpModal = (props: Props) => {
         animate={{ scale: 1 }}
         transition={{ duration: 0.2 }}
       >
-        <h1 className="font-normal">Signup</h1>
+        <h1 className="font-normal sm:text-[30px]">Signup</h1>
         <button
           onClick={props.closeModal}
           className="bg-closeIcon h-6 w-6 absolute right-[15px] top-[15px]"
         ></button>
         <Form>
+          {/* The onChnage logic is handling validation */}
           <Form.TextInput
-            register={nameValidation}
-            onChange={handleNameChange}
             labelText="Name"
             placeholder="Name"
+            register={register("name", {
+              required: "We need to know who you are :)",
+              minLength: {
+                value: 2,
+                message: "Use 2 or more characters",
+              },
+            })}
+            onChange={(evt) => {
+              const target = evt.target as HTMLInputElement;
+              setValue("name", target.value, { shouldValidate: true });
+            }}
           />
-          {nameError && <Form.ErrorMessage message={nameError} />}
+          {errors.name && <Form.ErrorMessage message={errors.name.message} />}
+          {/* The onChnage logic is handling validation */}
           <Form.TextInput
-            register={imageURLValidation}
-            onChange={handleImageURLChange}
             labelText="Avatar"
             placeholder="Avatar Url"
+            register={register("avatar", {
+              required: "New avatar is required",
+              pattern: {
+                value:
+                  /^https?:\/\/(?:www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b(?:[-a-zA-Z0-9()@:%_\+.~#?&\/=]*)$/,
+                message: "Invalid URL",
+              },
+            })}
+            onChange={(evt) => {
+              const target = evt.target as HTMLInputElement;
+              setValue("avatar", target.value, { shouldValidate: true });
+            }}
           />
-          {imageURLError && <Form.ErrorMessage message={imageURLError} />}
+          {errors.avatar && (
+            <Form.ErrorMessage message={errors.avatar.message} />
+          )}
+          {/* The onChnage logic is handling validation */}
           <Form.TextInput
-            register={emailValidation}
-            onChange={handleEmailChange}
             labelText="Email"
             placeholder="Email"
+            register={register("email", {
+              required: "Email is required",
+              pattern: {
+                value: /[\w\-\.]+@([\w\-]+\.)+[\w\-]{2,4}/,
+                message: "Invalid Email",
+              },
+            })}
+            onChange={(evt) => {
+              const target = evt.target as HTMLInputElement;
+              setValue("email", target.value, { shouldValidate: true });
+            }}
           />
-          {emailError && <Form.ErrorMessage message={emailError} />}
+          {errors.email && <Form.ErrorMessage message={errors.email.message} />}
+          {/* The onChnage logic is handling validation */}
           <Form.TextInput
-            register={passwordValidation}
-            onChange={handlePasswordChange}
             labelText="Password"
             placeholder="Password"
+            register={register("password", {
+              required: "Password is required",
+              minLength: {
+                value: 8,
+                message: "Use 8 or more characters",
+              },
+            })}
+            onChange={(evt) => {
+              const target = evt.target as HTMLInputElement;
+              setValue("password", target.value, { shouldValidate: true });
+            }}
           />
-          {passwordError && <Form.ErrorMessage message={passwordError} />}
-          {isValid ? (
-            <Button text="Signup" className="bg-black mt-3" />
-          ) : (
-            <ButtonDisabled className="bg-black" text="Signup" />
+          {errors.password && (
+            <Form.ErrorMessage message={errors.password.message} />
           )}
+          {/* If the inputs are valid, button is enabled otherwise its disabled */}
+          <Button
+            text="Signup"
+            className={`bg-black mt-3 ${
+              isValid ? "" : "opacity-50 cursor-not-allowed"
+            }`}
+            disabled={!isValid}
+          />
         </Form>
         <p className="text-[14px] font-normal text-center pt-4">
           Have an Account? Login{" "}

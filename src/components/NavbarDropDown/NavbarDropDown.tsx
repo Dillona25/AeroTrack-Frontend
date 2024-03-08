@@ -18,6 +18,7 @@ type menuProps = {
   handleSignInModal?: () => void;
   handleSignUpModal?: () => void;
   handleContactModal?: () => void;
+  handleProfileModal?: () => void;
 };
 
 export const NavDropDown = (props: menuProps) => {
@@ -31,6 +32,7 @@ export const NavDropDown = (props: menuProps) => {
         className="absolute top-0 z-10 py-5 w-full bg-[#fcfcfc] rounded-b-lg"
       >
         <div className="mx-4 mb-6 flex justify-between">
+          {/* If the user is logged in we greet them by name, otherwise we do but not by name */}
           {props.isLoggedIn ? (
             <div className="flex items-center gap-4">
               <img
@@ -54,21 +56,35 @@ export const NavDropDown = (props: menuProps) => {
           {/* Only display this button to unauthorized users */}
           {props.isLoggedIn ? (
             <>
-              <Link
-                to="/SavedArticles"
-                className="p-2 text-[14px] text-center bg-[#dbdbdb] mx-4 rounded-[10px] shadow-[rgba(0,_0,_0,_0.24)_0px_3px_8px]"
-              >
-                Saved Articles
-              </Link>
-              <NavButton text="Your profile" />
+              {/* Show these elements only in the saved articles route */}
+              {location.pathname === "/SavedArticles" && (
+                <Link
+                  to="/"
+                  onClick={props.closeModal}
+                  className="p-2 text-[14px] text-center bg-[#dbdbdb] mx-4 rounded-[10px] shadow-[rgba(0,_0,_0,_0.24)_0px_3px_8px]"
+                >
+                  Home
+                </Link>
+              )}
+              {location.pathname === "/" && (
+                <Link
+                  to="/SavedArticles"
+                  onClick={props.closeModal}
+                  className="p-2 text-[14px] text-center bg-[#dbdbdb] mx-4 rounded-[10px] shadow-[rgba(0,_0,_0,_0.24)_0px_3px_8px]"
+                >
+                  Saved Articles
+                </Link>
+              )}
+              <NavButton
+                onClick={props.handleProfileModal}
+                text="Your profile"
+              />
               <NavButton onClick={props.handleContactModal} text="Contact" />
-              <NavButton text="About the creator" />
               <Button text="Logout" className="max-w-[288px] bg-red-500" />
             </>
           ) : (
             <>
               <NavButton onClick={props.handleContactModal} text="Contact" />
-              <NavButton text="About the creator" />
               <Button
                 onClick={props.handleSignInModal}
                 text="Signin"
@@ -88,6 +104,7 @@ export const NavDropDown = (props: menuProps) => {
   );
 };
 
+// Reusable Nav button to save repeated className code
 export const NavButton = ({ text, onClick }: navProps) => {
   return (
     <button

@@ -1,4 +1,5 @@
 import { ChangeEventHandler, FormEventHandler, ReactNode } from "react";
+import { FieldError, Merge, FieldErrorsImpl } from "react-hook-form";
 
 type FormProps = {
   children?: ReactNode;
@@ -15,9 +16,10 @@ type FormProps = {
 };
 
 type MessageProps = {
-  message?: string;
+  message?: string | FieldError | Merge<FieldError, FieldErrorsImpl<any>>;
 };
 
+// Form component
 export const Form = ({ children, onSubmit }: FormProps) => {
   return (
     <form onSubmit={onSubmit} className="flex flex-col gap-3 mt-6">
@@ -26,6 +28,7 @@ export const Form = ({ children, onSubmit }: FormProps) => {
   );
 };
 
+// Reusable form input
 Form.TextInput = ({
   labelText,
   value,
@@ -51,6 +54,7 @@ Form.TextInput = ({
   );
 };
 
+// Reuseable form textarea
 Form.TextArea = ({
   labelText,
   value,
@@ -76,6 +80,7 @@ Form.TextArea = ({
   );
 };
 
+// Reusable form feedback message if there is a validation error
 Form.ErrorMessage = (props: MessageProps) => {
   return <p className="font-RobotoSlab text-[#f00]">{props.message}</p>;
 };
