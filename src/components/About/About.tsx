@@ -1,16 +1,21 @@
 import Avatar from "../../images/Hiker.avif";
+import { Button } from "../Button/Button";
 
-export const About = () => {
+type Props = {
+  handleContactModal?: () => void;
+};
+
+export const About = (props: Props) => {
   return (
-    <div className="flex flex-col gap-4 sm:flex-row sm:justify-center sm:gap-14 m-auto w-[288px] sm:w-full my-8 sm:my-[80px]">
+    <div className="bg-white flex flex-col gap-4 lg:flex-row lg:justify-center lg:gap-14 m-auto lg:w-full py-8 lg:py-[80px]">
       <img
         alt="Photo of author"
         src={Avatar}
-        className="bg-black h-[300px] w-[300px] sm:h-[464px] sm:w-[464px] rounded-full m-auto sm:m-0 mb-4"
+        className="bg-black h-[300px] w-[300px] lg:h-[400px] lg:w-[400px] rounded-full m-auto lg:m-0 mb-4"
       />
-      <div className="flex flex-col gap-4">
-        <h1 className="font-normal sm:text-[40px] sm:mt-8">About the Author</h1>
-        <p className="font-normal text-[16px] sm:text-[18px] sm:max-w-[600px]">
+      <div className="flex flex-col w-[288px] lg:w-[600px] m-auto lg:m-0 gap-4">
+        <h1 className="font-normal lg:text-[40px] lg:mt-8">About the Author</h1>
+        <p className="font-normal text-[16px] lg:text-[18px]">
           Hello 👋 Im Dillon, a full-stack engineer proficient in
           JavaScript/TypeScript, React, Node, and Express.
           <br />
@@ -22,6 +27,11 @@ export const About = () => {
           a proven track record of delivering efficient, and impactful
           solutions.
         </p>
+        <Button
+          text="Contact"
+          onClick={props.handleContactModal}
+          className="sm:max-w-[50%] sm:m-0 bg-black rounded-full"
+        />
       </div>
     </div>
   );

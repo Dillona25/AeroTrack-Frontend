@@ -15,11 +15,21 @@ import { SavedArticles } from "../routes/SavedArticles/SavedArticles";
 import { ProfileModal } from "./ProfileModal/ProfileModal";
 // import { PreLoader } from "./PreLoader/PreLoader";
 // import { NotFound } from "./NotFound/Notfound";
+import { getArticles } from "../utils/newsApi";
+
+type GetArticlesParams = {
+  ApiKey: string;
+  fromDate: string;
+  toDate: string;
+  pageSize: number;
+  userInput: string;
+};
 
 function App() {
   const [activeModal, setActiveModal] = useState("");
-  const [isLoggedIn, setIsLoggedIn] = useState(true);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [showMore, setShowMore] = useState(false);
+  const [cardsData, setCardsData] = useState([]);
 
   const handleNavMenu = () => {
     setActiveModal("navMenu");
@@ -43,6 +53,22 @@ function App() {
 
   const closeModal = () => {
     setActiveModal("");
+  };
+
+  const handleSearch = ({
+    ApiKey,
+    fromDate,
+    toDate,
+    pageSize,
+  }: GetArticlesParams) => {
+    getArticles({ ApiKey, fromDate, toDate, pageSize })
+      .then((res) => {
+        console.log(res.articles);
+        setCardsData(res.articles);
+      })
+      .catch((err) => {
+        return console.error(err.message, "Cant get articles");
+      });
   };
 
   return (
@@ -70,7 +96,7 @@ function App() {
                     handleProfileModal={handleProfileModal}
                   />
                 )}
-                <Hero />
+                <Hero handleSearch={handleSearch} />
               </div>
               {/* These will only appear for the user when they search and get
               results */}
@@ -83,7 +109,7 @@ function App() {
               no results */}
               {/* <PreLoader />
               <NotFound /> */}
-              <About />
+              <About handleContactModal={handleContactModal} />
               <Footer handleContactModal={handleContactModal} />
               {activeModal === "signIn" && (
                 <SignInModal
