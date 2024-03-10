@@ -1,41 +1,29 @@
-import { MouseEventHandler } from "react";
 import "../../vendor/fonts.css";
-
+import { useState } from "react";
 import { Button } from "../Button/Button";
-import { NewsCard } from "../NewsCard/NewsCard";
+import { NewsCardList } from "../NewsCardList/NewsCardList";
+import { Article } from "../App";
 
 type Props = {
   isLoggedIn?: boolean;
-  showMore?: boolean;
-  setShowMore?: MouseEventHandler;
+  cardsData: Article[];
 };
 
 export const SearchArticles = (props: Props) => {
+  const [visibleCards, setVisibleCards] = useState(3);
+  const handleShowMore = () => {
+    setVisibleCards((seeVisibleCards) => seeVisibleCards + 3);
+  };
+
   return (
     <div className="bg-[#f5f6f7] w-full">
       <div className="flex flex-col m-auto pb-6 pt-[32px] max-w-[1440px] sm:py-[80px]">
         <h1 className="font-normal pb-[15px] text-center sm:text-[40px]">
           Search Results
         </h1>
-        <div className="flex flex-col gap-3 py-[32px] items-center justify-center sm:flex-row sm:flex-wrap">
-          {/* // Card compoennts will go here */}
-          <NewsCard />
-          <NewsCard />
-          <NewsCard />
-          {/* Cards only show if the user selects "show more" */}
-          {props.showMore ? (
-            <>
-              <NewsCard />
-              <NewsCard />
-              <NewsCard />{" "}
-            </>
-          ) : (
-            ""
-          )}
-          {/* When clicked, this button should show 3 more articles */}
-        </div>
+        <NewsCardList cardsData={props.cardsData} visibleCards={visibleCards} />
         <Button
-          onClick={props.setShowMore}
+          onClick={handleShowMore}
           text="Show more"
           className="bg-black max-w-[288px] hover:bg-opacity-50 sm:rounded-full"
         />

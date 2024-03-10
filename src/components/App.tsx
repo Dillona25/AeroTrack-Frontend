@@ -25,11 +25,26 @@ type GetArticlesParams = {
   userInput: string;
 };
 
+export interface Article {
+  source: Source;
+  author: null;
+  title: string;
+  description: string;
+  url: string;
+  urlToImage: string;
+  publishedAt: string;
+  content: string;
+}
+
+export interface Source {
+  id: string;
+  name: string;
+}
+
 function App() {
   const [activeModal, setActiveModal] = useState("");
   const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const [showMore, setShowMore] = useState(false);
-  const [cardsData, setCardsData] = useState([]);
+  const [cardsData, setCardsData] = useState<Article[]>([]);
 
   const handleNavMenu = () => {
     setActiveModal("navMenu");
@@ -56,15 +71,14 @@ function App() {
   };
 
   const handleSearch = ({
-    ApiKey,
     fromDate,
     toDate,
     pageSize,
+    userInput,
   }: GetArticlesParams) => {
-    getArticles({ ApiKey, fromDate, toDate, pageSize })
+    getArticles({ fromDate, toDate, pageSize, userInput })
       .then((res) => {
         console.log(res.articles);
-        setCardsData(res.articles);
       })
       .catch((err) => {
         return console.error(err.message, "Cant get articles");
@@ -100,11 +114,7 @@ function App() {
               </div>
               {/* These will only appear for the user when they search and get
               results */}
-              <SearchArticles
-                isLoggedIn={isLoggedIn}
-                showMore={showMore}
-                setShowMore={setShowMore}
-              />
+              <SearchArticles cardsData={cardsData} isLoggedIn={isLoggedIn} />
               {/* These will only appear when the API is searching or when there are
               no results */}
               {/* <PreLoader />

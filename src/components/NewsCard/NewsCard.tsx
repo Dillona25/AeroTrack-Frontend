@@ -5,7 +5,7 @@ type Props = {
   src?: string;
   title?: string;
   description?: string;
-  keyword?: string;
+  author?: string;
   date?: string;
 };
 
@@ -42,7 +42,7 @@ export const NewsCard = (props: Props) => {
         </p>
         <div className="px-2 bg-[#f5f6f7] w-fit rounded-md">
           <p className="font-bold font-RobotoSlab text-[18px] text-[#84898b] ">
-            {props.keyword}
+            {props.author}
           </p>
         </div>
       </div>
