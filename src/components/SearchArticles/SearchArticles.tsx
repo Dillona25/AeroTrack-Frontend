@@ -5,7 +5,6 @@ import { NewsCardList } from "../NewsCardList/NewsCardList";
 import { Article } from "../App";
 
 type Props = {
-  isLoggedIn?: boolean;
   cardsData: Article[];
 };
 

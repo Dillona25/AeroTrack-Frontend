@@ -13,8 +13,8 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { SavedArticlesHeader } from "../routes/SavedArticlesHeader/SavedArticlesHeader";
 import { SavedArticles } from "../routes/SavedArticles/SavedArticles";
 import { ProfileModal } from "./ProfileModal/ProfileModal";
-// import { PreLoader } from "./PreLoader/PreLoader";
-// import { NotFound } from "./NotFound/Notfound";
+import { PreLoader } from "./PreLoader/PreLoader";
+import { NotFound } from "./NotFound/Notfound";
 import { getArticles } from "../utils/newsApi";
 
 type GetArticlesParams = {
@@ -43,8 +43,11 @@ export interface Source {
 
 function App() {
   const [activeModal, setActiveModal] = useState("");
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [isLoggedIn, setIsLoggedIn] = useState(true);
   const [cardsData, setCardsData] = useState<Article[]>([]);
+  const [searchedArticles, setSearchedArticles] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  const [searchResults, setSearchResults] = useState(false);
 
   const handleNavMenu = () => {
     setActiveModal("navMenu");
@@ -76,9 +79,16 @@ function App() {
     pageSize,
     userInput,
   }: GetArticlesParams) => {
+    setIsLoading(true);
     getArticles({ fromDate, toDate, pageSize, userInput })
       .then((res) => {
         console.log(res.articles);
+        setCardsData(res.articles);
+        setSearchedArticles(true);
+        cardsData.length === 0
+          ? setSearchResults(true)
+          : setSearchResults(false);
+        setIsLoading(false);
       })
       .catch((err) => {
         return console.error(err.message, "Cant get articles");
@@ -114,11 +124,11 @@ function App() {
               </div>
               {/* These will only appear for the user when they search and get
               results */}
-              <SearchArticles cardsData={cardsData} isLoggedIn={isLoggedIn} />
+              {searchedArticles && <SearchArticles cardsData={cardsData} />}
               {/* These will only appear when the API is searching or when there are
               no results */}
-              {/* <PreLoader />
-              <NotFound /> */}
+              {isLoading && <PreLoader />}
+              {/* <NotFound /> */}
               <About handleContactModal={handleContactModal} />
               <Footer handleContactModal={handleContactModal} />
               {activeModal === "signIn" && (

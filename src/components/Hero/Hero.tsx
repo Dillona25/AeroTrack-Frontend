@@ -24,6 +24,7 @@ export const Hero = (props: Props) => {
 
   const handleSearchSubmit = (e: FormEvent) => {
     e.preventDefault();
+    setSearchValue("");
     if (props.handleSearch) {
       props.handleSearch({
         userInput: searchValue,

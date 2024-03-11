@@ -9,7 +9,7 @@ export const NotFound = () => {
         className="w-[82px] h-[82px]"
       />
       <h1 className="font-normal">Nothing Found</h1>
-      <p className="font-Roboto font-normal text-[18px] text-[#B6BCBF] w-[356px]">
+      <p className="font-Roboto font-normal text-[18px] text-[#B6BCBF] px-5 sm:w-[356px]">
         Sorry, but nothing matched your search terms
       </p>
     </div>
