@@ -40,7 +40,7 @@ Form.TextInput = ({
 }: FormProps) => {
   return (
     <>
-      <label className="font-Roboto text-4">{labelText}</label>
+      <label className="text-black font-Roboto text-4">{labelText}</label>
       <input
         value={value}
         register={register}
@@ -48,7 +48,7 @@ Form.TextInput = ({
         name={name}
         placeholder={placeholder}
         onChange={onChange}
-        className="bg-slate-200 p-3 rounded-[10px] font-Roboto border-black border-[1px]"
+        className="bg-slate-200 text-black p-3 rounded-[10px] font-Roboto border-black border-[1px]"
       ></input>
     </>
   );

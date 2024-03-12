@@ -6,13 +6,13 @@ import Avatar from "../../images/Hiker.avif";
 type Props = {
   handleNavMenu?: () => void;
   handleSignInModal?: () => void;
-  isLoggedIn?: Boolean;
+  isLoggedIn?: boolean;
   handleProfileModal?: () => void;
   handleContactModal?: () => void;
 };
 
 export const Navbar = (props: Props) => {
-  let location = useLocation();
+  const location = useLocation();
 
   return (
     <div>

@@ -73,6 +73,7 @@ function App() {
     setActiveModal("");
   };
 
+  // Logic to handle Searching articles
   const handleSearch = ({
     fromDate,
     toDate,
@@ -85,15 +86,15 @@ function App() {
         console.log(res.articles);
         setCardsData(res.articles);
         setSearchedArticles(true);
-        cardsData.length === 0
-          ? setSearchResults(true)
-          : setSearchResults(false);
+        setSearchResults(true);
         setIsLoading(false);
       })
       .catch((err) => {
         return console.error(err.message, "Cant get articles");
       });
   };
+
+  // Logic to save cards will go here on backend setup
 
   return (
     <Router>
@@ -124,11 +125,13 @@ function App() {
               </div>
               {/* These will only appear for the user when they search and get
               results */}
-              {searchedArticles && <SearchArticles cardsData={cardsData} />}
+              {searchedArticles && cardsData.length > 0 && (
+                <SearchArticles isLoggedIn={isLoggedIn} cardsData={cardsData} />
+              )}
               {/* These will only appear when the API is searching or when there are
               no results */}
               {isLoading && <PreLoader />}
-              {/* <NotFound /> */}
+              {cardsData.length === 0 && searchResults === true && <NotFound />}
               <About handleContactModal={handleContactModal} />
               <Footer handleContactModal={handleContactModal} />
               {activeModal === "signIn" && (
@@ -152,7 +155,6 @@ function App() {
             </div>
           }
         />
-
         <Route
           path="/SavedArticles"
           element={
@@ -170,8 +172,8 @@ function App() {
                   handleProfileModal={handleProfileModal}
                 />
               )}
-              <SavedArticlesHeader />
-              <SavedArticles />
+              <SavedArticlesHeader cardsData={cardsData} />
+              <SavedArticles cardsData={cardsData} />
               <Footer handleContactModal={handleContactModal} />
               {activeModal === "contact" && (
                 <ContactModal closeModal={closeModal} />

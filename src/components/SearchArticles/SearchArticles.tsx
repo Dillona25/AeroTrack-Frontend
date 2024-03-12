@@ -6,6 +6,7 @@ import { Article } from "../App";
 
 type Props = {
   cardsData: Article[];
+  isLoggedIn?: boolean;
 };
 
 export const SearchArticles = (props: Props) => {
@@ -20,7 +21,11 @@ export const SearchArticles = (props: Props) => {
         <h1 className="font-normal pb-[15px] text-center sm:text-[40px]">
           Search Results
         </h1>
-        <NewsCardList cardsData={props.cardsData} visibleCards={visibleCards} />
+        <NewsCardList
+          isLoggedIn={props.isLoggedIn}
+          cardsData={props.cardsData}
+          visibleCards={visibleCards}
+        />
         <Button
           onClick={handleShowMore}
           text="Show more"

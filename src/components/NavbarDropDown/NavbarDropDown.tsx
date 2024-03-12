@@ -22,7 +22,7 @@ type menuProps = {
 };
 
 export const NavDropDown = (props: menuProps) => {
-  let location = useLocation();
+  const location = useLocation();
   return (
     <div className="fixed inset-0 z-50 backdrop-blur-lg">
       <motion.div

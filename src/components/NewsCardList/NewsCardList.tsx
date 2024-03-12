@@ -2,8 +2,9 @@ import { type Article } from "../App";
 import { NewsCard } from "../NewsCard/NewsCard";
 
 type Props = {
-  visibleCards: number;
+  visibleCards?: number;
   cardsData: Article[];
+  isLoggedIn?: boolean;
 };
 
 export const NewsCardList = (props: Props) => {
@@ -11,7 +12,7 @@ export const NewsCardList = (props: Props) => {
   const cards = props.cardsData
     .slice(0, props.visibleCards)
     .map((cardObj: Article, index) => (
-      <NewsCard cardObj={cardObj} key={index} />
+      <NewsCard isLoggedIn={props.isLoggedIn} cardObj={cardObj} key={index} />
     ));
 
   return (
