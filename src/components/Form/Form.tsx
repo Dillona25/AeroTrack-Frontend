@@ -16,7 +16,7 @@ type FormProps = {
 };
 
 type MessageProps = {
-  message?: string | FieldError | Merge<FieldError, FieldErrorsImpl<any>>;
+  message?: string | FieldError | Merge<FieldError, FieldErrorsImpl>;
 };
 
 // Form component

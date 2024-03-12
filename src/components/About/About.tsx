@@ -17,7 +17,8 @@ export const About = (props: Props) => {
         <h1 className="font-normal lg:text-[40px] lg:mt-8">About the Author</h1>
         <p className="font-normal text-[16px] lg:text-[18px]">
           Hello 👋 Im Dillon, a full-stack engineer proficient in
-          JavaScript/TypeScript, React, Node, and Express.
+          JavaScript/TypeScript, React, Node, and Express. I should mention, I
+          also love aviation!
           <br />
           <br />
           In March of 2024 I graduated TripleTens Software engineering bootcamp.

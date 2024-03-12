@@ -61,7 +61,7 @@ export const SignUpModal = (props: Props) => {
               required: "New avatar is required",
               pattern: {
                 value:
-                  /^https?:\/\/(?:www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b(?:[-a-zA-Z0-9()@:%_\+.~#?&\/=]*)$/,
+                  /^https?:\/\/(?:www\.)?[-a-zA-Z0-9@:%._+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b(?:[-a-zA-Z0-9()@:%_+.~#?&=]*)$/,
                 message: "Invalid URL",
               },
             })}
@@ -80,7 +80,7 @@ export const SignUpModal = (props: Props) => {
             register={register("email", {
               required: "Email is required",
               pattern: {
-                value: /[\w\-\.]+@([\w\-]+\.)+[\w\-]{2,4}/,
+                value: /[\w\-.]+@([\w-]+\.)+[\w-]{2,4}/,
                 message: "Invalid Email",
               },
             })}

@@ -1,5 +1,6 @@
-import { ProcessServerRes, baseUrl } from "./Constants";
+import { ProcessServerRes, baseUrl } from "./constants";
 
+// Types for each parameter that we have for the request
 type GetArticlesParams = {
   fromDate: string;
   toDate: string;
@@ -8,10 +9,10 @@ type GetArticlesParams = {
 };
 
 // Search query in which does its best to condense the user input to aviation articles related to their input
-//todo: make sure its working.
 const searchQuery = ({ userInput }: GetArticlesParams) =>
   `${userInput} AND (aviation OR aircraft)`;
 
+// Request to getArticles using the fetch method
 export const getArticles = ({
   fromDate,
   toDate,

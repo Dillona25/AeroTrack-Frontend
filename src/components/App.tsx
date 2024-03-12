@@ -16,6 +16,7 @@ import { ProfileModal } from "./ProfileModal/ProfileModal";
 import { PreLoader } from "./PreLoader/PreLoader";
 import { NotFound } from "./NotFound/Notfound";
 import { getArticles } from "../utils/newsApi";
+import { NoSearchYet } from "./NoSearchYet/NoSearchYet";
 
 type GetArticlesParams = {
   ApiKey: string;
@@ -25,6 +26,7 @@ type GetArticlesParams = {
   userInput: string;
 };
 
+// A types object for thr Article that can be easily passed and used where needed
 export interface Article {
   source: Source;
   author: null;
@@ -43,7 +45,7 @@ export interface Source {
 
 function App() {
   const [activeModal, setActiveModal] = useState("");
-  const [isLoggedIn, setIsLoggedIn] = useState(true);
+  const [isLoggedIn] = useState(true);
   const [cardsData, setCardsData] = useState<Article[]>([]);
   const [searchedArticles, setSearchedArticles] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
@@ -125,6 +127,7 @@ function App() {
               </div>
               {/* These will only appear for the user when they search and get
               results */}
+              {searchResults === false && <NoSearchYet />}
               {searchedArticles && cardsData.length > 0 && (
                 <SearchArticles isLoggedIn={isLoggedIn} cardsData={cardsData} />
               )}
