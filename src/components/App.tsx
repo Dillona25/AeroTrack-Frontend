@@ -127,7 +127,9 @@ function App() {
               </div>
               {/* These will only appear for the user when they search and get
               results */}
-              {searchResults === false && <NoSearchYet />}
+              {searchResults === false && isLoading === false && (
+                <NoSearchYet />
+              )}
               {searchedArticles && cardsData.length > 0 && (
                 <SearchArticles isLoggedIn={isLoggedIn} cardsData={cardsData} />
               )}
