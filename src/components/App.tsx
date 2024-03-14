@@ -19,7 +19,6 @@ import { getArticles } from "../utils/newsApi";
 import { NoSearchYet } from "./NoSearchYet/NoSearchYet";
 
 type GetArticlesParams = {
-  ApiKey: string;
   fromDate: string;
   toDate: string;
   pageSize: number;
@@ -123,6 +122,7 @@ function App() {
                     handleProfileModal={handleProfileModal}
                   />
                 )}
+                {/* @ts-ignore */}
                 <Hero handleSearch={handleSearch} />
               </div>
               {/* These will only appear for the user when they search and get

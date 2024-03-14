@@ -1,14 +1,15 @@
-import { ChangeEventHandler, FormEventHandler, ReactNode } from "react";
+import { ChangeEventHandler, FormEventHandler } from "react";
 import { FieldError, Merge, FieldErrorsImpl } from "react-hook-form";
 
 type FormProps = {
-  children?: ReactNode;
+  children?: any;
   // onSubmit takes FormEventHandler
   onSubmit?: FormEventHandler;
   labelText?: string;
   value?: string;
   type?: string;
   name?: string;
+  message?: string;
   // onChange uses the ChangeEvent type. This is used for any change event
   onChange?: ChangeEventHandler;
   placeholder?: string;
@@ -36,14 +37,12 @@ Form.TextInput = ({
   name,
   onChange,
   placeholder,
-  register,
 }: FormProps) => {
   return (
     <>
       <label className="text-black font-Roboto text-4">{labelText}</label>
       <input
         value={value}
-        register={register}
         type={type}
         name={name}
         placeholder={placeholder}
@@ -58,19 +57,15 @@ Form.TextInput = ({
 Form.TextArea = ({
   labelText,
   value,
-  type,
   name,
   onChange,
   placeholder,
-  register,
 }: FormProps) => {
   return (
     <>
       <label className="font-Roboto text-4">{labelText}</label>
       <textarea
         value={value}
-        register={register}
-        type={type}
         name={name}
         placeholder={placeholder}
         onChange={onChange}
@@ -81,6 +76,8 @@ Form.TextArea = ({
 };
 
 // Reusable form feedback message if there is a validation error
+
 Form.ErrorMessage = (props: MessageProps) => {
+  // @ts-ignore
   return <p className="font-RobotoSlab text-[#f00]">{props.message}</p>;
 };

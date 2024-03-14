@@ -11,7 +11,7 @@ type GetArticlesParams = {
 };
 
 type Props = {
-  handleSearch?: (params: GetArticlesParams) => void;
+  handleSearch: (params: GetArticlesParams) => void;
 };
 
 export const Hero = (props: Props) => {
