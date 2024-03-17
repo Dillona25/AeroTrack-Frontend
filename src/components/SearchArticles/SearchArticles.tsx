@@ -16,7 +16,7 @@ export const SearchArticles = (props: Props) => {
   };
 
   return (
-    <div className="bg-[#f5f6f7] w-full">
+    <section className="bg-[#f5f6f7] w-full">
       <div className="flex flex-col m-auto pb-6 pt-[32px] max-w-[1440px] sm:py-[80px]">
         <h1 className="font-normal pb-[15px] text-center sm:text-[40px]">
           Search Results
@@ -32,6 +32,6 @@ export const SearchArticles = (props: Props) => {
           className="bg-black max-w-[288px] hover:bg-opacity-50 sm:rounded-full"
         />
       </div>
-    </div>
+    </section>
   );
 };

@@ -3,7 +3,7 @@ import { Form } from "../Form/Form";
 import { Button } from "../Button/Button";
 import { motion } from "framer-motion";
 import { useForm } from "react-hook-form";
-import Avatar from "../../images/Hiker.avif";
+import Avatar from "../../images/About.png";
 
 type Props = {
   closeModal?: () => void;
@@ -38,7 +38,7 @@ export const ProfileModal = (props: Props) => {
           <img
             alt="Profile image"
             src={Avatar}
-            className="bg-black h-[225px] w-[225px] sm:h-[300px] sm:w-[300px] rounded-full m-auto mb-4"
+            className="bg-black h-[225px] w-[225px] sm:h-[300px] sm:w-[300px] rounded-full object-cover m-auto mb-4"
           />
           {/* The onChnage logic is handling validation */}
           <Form.TextInput

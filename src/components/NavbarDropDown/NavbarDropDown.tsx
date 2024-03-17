@@ -2,7 +2,7 @@ import { MouseEventHandler } from "react";
 import "../../vendor/fonts.css";
 import { Button } from "../Button/Button";
 import { motion } from "framer-motion";
-import Avatar from "../../images/Hiker.avif";
+import Avatar from "../../images/About.png";
 import { Link } from "react-router-dom";
 import { useLocation } from "react-router-dom";
 
@@ -24,7 +24,7 @@ type menuProps = {
 export const NavDropDown = (props: menuProps) => {
   const location = useLocation();
   return (
-    <div className="fixed inset-0 z-50 backdrop-blur-lg">
+    <nav className="fixed inset-0 z-50 backdrop-blur-lg">
       <motion.div
         initial={{ y: -500 }}
         animate={{ y: 0 }}
@@ -38,12 +38,12 @@ export const NavDropDown = (props: menuProps) => {
               <img
                 src={Avatar}
                 alt="profile Image"
-                className="w-[50px] h-[50px] rounded-[50%]"
+                className="w-[50px] h-[50px] object-cover rounded-[50%]"
               ></img>
               <h1 className="text-[18px] font-normal">Hello, Dillon</h1>
             </div>
           ) : (
-            <h1 className="text-[18px] font-normal">Hello...</h1>
+            <h2 className="text-[18px] font-normal">Hello...</h2>
           )}
           {/* If user is logged in disyapled their name */}
           {/* <h1 className=" text-black text-[18px] font-normal">Hello, Dillon</h1> */}
@@ -100,7 +100,7 @@ export const NavDropDown = (props: menuProps) => {
           )}
         </ul>
       </motion.div>
-    </div>
+    </nav>
   );
 };
 

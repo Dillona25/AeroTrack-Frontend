@@ -1,8 +1,8 @@
-import { ChangeEventHandler, FormEventHandler } from "react";
+import { ChangeEventHandler, FormEventHandler, ReactNode } from "react";
 import { FieldError, Merge, FieldErrorsImpl } from "react-hook-form";
 
 type FormProps = {
-  children?: any;
+  children?: ReactNode;
   // onSubmit takes FormEventHandler
   onSubmit?: FormEventHandler;
   labelText?: string;
@@ -14,6 +14,7 @@ type FormProps = {
   onChange?: ChangeEventHandler;
   placeholder?: string;
   register?: FormProps;
+  ref?: any;
 };
 
 type MessageProps = {
@@ -21,9 +22,9 @@ type MessageProps = {
 };
 
 // Form component
-export const Form = ({ children, onSubmit }: FormProps) => {
+export const Form = ({ children, onSubmit, ref }: FormProps) => {
   return (
-    <form onSubmit={onSubmit} className="flex flex-col gap-3 mt-6">
+    <form ref={ref} onSubmit={onSubmit} className="flex flex-col gap-3 mt-6">
       {children}
     </form>
   );
@@ -78,6 +79,6 @@ Form.TextArea = ({
 // Reusable form feedback message if there is a validation error
 
 Form.ErrorMessage = (props: MessageProps) => {
-  // @ts-ignore
+  // @ts-expect-error ignore error, error is not crucial
   return <p className="font-RobotoSlab text-[#f00]">{props.message}</p>;
 };

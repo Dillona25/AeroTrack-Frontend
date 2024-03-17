@@ -1,4 +1,4 @@
-import { ProcessServerRes, baseUrl } from "./constants";
+import { BASE_URL } from "./constants";
 
 // Types for each parameter that we have for the request
 type GetArticlesParams = {
@@ -6,6 +6,14 @@ type GetArticlesParams = {
   toDate: string;
   pageSize: number;
   userInput?: string;
+};
+
+export const processServerRes = (res: Response) => {
+  if (res.ok) {
+    return res.json();
+  }
+
+  return Promise.reject(new Error(`Error ${res.status}`));
 };
 
 // Search query in which does its best to condense the user input to aviation articles related to their input
@@ -21,12 +29,12 @@ export const getArticles = ({
 }: GetArticlesParams) => {
   const query = searchQuery({ userInput, fromDate, toDate, pageSize });
   return fetch(
-    `${baseUrl}/everything/?q=${query}&apiKey=f048494bbf6540f1995cbbfe929e5677&$from=${fromDate}&to=${toDate}$pageSize=${pageSize}, {
+    `${BASE_URL}/everything/?q=${query}&apiKey=f048494bbf6540f1995cbbfe929e5677&$from=${fromDate}&to=${toDate}$pageSize=${pageSize}, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
         authorization: ApiKey,
       }
     }`
-  ).then(ProcessServerRes);
+  ).then(processServerRes);
 };

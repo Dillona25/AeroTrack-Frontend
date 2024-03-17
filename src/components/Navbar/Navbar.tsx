@@ -1,7 +1,7 @@
 import "../../vendor/fonts.css";
 import { useLocation } from "react-router-dom";
 import { Link } from "react-router-dom";
-import Avatar from "../../images/Hiker.avif";
+import Avatar from "../../images/About.png";
 
 type Props = {
   handleNavMenu?: () => void;
@@ -15,7 +15,7 @@ export const Navbar = (props: Props) => {
   const location = useLocation();
 
   return (
-    <div>
+    <nav>
       {/* This is the Navbar for the exact path */}
       {location.pathname === "/" && (
         <>
@@ -67,7 +67,7 @@ export const Navbar = (props: Props) => {
                 <img
                   alt="profile img"
                   src={Avatar}
-                  className="h-12 w-12 rounded-full ml-6"
+                  className="h-12 w-12 rounded-full object-cover ml-6"
                 />
               ) : (
                 ""
@@ -119,6 +119,6 @@ export const Navbar = (props: Props) => {
           </div>
         </>
       )}
-    </div>
+    </nav>
   );
 };

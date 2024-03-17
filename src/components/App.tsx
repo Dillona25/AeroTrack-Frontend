@@ -17,6 +17,8 @@ import { PreLoader } from "./PreLoader/PreLoader";
 import { NotFound } from "./NotFound/Notfound";
 import { getArticles } from "../utils/newsApi";
 import { NoSearchYet } from "./NoSearchYet/NoSearchYet";
+import useEscapeKey from "../hooks/useEscapeKey";
+import { ArticleError } from "./ArticlesError/ArticlesError";
 
 type GetArticlesParams = {
   fromDate: string;
@@ -49,6 +51,7 @@ function App() {
   const [searchedArticles, setSearchedArticles] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [searchResults, setSearchResults] = useState(false);
+  const [ArticlesError, setArticlesError] = useState("");
 
   const handleNavMenu = () => {
     setActiveModal("navMenu");
@@ -70,9 +73,16 @@ function App() {
     setActiveModal("profile");
   };
 
+  const handleArticlesConflictError = () => {
+    setArticlesError("Error");
+  };
+
   const closeModal = () => {
     setActiveModal("");
   };
+
+  // Calling the hook to close modals on escape
+  useEscapeKey(closeModal);
 
   // Logic to handle Searching articles
   const handleSearch = ({
@@ -84,14 +94,13 @@ function App() {
     setIsLoading(true);
     getArticles({ fromDate, toDate, pageSize, userInput })
       .then((res) => {
-        console.log(res.articles);
         setCardsData(res.articles);
         setSearchedArticles(true);
         setSearchResults(true);
         setIsLoading(false);
       })
-      .catch((err) => {
-        return console.error(err.message, "Cant get articles");
+      .catch(() => {
+        return handleArticlesConflictError();
       });
   };
 
@@ -122,7 +131,7 @@ function App() {
                     handleProfileModal={handleProfileModal}
                   />
                 )}
-                {/* @ts-ignore */}
+                {/* @ts-expect-error ignore error, error is not crucial */}
                 <Hero handleSearch={handleSearch} />
               </div>
               {/* These will only appear for the user when they search and get
@@ -135,8 +144,11 @@ function App() {
               )}
               {/* These will only appear when the API is searching or when there are
               no results */}
-              {isLoading && <PreLoader />}
+              {isLoading && ArticlesError === "" && <PreLoader />}
               {cardsData.length === 0 && searchResults === true && <NotFound />}
+              {ArticlesError === "Error" && searchResults === false && (
+                <ArticleError handleContactModal={handleContactModal} />
+              )}
               <About handleContactModal={handleContactModal} />
               <Footer handleContactModal={handleContactModal} />
               {activeModal === "signIn" && (

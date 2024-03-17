@@ -10,11 +10,12 @@ export const Footer = (props: Props) => {
   const location = useLocation();
 
   return (
-    <div
+    <footer
       // Added logic here for path class due to the user not having saved articles we want to keep that footer at the bottom
       className={
         location.pathname === "/SavedArticles"
-          ? `${`bg-[#f5f6f7] p-5 flex justify-between absolute bottom-0 w-full items-center`}`
+          ? // if we do not have saved articles this needs to be position absolute
+            `${`bg-[#f5f6f7] p-5 flex justify-between relative bottom-0 w-full items-center`}`
           : `${`bg-[#f5f6f7] p-5 flex justify-between items-center`}`
       }
     >
@@ -31,8 +32,9 @@ export const Footer = (props: Props) => {
       </div>
       <a
         href="https://www.linkedin.com/in/dillonarnold/"
+        target="_blank"
         className="h-12 w-12 bg-LinkedInIcon"
       ></a>
-    </div>
+    </footer>
   );
 };

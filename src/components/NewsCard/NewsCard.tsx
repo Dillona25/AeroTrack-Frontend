@@ -51,7 +51,7 @@ export const NewsCard = (props: Props) => {
         />
         <div className="flex flex-col sm:justify-between gap-2 px-4 py-5">
           <div className="px-2 bg-[#f5f6f7] w-fit rounded-md">
-            <p className="font-bold font-RobotoSlab line-clamp-1 text-[18px] text-[#84898b] ">
+            <p className="hidden sm:block font-bold font-RobotoSlab line-clamp-1 text-[18px] text-[#84898b] ">
               {cardObj.author}
             </p>
           </div>

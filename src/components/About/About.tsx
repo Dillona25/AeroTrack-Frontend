@@ -1,4 +1,4 @@
-import Avatar from "../../images/Hiker.avif";
+import Avatar from "../../images/About.png";
 import { Button } from "../Button/Button";
 
 type Props = {
@@ -7,11 +7,11 @@ type Props = {
 
 export const About = (props: Props) => {
   return (
-    <div className="bg-white flex flex-col gap-4 lg:flex-row lg:justify-center lg:gap-14 m-auto lg:w-full py-8 lg:py-[80px]">
+    <section className="bg-white flex flex-col gap-4 lg:flex-row lg:justify-center lg:gap-14 m-auto lg:w-full py-8 lg:py-[80px]">
       <img
         alt="Photo of author"
         src={Avatar}
-        className="bg-black h-[300px] w-[300px] lg:h-[400px] lg:w-[400px] rounded-full m-auto lg:m-0 mb-4"
+        className="bg-black h-[300px] w-[300px] lg:h-[400px] lg:w-[400px] rounded-full object-cover m-auto lg:m-0 mb-4"
       />
       <div className="flex flex-col w-[288px] lg:w-[600px] m-auto lg:m-0 gap-4">
         <h1 className="font-normal lg:text-[40px] lg:mt-8">About the Author</h1>
@@ -34,6 +34,6 @@ export const About = (props: Props) => {
           className="sm:max-w-[50%] sm:m-0 bg-black rounded-full"
         />
       </div>
-    </div>
+    </section>
   );
 };
