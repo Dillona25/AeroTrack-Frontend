@@ -28,7 +28,7 @@ export const ContactModal = (props: Props) => {
         animate={{ scale: 1 }}
         transition={{ duration: 0.2 }}
       >
-        <h1 className="font-normal sm:text-[30px]">Contact us</h1>
+        <h1 className="font-normal sm:text-[30px]">Contact Me!</h1>
         <button
           onClick={props.closeModal}
           className="bg-closeIcon h-6 w-6 absolute right-[15px] top-[15px]"

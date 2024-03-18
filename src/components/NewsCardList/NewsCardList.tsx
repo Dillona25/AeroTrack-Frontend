@@ -5,7 +5,6 @@ type Props = {
   visibleCards?: number;
   cardsData: Article[];
   isLoggedIn?: boolean;
-  handleSaveArticle?: () => void;
 };
 
 export const NewsCardList = (props: Props) => {
@@ -13,12 +12,7 @@ export const NewsCardList = (props: Props) => {
   const cards = props.cardsData
     .slice(0, props.visibleCards)
     .map((cardObj: Article, index) => (
-      <NewsCard
-        handleSaveArticle={props.handleSaveArticle}
-        isLoggedIn={props.isLoggedIn}
-        cardObj={cardObj}
-        key={index}
-      />
+      <NewsCard isLoggedIn={props.isLoggedIn} cardObj={cardObj} key={index} />
     ));
 
   return (
