@@ -9,7 +9,7 @@
     "build": "tsc && vite build",
     "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
     "preview": "vite preview",
-    "deploy": "npm run build && scp -r -i ~/.ssh/id_ed25519 ./dist/ dillyb00by49@AviNews.twilightparadox.com:/home/dillyb00by49/AviNews-frontend"
+    "deploy": "npm run build && scp -r ./dist/* dillyb00by49@avinews.twilightparadox.com:/home/dillyb00by49/AviNews-Frontend"
   },
   "dependencies": {
     "@emailjs/browser": "^4.3.3",
