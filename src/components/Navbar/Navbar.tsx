@@ -9,6 +9,7 @@ type Props = {
   isLoggedIn?: boolean;
   handleProfileModal?: () => void;
   handleContactModal?: () => void;
+  handleLogout?: () => void;
 };
 
 export const Navbar = (props: Props) => {
@@ -52,7 +53,10 @@ export const Navbar = (props: Props) => {
               )}
               {/* If the user is logged in, we display a button to logout, otherwise we display a sign in button */}
               {props.isLoggedIn ? (
-                <button className="hidden lg:block border-white border-[1px] py-3 w-40 rounded-full font-Roboto lg:text-[18px]">
+                <button
+                  onClick={props.handleLogout}
+                  className="hidden lg:block border-white border-[1px] py-3 w-40 rounded-full font-Roboto lg:text-[18px]"
+                >
                   Logout
                 </button>
               ) : (
@@ -107,7 +111,10 @@ export const Navbar = (props: Props) => {
               <Link to="/" className="hidden lg:block mr-[42px] ">
                 Home
               </Link>
-              <button className="hidden lg:block border-black border-[1px] py-3 w-40 rounded-full font-Roboto lg:text-[18px]">
+              <button
+                onClick={props.handleLogout}
+                className="hidden lg:block border-black border-[1px] py-3 w-40 rounded-full font-Roboto lg:text-[18px]"
+              >
                 Logout
               </button>
               <img

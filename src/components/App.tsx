@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 // Component imports
 import { Navbar } from "./Navbar/Navbar";
 import { Hero } from "./Hero/Hero";
@@ -9,7 +9,12 @@ import { SignInModal } from "./SignInModal/SignInModal";
 import { NavDropDown } from "./NavbarDropDown/NavbarDropDown";
 import { SignUpModal } from "./SignUpModal/SignUpModal";
 import { ContactModal } from "./ContactModal/ContactModal";
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import {
+  BrowserRouter as Router,
+  Routes,
+  Route,
+  useNavigate,
+} from "react-router-dom";
 import { SavedArticlesHeader } from "../routes/SavedArticlesHeader/SavedArticlesHeader";
 import { SavedArticles } from "../routes/SavedArticles/SavedArticles";
 import { ProfileModal } from "./ProfileModal/ProfileModal";
@@ -19,6 +24,7 @@ import { getArticles } from "../utils/newsApi";
 import { NoSearchYet } from "./NoSearchYet/NoSearchYet";
 import useEscapeKey from "../hooks/useEscapeKey";
 import { ArticleError } from "./ArticlesError/ArticlesError";
+import * as auth from "../utils/authApi";
 
 type GetArticlesParams = {
   fromDate: string;
@@ -44,9 +50,17 @@ export interface Source {
   name: string;
 }
 
+type handleRegisterProps = {
+  email: string;
+  password: string;
+  name: string;
+  avatar: string;
+};
+
 function App() {
   const [activeModal, setActiveModal] = useState("");
-  const [isLoggedIn] = useState(true);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [currentUser, setCurrentUser] = useState(null);
   const [cardsData, setCardsData] = useState<Article[]>([]);
   const [searchedArticles, setSearchedArticles] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
@@ -104,7 +118,31 @@ function App() {
       });
   };
 
-  // Logic to save cards will go here on backend setup
+  // Checking for token
+  useEffect(() => {
+    // Setting jwt to the token from local storage
+    const jwt = localStorage.getItem("jwt");
+    if (jwt) {
+      localStorage.setItem("jwt", jwt);
+      auth
+        .checkToken(jwt)
+        .then((res) => {
+          setIsLoggedIn(true);
+          setCurrentUser(res.data);
+        })
+        .catch((err) => {
+          console.error(err);
+        });
+    }
+  }, []);
+
+  // Logging a user out
+  const handleLogout = () => {
+    setIsLoggedIn(false);
+    localStorage.removeItem("jwt");
+    const navigate = useNavigate();
+    navigate("/");
+  };
 
   return (
     <Router>
@@ -120,6 +158,7 @@ function App() {
                   handleProfileModal={handleProfileModal}
                   handleContactModal={handleContactModal}
                   isLoggedIn={isLoggedIn}
+                  handleLogout={handleLogout}
                 />
                 {activeModal === "navMenu" && (
                   <NavDropDown
@@ -129,6 +168,7 @@ function App() {
                     handleSignUpModal={handleSignUpModal}
                     handleContactModal={handleContactModal}
                     handleProfileModal={handleProfileModal}
+                    handleLogout={handleLogout}
                   />
                 )}
                 {/* @ts-expect-error ignore error, error is not crucial */}
