@@ -1,6 +1,6 @@
 export const BASE_URL =
   process.env.NODE_ENV === "production"
-    ? `https://nomoreparties.co/news/v2`
+    ? `https://api.avinews.twilightparadox.com`
     : "http://localhost:3001";
 
 export const NEWS_BASE_URL = "https://nomoreparties.co/news/v2";

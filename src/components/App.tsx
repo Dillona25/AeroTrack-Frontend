@@ -151,29 +151,6 @@ function App() {
     navigate("/");
   };
 
-  // Logic to register a new user
-  function handleSignup({ email, password, avatar, name }: signupProps) {
-    auth
-      .registration({ name, avatar, email, password })
-      .then((res) => {
-        if (res) {
-          localStorage.setItem("jwt", res.token);
-          auth
-            .checkToken(res.token)
-            .then((data) => {
-              setCurrentUser(data.data);
-              console.log(data);
-            })
-            .catch((err) => {
-              console.error(err);
-            });
-        }
-      })
-      .catch((err) => {
-        console.error(err);
-      });
-  }
-
   // Logic to login an existing user
   function handleLogin({ email, password }: loginProps) {
     auth
@@ -186,6 +163,29 @@ function App() {
             .then((data) => {
               setCurrentUser(data.data);
               setIsLoggedIn(true);
+              console.log(data);
+            })
+            .catch((err) => {
+              console.error(err);
+            });
+        }
+      })
+      .catch((err) => {
+        console.error(err);
+      });
+  }
+
+  // Logic to register a new user
+  function handleSignup({ email, password, avatar, name }: signupProps) {
+    auth
+      .registration({ name, avatar, email, password })
+      .then((res) => {
+        if (res) {
+          localStorage.setItem("jwt", res.token);
+          auth
+            .checkToken(res.token)
+            .then((data) => {
+              setCurrentUser(data);
               console.log(data);
             })
             .catch((err) => {
