@@ -1,7 +1,7 @@
 import "../../vendor/fonts.css";
 import { useLocation } from "react-router-dom";
 import { Link } from "react-router-dom";
-import Avatar from "../../images/About.png";
+import Avatar from "../../images/Avatar2.avif";
 
 type Props = {
   handleNavMenu?: () => void;
@@ -10,6 +10,7 @@ type Props = {
   handleProfileModal?: () => void;
   handleContactModal?: () => void;
   handleLogout?: () => void;
+  avatarUrl?: string;
 };
 
 export const Navbar = (props: Props) => {
@@ -70,7 +71,7 @@ export const Navbar = (props: Props) => {
               {props.isLoggedIn ? (
                 <img
                   alt="profile img"
-                  src={Avatar}
+                  src={props.avatarUrl || Avatar}
                   className="h-12 w-12 rounded-full object-cover ml-6"
                 />
               ) : (

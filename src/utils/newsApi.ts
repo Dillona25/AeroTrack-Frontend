@@ -1,4 +1,4 @@
-import { BASE_URL } from "./constants";
+import { NEWS_BASE_URL } from "./constants";
 
 // Types for each parameter that we have for the request
 type GetArticlesParams = {
@@ -29,7 +29,7 @@ export const getArticles = ({
 }: GetArticlesParams) => {
   const query = searchQuery({ userInput, fromDate, toDate, pageSize });
   return fetch(
-    `${BASE_URL}/everything/?q=${query}&apiKey=f048494bbf6540f1995cbbfe929e5677&$from=${fromDate}&to=${toDate}$pageSize=${pageSize}, {
+    `${NEWS_BASE_URL}/everything/?q=${query}&apiKey=f048494bbf6540f1995cbbfe929e5677&$from=${fromDate}&to=${toDate}$pageSize=${pageSize}, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",

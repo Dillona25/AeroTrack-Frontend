@@ -50,11 +50,16 @@ export interface Source {
   name: string;
 }
 
-type handleRegisterProps = {
+type loginProps = {
   email: string;
   password: string;
+};
+
+type signupProps = {
   name: string;
   avatar: string;
+  email: string;
+  password: string;
 };
 
 function App() {
@@ -66,6 +71,7 @@ function App() {
   const [isLoading, setIsLoading] = useState(false);
   const [searchResults, setSearchResults] = useState(false);
   const [ArticlesError, setArticlesError] = useState("");
+  const [avatarUrl, setAvatarUrl] = useState<string>("");
 
   const handleNavMenu = () => {
     setActiveModal("navMenu");
@@ -128,7 +134,7 @@ function App() {
         .checkToken(jwt)
         .then((res) => {
           setIsLoggedIn(true);
-          setCurrentUser(res.data);
+          if (currentUser) setCurrentUser(res.data);
         })
         .catch((err) => {
           console.error(err);
@@ -139,9 +145,62 @@ function App() {
   // Logging a user out
   const handleLogout = () => {
     setIsLoggedIn(false);
+    console.log(isLoggedIn);
     localStorage.removeItem("jwt");
     const navigate = useNavigate();
     navigate("/");
+  };
+
+  // Logic to register a new user
+  function handleSignup({ email, password, avatar, name }: signupProps) {
+    auth
+      .registration({ name, avatar, email, password })
+      .then((res) => {
+        if (res) {
+          localStorage.setItem("jwt", res.token);
+          auth
+            .checkToken(res.token)
+            .then((data) => {
+              setCurrentUser(data.data);
+              console.log(data);
+            })
+            .catch((err) => {
+              console.error(err);
+            });
+        }
+      })
+      .catch((err) => {
+        console.error(err);
+      });
+  }
+
+  // Logic to login an existing user
+  function handleLogin({ email, password }: loginProps) {
+    auth
+      .authorize({ email, password })
+      .then((res) => {
+        if (res) {
+          localStorage.setItem("jwt", res.token);
+          auth
+            .checkToken(res.token)
+            .then((data) => {
+              setCurrentUser(data.data);
+              setIsLoggedIn(true);
+              console.log(data);
+            })
+            .catch((err) => {
+              console.error(err);
+            });
+        }
+      })
+      .catch((err) => {
+        console.error(err);
+      });
+  }
+
+  // Logic to edit the profile image
+  const handleAvatarUrlChange = (newAvatarUrl: string) => {
+    setAvatarUrl(newAvatarUrl);
   };
 
   return (
@@ -159,6 +218,7 @@ function App() {
                   handleContactModal={handleContactModal}
                   isLoggedIn={isLoggedIn}
                   handleLogout={handleLogout}
+                  avatarUrl={avatarUrl}
                 />
                 {activeModal === "navMenu" && (
                   <NavDropDown
@@ -169,6 +229,7 @@ function App() {
                     handleContactModal={handleContactModal}
                     handleProfileModal={handleProfileModal}
                     handleLogout={handleLogout}
+                    avatarUrl={avatarUrl}
                   />
                 )}
                 {/* @ts-expect-error ignore error, error is not crucial */}
@@ -195,19 +256,25 @@ function App() {
                 <SignInModal
                   handleSignUpModal={handleSignUpModal}
                   closeModal={closeModal}
+                  handleLogin={handleLogin}
                 />
               )}
               {activeModal === "signUp" && (
                 <SignUpModal
                   handleSignInModal={handleSignInModal}
                   closeModal={closeModal}
+                  handleSignup={handleSignup}
                 />
               )}
               {activeModal === "contact" && (
                 <ContactModal closeModal={closeModal} />
               )}
               {activeModal === "profile" && (
-                <ProfileModal closeModal={closeModal} />
+                <ProfileModal
+                  closeModal={closeModal}
+                  avatarUrl={avatarUrl}
+                  setAvatarUrl={handleAvatarUrlChange}
+                />
               )}
             </div>
           }
@@ -236,7 +303,11 @@ function App() {
                 <ContactModal closeModal={closeModal} />
               )}
               {activeModal === "profile" && (
-                <ProfileModal closeModal={closeModal} />
+                <ProfileModal
+                  closeModal={closeModal}
+                  avatarUrl={avatarUrl}
+                  setAvatarUrl={setAvatarUrl}
+                />
               )}
             </>
           }

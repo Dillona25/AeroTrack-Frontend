@@ -3,17 +3,20 @@ import { Form } from "../Form/Form";
 import { Button } from "../Button/Button";
 import { motion } from "framer-motion";
 import { useForm } from "react-hook-form";
-import Avatar from "../../images/About.png";
+import Avatar from "../../images/Avatar2.avif";
 
 type Props = {
   closeModal?: () => void;
   setIsLOggedIn?: boolean;
+  avatarUrl: string;
+  setAvatarUrl: (newAvatarUrl: string) => void;
 };
 
 export const ProfileModal = (props: Props) => {
   const {
     register,
     setValue,
+    handleSubmit,
     formState: { errors, isValid },
   } = useForm({
     defaultValues: {
@@ -21,6 +24,10 @@ export const ProfileModal = (props: Props) => {
       avatar: "",
     },
   });
+
+  const onSubmit = (data: { avatar: string }) => {
+    props.setAvatarUrl(data.avatar);
+  };
 
   return (
     <Modal>
@@ -33,11 +40,11 @@ export const ProfileModal = (props: Props) => {
           onClick={props.closeModal}
           className="bg-closeIcon h-6 w-6 absolute right-[15px] top-[15px]"
         ></button>
-        <Form>
+        <Form onSubmit={handleSubmit(onSubmit)}>
           <h1 className="font-normal mb-4 sm:text-[30px]">Edit Profile</h1>
           <img
             alt="Profile image"
-            src={Avatar}
+            src={props.avatarUrl || Avatar}
             className="bg-black h-[225px] w-[225px] sm:h-[300px] sm:w-[300px] rounded-full object-cover m-auto mb-4"
           />
           {/* The onChnage logic is handling validation */}
@@ -63,11 +70,6 @@ export const ProfileModal = (props: Props) => {
             placeholder="Avatar Url"
             register={register("avatar", {
               required: "New avatar is required",
-              pattern: {
-                value:
-                  /^https?:\/\/(?:www\.)?[-a-zA-Z0-9@:%._+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b(?:[-a-zA-Z0-9()@:%_+.~#?&=]*)$/,
-                message: "Invalid URL",
-              },
             })}
             onChange={(evt) => {
               const target = evt.target as HTMLInputElement;

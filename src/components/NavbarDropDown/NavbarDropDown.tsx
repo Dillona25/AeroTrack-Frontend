@@ -20,6 +20,7 @@ type menuProps = {
   handleContactModal?: () => void;
   handleProfileModal?: () => void;
   handleLogout?: () => void;
+  avatarUrl?: string;
 };
 
 export const NavDropDown = (props: menuProps) => {
@@ -37,7 +38,7 @@ export const NavDropDown = (props: menuProps) => {
           {props.isLoggedIn ? (
             <div className="flex items-center gap-4">
               <img
-                src={Avatar}
+                src={props.avatarUrl || Avatar}
                 alt="profile Image"
                 className="w-[50px] h-[50px] object-cover rounded-[50%]"
               ></img>
