@@ -2,9 +2,9 @@ import { MouseEventHandler } from "react";
 import "../../vendor/fonts.css";
 import { Button } from "../Button/Button";
 import { motion } from "framer-motion";
-import Avatar from "../../images/About.png";
 import { Link } from "react-router-dom";
 import { useLocation } from "react-router-dom";
+import { currentUser } from "../App";
 
 type navProps = {
   text?: string;
@@ -21,6 +21,7 @@ type menuProps = {
   handleProfileModal?: () => void;
   handleLogout?: () => void;
   avatarUrl?: string;
+  currentUser?: currentUser | null;
 };
 
 export const NavDropDown = (props: menuProps) => {
@@ -38,11 +39,13 @@ export const NavDropDown = (props: menuProps) => {
           {props.isLoggedIn ? (
             <div className="flex items-center gap-4">
               <img
-                src={props.avatarUrl || Avatar}
+                src={props.currentUser?.avatar}
                 alt="profile Image"
                 className="w-[50px] h-[50px] object-cover rounded-[50%]"
               ></img>
-              <h1 className="text-[18px] font-normal">Hello, Dillon</h1>
+              <h1 className="text-[18px] font-normal">
+                Hello, {props.currentUser?.name}
+              </h1>
             </div>
           ) : (
             <h2 className="text-[18px] font-normal">Hello...</h2>

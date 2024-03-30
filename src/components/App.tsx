@@ -25,6 +25,7 @@ import { NoSearchYet } from "./NoSearchYet/NoSearchYet";
 import useEscapeKey from "../hooks/useEscapeKey";
 import { ArticleError } from "./ArticlesError/ArticlesError";
 import * as auth from "../utils/authApi";
+import { updateUser } from "../utils/MainApi";
 
 type GetArticlesParams = {
   fromDate: string;
@@ -62,10 +63,25 @@ type signupProps = {
   password: string;
 };
 
+export interface currentUser {
+  name: string;
+  avatar: string;
+  email: string;
+  password: string;
+}
+
+type updateUserProps = {
+  name: string;
+  avatar: string;
+};
+
 function App() {
   const [activeModal, setActiveModal] = useState("");
   const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const [currentUser, setCurrentUser] = useState(null);
+  const [currentUser, setCurrentUser] = useState(() => {
+    const storedUser = localStorage.getItem("currentUser");
+    return storedUser ? JSON.parse(storedUser) : null;
+  });
   const [cardsData, setCardsData] = useState<Article[]>([]);
   const [searchedArticles, setSearchedArticles] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
@@ -142,10 +158,9 @@ function App() {
     }
   }, []);
 
-  // Logging a user out
+  // Logic to logout a user
   const handleLogout = () => {
     setIsLoggedIn(false);
-    console.log(isLoggedIn);
     localStorage.removeItem("jwt");
     const navigate = useNavigate();
     navigate("/");
@@ -163,7 +178,6 @@ function App() {
             .then((data) => {
               setCurrentUser(data.data);
               setIsLoggedIn(true);
-              console.log(data);
             })
             .catch((err) => {
               console.error(err);
@@ -181,16 +195,7 @@ function App() {
       .registration({ name, avatar, email, password })
       .then((res) => {
         if (res) {
-          localStorage.setItem("jwt", res.token);
-          auth
-            .checkToken(res.token)
-            .then((data) => {
-              setCurrentUser(data);
-              console.log(data);
-            })
-            .catch((err) => {
-              console.error(err);
-            });
+          handleLogin({ email, password });
         }
       })
       .catch((err) => {
@@ -198,9 +203,16 @@ function App() {
       });
   }
 
-  // Logic to edit the profile image
-  const handleAvatarUrlChange = (newAvatarUrl: string) => {
-    setAvatarUrl(newAvatarUrl);
+  // Logic go update the profile
+  const updateProfile = ({ name, avatar }: updateUserProps) => {
+    updateUser({ name, avatar })
+      .then(({ data }) => {
+        setCurrentUser(data);
+        return data;
+      })
+      .catch((err) => {
+        console.error(err);
+      });
   };
 
   return (
@@ -219,6 +231,7 @@ function App() {
                   isLoggedIn={isLoggedIn}
                   handleLogout={handleLogout}
                   avatarUrl={avatarUrl}
+                  currentUser={currentUser}
                 />
                 {activeModal === "navMenu" && (
                   <NavDropDown
@@ -230,6 +243,7 @@ function App() {
                     handleProfileModal={handleProfileModal}
                     handleLogout={handleLogout}
                     avatarUrl={avatarUrl}
+                    currentUser={currentUser}
                   />
                 )}
                 {/* @ts-expect-error ignore error, error is not crucial */}
@@ -273,7 +287,8 @@ function App() {
                 <ProfileModal
                   closeModal={closeModal}
                   avatarUrl={avatarUrl}
-                  setAvatarUrl={handleAvatarUrlChange}
+                  currentUser={currentUser}
+                  updateProfile={updateProfile}
                 />
               )}
             </div>

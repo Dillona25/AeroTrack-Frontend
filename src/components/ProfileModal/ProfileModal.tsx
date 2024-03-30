@@ -2,14 +2,20 @@ import { Modal } from "../Modal/Modal";
 import { Form } from "../Form/Form";
 import { Button } from "../Button/Button";
 import { motion } from "framer-motion";
-import { useForm } from "react-hook-form";
-import Avatar from "../../images/Avatar2.avif";
+import { useForm, SubmitHandler } from "react-hook-form";
+import { currentUser } from "../App";
+
+type updateUserProps = {
+  name: string;
+  avatar: string;
+};
 
 type Props = {
   closeModal?: () => void;
   setIsLOggedIn?: boolean;
   avatarUrl: string;
-  setAvatarUrl: (newAvatarUrl: string) => void;
+  currentUser?: currentUser | null;
+  updateProfile?: (data: updateUserProps) => void;
 };
 
 export const ProfileModal = (props: Props) => {
@@ -25,8 +31,9 @@ export const ProfileModal = (props: Props) => {
     },
   });
 
-  const onSubmit = (data: { avatar: string }) => {
-    props.setAvatarUrl(data.avatar);
+  const onSubmit: SubmitHandler<{ name: string; avatar: string }> = (data) => {
+    props.updateProfile?.({ name: data.name, avatar: data.avatar });
+    props.closeModal?.();
   };
 
   return (
@@ -44,7 +51,7 @@ export const ProfileModal = (props: Props) => {
           <h1 className="font-normal mb-4 sm:text-[30px]">Edit Profile</h1>
           <img
             alt="Profile image"
-            src={props.avatarUrl || Avatar}
+            src={props.currentUser?.avatar}
             className="bg-black h-[225px] w-[225px] sm:h-[300px] sm:w-[300px] rounded-full object-cover m-auto mb-4"
           />
           {/* The onChnage logic is handling validation */}

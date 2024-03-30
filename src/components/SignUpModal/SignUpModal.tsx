@@ -104,6 +104,7 @@ export const SignUpModal = (props: Props) => {
           {errors.email && <Form.ErrorMessage message={errors.email.message} />}
           {/* The onChnage logic is handling validation */}
           <Form.TextInput
+            type="password"
             labelText="Password"
             placeholder="Password"
             register={register("password", {
