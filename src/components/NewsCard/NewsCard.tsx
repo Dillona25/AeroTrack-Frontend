@@ -35,7 +35,7 @@ export const NewsCard = (props: Props) => {
       {props.isLoggedIn ? (
         <div className="bg-white h-10 w-10 absolute right-[16px] top-[16px] rounded-[10px] flex">
           <button
-            onClick={props.handleSaveArticle}
+            onClick={() => props.handleSaveArticle}
             className="bg-saveIcon z-10 hover:bg-saveIconHover h-6 w-6 m-auto"
           ></button>
         </div>
