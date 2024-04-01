@@ -13,7 +13,6 @@ type updateUserProps = {
 type Props = {
   closeModal?: () => void;
   setIsLOggedIn?: boolean;
-  avatarUrl: string;
   currentUser?: currentUser | null;
   updateProfile?: (data: updateUserProps) => void;
 };

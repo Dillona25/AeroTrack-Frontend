@@ -1,7 +1,6 @@
 import "../../vendor/fonts.css";
 import { useLocation } from "react-router-dom";
 import { Link } from "react-router-dom";
-import Avatar from "../../images/Avatar2.avif";
 import { currentUser } from "../App";
 
 type Props = {
@@ -114,16 +113,10 @@ export const Navbar = (props: Props) => {
               <Link to="/" className="hidden lg:block mr-[42px] ">
                 Home
               </Link>
-              <button
-                onClick={props.handleLogout}
-                className="hidden lg:block border-black border-[1px] py-3 w-40 rounded-full font-Roboto lg:text-[18px]"
-              >
-                Logout
-              </button>
               <img
                 alt="profile img"
-                src={Avatar}
-                className="h-12 w-12 rounded-full ml-6"
+                src={props.currentUser?.avatar}
+                className="h-12 w-12 rounded-full ml-6 object-cover"
               />
             </div>
           </div>

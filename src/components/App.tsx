@@ -25,7 +25,7 @@ import { NoSearchYet } from "./NoSearchYet/NoSearchYet";
 import useEscapeKey from "../hooks/useEscapeKey";
 import { ArticleError } from "./ArticlesError/ArticlesError";
 import * as auth from "../utils/authApi";
-import { updateUser } from "../utils/MainApi";
+import { updateUser, saveArticle } from "../utils/MainApi";
 
 type GetArticlesParams = {
   fromDate: string;
@@ -75,6 +75,16 @@ type updateUserProps = {
   avatar: string;
 };
 
+export interface SaveArticlesProps {
+  keyword: string;
+  title: string;
+  text: string;
+  date: string;
+  source: string;
+  link: string;
+  image: string;
+}
+
 function App() {
   const [activeModal, setActiveModal] = useState("");
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -87,7 +97,8 @@ function App() {
   const [isLoading, setIsLoading] = useState(false);
   const [searchResults, setSearchResults] = useState(false);
   const [ArticlesError, setArticlesError] = useState("");
-  const [avatarUrl, setAvatarUrl] = useState<string>("");
+  const [savedNewsArticles, setSavedNewsArticles] = useState<Article[]>([]);
+  const [selectedArticleId, setSelectedArticleId] = useState(null);
 
   const handleNavMenu = () => {
     setActiveModal("navMenu");
@@ -215,6 +226,18 @@ function App() {
       });
   };
 
+  const handleSaveArticle = (card: SaveArticlesProps) => {
+    saveArticle(card)
+      .then((response) => response.json())
+      .then((data) => {
+        setSavedNewsArticles([...savedNewsArticles, data]);
+        setSelectedArticleId(data._id);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+
   return (
     <Router>
       <Routes>
@@ -230,7 +253,6 @@ function App() {
                   handleContactModal={handleContactModal}
                   isLoggedIn={isLoggedIn}
                   handleLogout={handleLogout}
-                  avatarUrl={avatarUrl}
                   currentUser={currentUser}
                 />
                 {activeModal === "navMenu" && (
@@ -242,7 +264,6 @@ function App() {
                     handleContactModal={handleContactModal}
                     handleProfileModal={handleProfileModal}
                     handleLogout={handleLogout}
-                    avatarUrl={avatarUrl}
                     currentUser={currentUser}
                   />
                 )}
@@ -255,7 +276,11 @@ function App() {
                 <NoSearchYet />
               )}
               {searchedArticles && cardsData.length > 0 && (
-                <SearchArticles isLoggedIn={isLoggedIn} cardsData={cardsData} />
+                <SearchArticles
+                  isLoggedIn={isLoggedIn}
+                  cardsData={cardsData}
+                  handleSaveArticle={handleSaveArticle}
+                />
               )}
               {/* These will only appear when the API is searching or when there are
               no results */}
@@ -286,7 +311,6 @@ function App() {
               {activeModal === "profile" && (
                 <ProfileModal
                   closeModal={closeModal}
-                  avatarUrl={avatarUrl}
                   currentUser={currentUser}
                   updateProfile={updateProfile}
                 />
@@ -302,6 +326,7 @@ function App() {
                 handleNavMenu={handleNavMenu}
                 handleProfileModal={handleProfileModal}
                 handleContactModal={handleContactModal}
+                currentUser={currentUser}
               />
               {activeModal === "navMenu" && (
                 <NavDropDown
@@ -309,6 +334,7 @@ function App() {
                   closeModal={closeModal}
                   handleContactModal={handleContactModal}
                   handleProfileModal={handleProfileModal}
+                  currentUser={currentUser}
                 />
               )}
               <SavedArticlesHeader cardsData={cardsData} />
@@ -320,8 +346,7 @@ function App() {
               {activeModal === "profile" && (
                 <ProfileModal
                   closeModal={closeModal}
-                  avatarUrl={avatarUrl}
-                  setAvatarUrl={setAvatarUrl}
+                  currentUser={currentUser}
                 />
               )}
             </>

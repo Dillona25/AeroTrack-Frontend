@@ -1,5 +1,5 @@
 import { Link, useLocation } from "react-router-dom";
-import { type Article } from "../App";
+import { SaveArticlesProps, type Article } from "../App";
 
 type Props = {
   isLoggedIn?: boolean;
@@ -10,6 +10,7 @@ type Props = {
   date?: string;
   cardObj: Article;
   options?: string;
+  handleSaveArticle?: (card: SaveArticlesProps) => void;
 };
 
 export const NewsCard = (props: Props) => {
@@ -33,7 +34,10 @@ export const NewsCard = (props: Props) => {
     <div className="relative flex flex-col sm:h-[576px] w-[288px] sm:w-[400px] rounded-[20px] bg-white shadow-[rgba(0,_0,_0,_0.24)_0px_3px_8px]">
       {props.isLoggedIn ? (
         <div className="bg-white h-10 w-10 absolute right-[16px] top-[16px] rounded-[10px] flex">
-          <button className="bg-saveIcon z-10 hover:bg-saveIconHover h-6 w-6 m-auto"></button>
+          <button
+            onClick={props.handleSaveArticle}
+            className="bg-saveIcon z-10 hover:bg-saveIconHover h-6 w-6 m-auto"
+          ></button>
         </div>
       ) : (
         ""

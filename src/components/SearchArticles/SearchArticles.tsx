@@ -2,11 +2,12 @@ import "../../vendor/fonts.css";
 import { useState } from "react";
 import { Button } from "../Button/Button";
 import { NewsCardList } from "../NewsCardList/NewsCardList";
-import { Article } from "../App";
+import { Article, SaveArticlesProps } from "../App";
 
 type Props = {
   cardsData: Article[];
   isLoggedIn?: boolean;
+  handleSaveArticle?: (card: SaveArticlesProps) => void;
 };
 
 export const SearchArticles = (props: Props) => {
@@ -25,6 +26,7 @@ export const SearchArticles = (props: Props) => {
           isLoggedIn={props.isLoggedIn}
           cardsData={props.cardsData}
           visibleCards={visibleCards}
+          handleSaveArticle={props.handleSaveArticle}
         />
         <Button
           onClick={handleShowMore}
