@@ -37,7 +37,6 @@ export const saveArticle = ({
   title,
   text,
   date,
-  source,
   link,
   image,
 }: SaveArticlesProps) => {
@@ -53,7 +52,6 @@ export const saveArticle = ({
       title,
       text,
       date,
-      source,
       link,
       image,
     }),

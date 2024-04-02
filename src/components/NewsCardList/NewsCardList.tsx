@@ -6,6 +6,7 @@ type Props = {
   cardsData: Article[];
   isLoggedIn?: boolean;
   handleSaveArticle?: (card: SaveArticlesProps) => void;
+  saveCard: SaveArticlesProps;
 };
 
 export const NewsCardList = (props: Props) => {
@@ -18,6 +19,7 @@ export const NewsCardList = (props: Props) => {
         cardObj={cardObj}
         key={index}
         handleSaveArticle={props.handleSaveArticle}
+        saveCard={props.saveCard}
       />
     ));
 

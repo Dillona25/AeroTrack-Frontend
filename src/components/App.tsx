@@ -26,6 +26,7 @@ import useEscapeKey from "../hooks/useEscapeKey";
 import { ArticleError } from "./ArticlesError/ArticlesError";
 import * as auth from "../utils/authApi";
 import { updateUser, saveArticle } from "../utils/MainApi";
+import { LogoutConfirmModal } from "./LogoutConfirmModal/LogoutConfirmModal";
 
 type GetArticlesParams = {
   fromDate: string;
@@ -36,8 +37,7 @@ type GetArticlesParams = {
 
 // A types object for thr Article that can be easily passed and used where needed
 export interface Article {
-  source: Source;
-  author: null;
+  author: string;
   title: string;
   description: string;
   url: string;
@@ -46,10 +46,10 @@ export interface Article {
   content: string;
 }
 
-export interface Source {
-  id: string;
-  name: string;
-}
+// export interface Source {
+//   id: string;
+//   name: string;
+// }
 
 type loginProps = {
   email: string;
@@ -80,7 +80,6 @@ export interface SaveArticlesProps {
   title: string;
   text: string;
   date: string;
-  source: string;
   link: string;
   image: string;
 }
@@ -98,7 +97,7 @@ function App() {
   const [searchResults, setSearchResults] = useState(false);
   const [ArticlesError, setArticlesError] = useState("");
   const [savedNewsArticles, setSavedNewsArticles] = useState<Article[]>([]);
-  const [selectedArticleId, setSelectedArticleId] = useState(null);
+  const [selectedArticleid, setSelectedArticleId] = useState(null);
 
   const handleNavMenu = () => {
     setActiveModal("navMenu");
@@ -118,6 +117,10 @@ function App() {
 
   const handleProfileModal = () => {
     setActiveModal("profile");
+  };
+
+  const handleLogoutConfirm = () => {
+    setActiveModal("logoutConfirm");
   };
 
   const handleArticlesConflictError = () => {
@@ -228,11 +231,9 @@ function App() {
   };
 
   const handleSaveArticle = (card: SaveArticlesProps) => {
-    console.log(card);
     saveArticle(card)
       .then((response) => response.json())
       .then((data) => {
-        console.log("saved");
         setSavedNewsArticles([...savedNewsArticles, data]);
         setSelectedArticleId(data._id);
       })
@@ -255,8 +256,8 @@ function App() {
                   handleProfileModal={handleProfileModal}
                   handleContactModal={handleContactModal}
                   isLoggedIn={isLoggedIn}
-                  handleLogout={handleLogout}
                   currentUser={currentUser}
+                  handleLogoutConfirm={handleLogoutConfirm}
                 />
                 {activeModal === "navMenu" && (
                   <NavDropDown
@@ -266,8 +267,8 @@ function App() {
                     handleSignUpModal={handleSignUpModal}
                     handleContactModal={handleContactModal}
                     handleProfileModal={handleProfileModal}
-                    handleLogout={handleLogout}
                     currentUser={currentUser}
+                    handleLogoutConfirm={handleLogoutConfirm}
                   />
                 )}
                 {/* @ts-expect-error ignore error, error is not crucial */}
@@ -318,6 +319,12 @@ function App() {
                   updateProfile={updateProfile}
                 />
               )}
+              {activeModal === "logoutConfirm" && (
+                <LogoutConfirmModal
+                  closeModal={closeModal}
+                  handleLogout={handleLogout}
+                />
+              )}
             </div>
           }
         />
@@ -341,7 +348,7 @@ function App() {
                 />
               )}
               <SavedArticlesHeader cardsData={cardsData} />
-              <SavedArticles cardsData={cardsData} />
+              <SavedArticles />
               <Footer handleContactModal={handleContactModal} />
               {activeModal === "contact" && (
                 <ContactModal closeModal={closeModal} />

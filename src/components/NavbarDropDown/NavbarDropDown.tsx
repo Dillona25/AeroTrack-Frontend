@@ -19,7 +19,7 @@ type menuProps = {
   handleSignUpModal?: () => void;
   handleContactModal?: () => void;
   handleProfileModal?: () => void;
-  handleLogout?: () => void;
+  handleLogoutConfirm?: () => void;
   avatarUrl?: string;
   currentUser?: currentUser | null;
 };
@@ -86,7 +86,7 @@ export const NavDropDown = (props: menuProps) => {
               />
               <NavButton onClick={props.handleContactModal} text="Contact" />
               <Button
-                onClick={props.handleLogout}
+                onClick={props.handleLogoutConfirm}
                 text="Logout"
                 className="max-w-[288px] bg-red-500"
               />

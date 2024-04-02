@@ -9,7 +9,7 @@ type Props = {
   isLoggedIn?: boolean;
   handleProfileModal?: () => void;
   handleContactModal?: () => void;
-  handleLogout?: () => void;
+  handleLogoutConfirm?: () => void;
   avatarUrl?: string;
   currentUser?: currentUser | null;
 };
@@ -56,7 +56,7 @@ export const Navbar = (props: Props) => {
               {/* If the user is logged in, we display a button to logout, otherwise we display a sign in button */}
               {props.isLoggedIn ? (
                 <button
-                  onClick={props.handleLogout}
+                  onClick={props.handleLogoutConfirm}
                   className="hidden lg:block border-white border-[1px] py-3 w-40 rounded-full font-Roboto lg:text-[18px]"
                 >
                   Logout
