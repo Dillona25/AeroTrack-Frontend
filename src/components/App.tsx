@@ -76,7 +76,7 @@ type updateUserProps = {
 };
 
 export interface SaveArticlesProps {
-  keyword: string;
+  author: string;
   title: string;
   text: string;
   date: string;
@@ -141,6 +141,7 @@ function App() {
     setIsLoading(true);
     getArticles({ fromDate, toDate, pageSize, userInput })
       .then((res) => {
+        console.log(res.articles[0]);
         setCardsData(res.articles);
         setSearchedArticles(true);
         setSearchResults(true);
@@ -227,9 +228,11 @@ function App() {
   };
 
   const handleSaveArticle = (card: SaveArticlesProps) => {
+    console.log(card);
     saveArticle(card)
       .then((response) => response.json())
       .then((data) => {
+        console.log("saved");
         setSavedNewsArticles([...savedNewsArticles, data]);
         setSelectedArticleId(data._id);
       })

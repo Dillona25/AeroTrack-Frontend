@@ -1,19 +1,10 @@
+import { SaveArticlesProps } from "../components/App";
 import { BASE_URL } from "./constants";
 import { processServerRes } from "./newsApi";
 
 type updateUserProps = {
   name: string;
   avatar: string;
-};
-
-type saveArticlesProps = {
-  keyword: string;
-  title: string;
-  text: string;
-  date: string;
-  source: string;
-  link: string;
-  image: string;
 };
 
 export const updateUser = ({ name, avatar }: updateUserProps) => {
@@ -42,14 +33,14 @@ export const getSavedArticles = (token: string) => {
 };
 
 export const saveArticle = ({
-  keyword,
+  author,
   title,
   text,
   date,
   source,
   link,
   image,
-}: saveArticlesProps) => {
+}: SaveArticlesProps) => {
   const token = localStorage.getItem("jwt");
   return fetch(`${BASE_URL}/articles`, {
     method: "POST",
@@ -58,7 +49,7 @@ export const saveArticle = ({
       authorization: `Bearer ${token}`,
     },
     body: JSON.stringify({
-      keyword,
+      author,
       title,
       text,
       date,
