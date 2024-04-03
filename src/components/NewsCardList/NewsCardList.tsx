@@ -1,12 +1,11 @@
-import { SaveArticlesProps, type Article } from "../App";
+import { Article } from "../App";
 import { NewsCard } from "../NewsCard/NewsCard";
 
 type Props = {
   visibleCards?: number;
   cardsData: Article[];
   isLoggedIn?: boolean;
-  handleSaveArticle?: (card: SaveArticlesProps) => void;
-  saveCard: SaveArticlesProps;
+  handleSaveArticle?: (card: Article) => void;
 };
 
 export const NewsCardList = (props: Props) => {
@@ -19,7 +18,6 @@ export const NewsCardList = (props: Props) => {
         cardObj={cardObj}
         key={index}
         handleSaveArticle={props.handleSaveArticle}
-        saveCard={props.saveCard}
       />
     ));
 

@@ -43,7 +43,6 @@ export interface Article {
   url: string;
   urlToImage: string;
   publishedAt: string;
-  content: string;
 }
 
 // export interface Source {
@@ -144,7 +143,6 @@ function App() {
     setIsLoading(true);
     getArticles({ fromDate, toDate, pageSize, userInput })
       .then((res) => {
-        console.log(res.articles[0]);
         setCardsData(res.articles);
         setSearchedArticles(true);
         setSearchResults(true);
@@ -230,7 +228,7 @@ function App() {
       });
   };
 
-  const handleSaveArticle = (card: SaveArticlesProps) => {
+  const handleSaveArticle = (card: Article) => {
     saveArticle(card)
       .then((response) => response.json())
       .then((data) => {
@@ -347,8 +345,11 @@ function App() {
                   currentUser={currentUser}
                 />
               )}
-              <SavedArticlesHeader cardsData={cardsData} />
-              <SavedArticles />
+              <SavedArticlesHeader
+                cardsData={cardsData}
+                currentUser={currentUser}
+              />
+              <SavedArticles savedNewsArticles={savedNewsArticles} />
               <Footer handleContactModal={handleContactModal} />
               {activeModal === "contact" && (
                 <ContactModal closeModal={closeModal} />
@@ -356,6 +357,7 @@ function App() {
               {activeModal === "profile" && (
                 <ProfileModal
                   closeModal={closeModal}
+                  updateProfile={updateProfile}
                   currentUser={currentUser}
                 />
               )}

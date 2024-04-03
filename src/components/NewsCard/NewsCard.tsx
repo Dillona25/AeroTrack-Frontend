@@ -1,5 +1,5 @@
 import { Link, useLocation } from "react-router-dom";
-import { SaveArticlesProps, type Article } from "../App";
+import { Article } from "../App";
 
 type Props = {
   isLoggedIn?: boolean;
@@ -10,8 +10,7 @@ type Props = {
   date?: string;
   cardObj: Article;
   options?: string;
-  handleSaveArticle?: (card: SaveArticlesProps) => void;
-  saveCard: SaveArticlesProps;
+  handleSaveArticle?: (card: Article) => void;
 };
 
 export const NewsCard = (props: Props) => {
@@ -40,10 +39,10 @@ export const NewsCard = (props: Props) => {
               props.handleSaveArticle?.({
                 author: props.cardObj.author,
                 title: props.cardObj.title,
-                text: props.cardObj.description,
-                date: props.cardObj.publishedAt,
-                link: props.cardObj.url,
-                image: props.cardObj.urlToImage,
+                description: props.cardObj.description,
+                publishedAt: props.cardObj.publishedAt,
+                url: props.cardObj.url,
+                urlToImage: props.cardObj.urlToImage,
               })
             }
             className="bg-saveIcon z-10 hover:bg-saveIconHover h-6 w-6 m-auto"

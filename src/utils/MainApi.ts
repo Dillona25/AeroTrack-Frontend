@@ -1,4 +1,4 @@
-import { SaveArticlesProps } from "../components/App";
+import { Article } from "../components/App";
 import { BASE_URL } from "./constants";
 import { processServerRes } from "./newsApi";
 
@@ -35,11 +35,11 @@ export const getSavedArticles = (token: string) => {
 export const saveArticle = ({
   author,
   title,
-  text,
-  date,
-  link,
-  image,
-}: SaveArticlesProps) => {
+  description,
+  publishedAt,
+  url,
+  urlToImage,
+}: Article) => {
   const token = localStorage.getItem("jwt");
   return fetch(`${BASE_URL}/articles`, {
     method: "POST",
@@ -50,10 +50,10 @@ export const saveArticle = ({
     body: JSON.stringify({
       author,
       title,
-      text,
-      date,
-      link,
-      image,
+      description,
+      publishedAt,
+      url,
+      urlToImage,
     }),
   });
 };
