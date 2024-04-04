@@ -45,11 +45,6 @@ export interface Article {
   publishedAt: string;
 }
 
-// export interface Source {
-//   id: string;
-//   name: string;
-// }
-
 type loginProps = {
   email: string;
   password: string;
@@ -74,15 +69,6 @@ type updateUserProps = {
   avatar: string;
 };
 
-export interface SaveArticlesProps {
-  author: string;
-  title: string;
-  text: string;
-  date: string;
-  link: string;
-  image: string;
-}
-
 function App() {
   const [activeModal, setActiveModal] = useState("");
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -96,6 +82,7 @@ function App() {
   const [searchResults, setSearchResults] = useState(false);
   const [ArticlesError, setArticlesError] = useState("");
   const [savedNewsArticles, setSavedNewsArticles] = useState<Article[]>([]);
+  // @ts-ignore
   const [selectedArticleid, setSelectedArticleId] = useState(null);
 
   const handleNavMenu = () => {
@@ -232,8 +219,10 @@ function App() {
     saveArticle(card)
       .then((response) => response.json())
       .then((data) => {
+        console.log(data);
         setSavedNewsArticles([...savedNewsArticles, data]);
         setSelectedArticleId(data._id);
+        console.log(savedNewsArticles);
       })
       .catch((err) => {
         console.log(err);

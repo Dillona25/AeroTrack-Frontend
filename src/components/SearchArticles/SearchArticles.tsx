@@ -2,7 +2,7 @@ import "../../vendor/fonts.css";
 import { useState } from "react";
 import { Button } from "../Button/Button";
 import { NewsCardList } from "../NewsCardList/NewsCardList";
-import { Article, SaveArticlesProps } from "../App";
+import { Article } from "../App";
 
 type Props = {
   cardsData: Article[];
