@@ -11,6 +11,7 @@ type Props = {
   cardObj: Article;
   options?: string;
   handleSaveArticle?: (card: Article) => void;
+  handleDeleteArticle?: (articleId: Article) => void;
 };
 
 export const NewsCard = (props: Props) => {
@@ -43,6 +44,7 @@ export const NewsCard = (props: Props) => {
                 publishedAt: props.cardObj.publishedAt,
                 url: props.cardObj.url,
                 urlToImage: props.cardObj.urlToImage,
+                _id: props.cardObj._id,
               })
             }
             className="bg-saveIcon z-10 hover:bg-saveIconHover h-6 w-6 m-auto"
@@ -53,7 +55,20 @@ export const NewsCard = (props: Props) => {
       )}
       {location.pathname === "/SavedArticles" && (
         <div className="bg-white h-10 w-10 absolute right-[16px] top-[16px] rounded-[10px] flex">
-          <button className="bg-deleteIcon hover:bg-deleteHover h-6 w-6 m-auto"></button>
+          <button
+            onClick={() =>
+              props.handleDeleteArticle?.({
+                author: props.cardObj.author,
+                title: props.cardObj.title,
+                description: props.cardObj.description,
+                publishedAt: props.cardObj.publishedAt,
+                url: props.cardObj.url,
+                urlToImage: props.cardObj.urlToImage,
+                _id: props.cardObj._id,
+              })
+            }
+            className="bg-deleteIcon hover:bg-deleteHover h-6 w-6 m-auto"
+          ></button>
         </div>
       )}
       <Link to={cardObj.url}>

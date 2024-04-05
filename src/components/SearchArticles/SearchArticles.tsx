@@ -8,6 +8,7 @@ type Props = {
   cardsData: Article[];
   isLoggedIn?: boolean;
   handleSaveArticle?: (card: Article) => void;
+  handleDeleteArticle?: (articleId: Article) => void;
 };
 
 export const SearchArticles = (props: Props) => {
@@ -27,6 +28,7 @@ export const SearchArticles = (props: Props) => {
           cardsData={props.cardsData}
           visibleCards={visibleCards}
           handleSaveArticle={props.handleSaveArticle}
+          handleDeleteArticle={props.handleDeleteArticle}
         />
         <Button
           onClick={handleShowMore}

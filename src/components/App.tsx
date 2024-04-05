@@ -25,7 +25,12 @@ import { NoSearchYet } from "./NoSearchYet/NoSearchYet";
 import useEscapeKey from "../hooks/useEscapeKey";
 import { ArticleError } from "./ArticlesError/ArticlesError";
 import * as auth from "../utils/authApi";
-import { updateUser, saveArticle } from "../utils/MainApi";
+import {
+  updateUser,
+  saveArticle,
+  getSavedArticles,
+  deleteSaveArticles,
+} from "../utils/MainApi";
 import { LogoutConfirmModal } from "./LogoutConfirmModal/LogoutConfirmModal";
 
 type GetArticlesParams = {
@@ -43,6 +48,7 @@ export interface Article {
   url: string;
   urlToImage: string;
   publishedAt: string;
+  _id: string;
 }
 
 type loginProps = {
@@ -151,6 +157,9 @@ function App() {
         .then((res) => {
           setIsLoggedIn(true);
           if (currentUser) setCurrentUser(res.data);
+          getSavedArticles(jwt).then((SavedArticles) => {
+            setSavedNewsArticles(SavedArticles);
+          });
         })
         .catch((err) => {
           console.error(err);
@@ -178,6 +187,9 @@ function App() {
             .then((data) => {
               setCurrentUser(data.data);
               setIsLoggedIn(true);
+              getSavedArticles(res.token).then((SavedArticles) => {
+                setSavedNewsArticles(SavedArticles);
+              });
             })
             .catch((err) => {
               console.error(err);
@@ -218,7 +230,7 @@ function App() {
   const handleSaveArticle = (card: Article) => {
     saveArticle(card)
       .then((response) => response.json())
-      .then((data) => {
+      .then(({ data }) => {
         console.log(data);
         setSavedNewsArticles([...savedNewsArticles, data]);
         setSelectedArticleId(data._id);
@@ -226,6 +238,20 @@ function App() {
       })
       .catch((err) => {
         console.log(err);
+      });
+  };
+
+  const handleDeleteArticle = (articleId: Article) => {
+    deleteSaveArticles(articleId._id, localStorage.getItem("jwt") || "")
+      .then(() => {
+        const updatedArticles = savedNewsArticles.filter(
+          (article) => article._id !== articleId._id
+        );
+        setSavedNewsArticles(updatedArticles);
+        console.log("deleted");
+      })
+      .catch((error) => {
+        console.error(error);
       });
   };
 
@@ -271,6 +297,7 @@ function App() {
                   isLoggedIn={isLoggedIn}
                   cardsData={cardsData}
                   handleSaveArticle={handleSaveArticle}
+                  handleDeleteArticle={handleDeleteArticle}
                 />
               )}
               {/* These will only appear when the API is searching or when there are
@@ -335,7 +362,7 @@ function App() {
                 />
               )}
               <SavedArticlesHeader
-                cardsData={cardsData}
+                savedNewsArticles={savedNewsArticles}
                 currentUser={currentUser}
               />
               <SavedArticles savedNewsArticles={savedNewsArticles} />
