@@ -1,11 +1,6 @@
 import Avatar from "../../images/About.png";
-import { Button } from "../Button/Button";
 
-type Props = {
-  handleContactModal?: () => void;
-};
-
-export const About = (props: Props) => {
+export const About = () => {
   return (
     <section className="bg-white flex flex-col gap-4 lg:flex-row lg:justify-center lg:gap-14 m-auto lg:w-full py-8 lg:py-[80px]">
       <img

@@ -82,7 +82,7 @@ function App() {
   const [searchResults, setSearchResults] = useState(false);
   const [ArticlesError, setArticlesError] = useState("");
   const [savedNewsArticles, setSavedNewsArticles] = useState<Article[]>([]);
-  // @ts-expect-error error no important as selectedArticleid is not used
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [selectedArticleid, setSelectedArticleId] = useState(null);
 
   const handleNavMenu = () => {
