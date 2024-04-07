@@ -8,7 +8,6 @@ type Props = {
   handleSignInModal?: () => void;
   isLoggedIn?: boolean;
   handleProfileModal?: () => void;
-  handleContactModal?: () => void;
   handleLogoutConfirm?: () => void;
   avatarUrl?: string;
   currentUser?: currentUser | null;

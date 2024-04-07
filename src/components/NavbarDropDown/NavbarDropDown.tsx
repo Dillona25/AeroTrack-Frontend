@@ -17,7 +17,6 @@ type menuProps = {
   closeModal?: () => void;
   handleSignInModal?: () => void;
   handleSignUpModal?: () => void;
-  handleContactModal?: () => void;
   handleProfileModal?: () => void;
   handleLogoutConfirm?: () => void;
   avatarUrl?: string;
@@ -42,7 +41,7 @@ export const NavDropDown = (props: menuProps) => {
                 src={props.currentUser?.avatar}
                 alt="profile Image"
                 className="w-[50px] h-[50px] object-cover rounded-[50%]"
-              ></img>
+              />
               <h1 className="text-[18px] font-normal">
                 Hello, {props.currentUser?.name}
               </h1>
@@ -84,7 +83,6 @@ export const NavDropDown = (props: menuProps) => {
                 onClick={props.handleProfileModal}
                 text="Your profile"
               />
-              <NavButton onClick={props.handleContactModal} text="Contact" />
               <Button
                 onClick={props.handleLogoutConfirm}
                 text="Logout"
@@ -93,7 +91,6 @@ export const NavDropDown = (props: menuProps) => {
             </>
           ) : (
             <>
-              <NavButton onClick={props.handleContactModal} text="Contact" />
               <Button
                 onClick={props.handleSignInModal}
                 text="Signin"

@@ -28,11 +28,6 @@ export const About = (props: Props) => {
           a proven track record of delivering efficient, and impactful
           solutions.
         </p>
-        <Button
-          text="Contact"
-          onClick={props.handleContactModal}
-          className="sm:max-w-[50%] sm:m-0 bg-black rounded-full"
-        />
       </div>
     </section>
   );

@@ -8,7 +8,6 @@ import { About } from "./About/About";
 import { SignInModal } from "./SignInModal/SignInModal";
 import { NavDropDown } from "./NavbarDropDown/NavbarDropDown";
 import { SignUpModal } from "./SignUpModal/SignUpModal";
-import { ContactModal } from "./ContactModal/ContactModal";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { SavedArticlesHeader } from "../routes/SavedArticlesHeader/SavedArticlesHeader";
 import { SavedArticles } from "../routes/SavedArticles/SavedArticles";
@@ -98,10 +97,6 @@ function App() {
     setActiveModal("signUp");
   };
 
-  const handleContactModal = () => {
-    setActiveModal("contact");
-  };
-
   const handleProfileModal = () => {
     setActiveModal("profile");
   };
@@ -151,7 +146,7 @@ function App() {
         .checkToken(jwt)
         .then((res) => {
           setIsLoggedIn(true);
-          if (currentUser) setCurrentUser(res.data);
+          setCurrentUser(res.data);
           getSavedArticles(jwt).then((SavedArticles) => {
             setSavedNewsArticles(SavedArticles);
           });
@@ -220,7 +215,6 @@ function App() {
       .then(({ data }) => {
         setSavedNewsArticles([...savedNewsArticles, data]);
         setSelectedArticleId(data._id);
-        console.log(savedNewsArticles);
       })
       .catch((err) => {
         console.log(err);
@@ -252,7 +246,6 @@ function App() {
                   handleNavMenu={handleNavMenu}
                   handleSignInModal={handleSignInModal}
                   handleProfileModal={handleProfileModal}
-                  handleContactModal={handleContactModal}
                   isLoggedIn={isLoggedIn}
                   currentUser={currentUser}
                   handleLogoutConfirm={handleLogoutConfirm}
@@ -263,7 +256,6 @@ function App() {
                     closeModal={closeModal}
                     handleSignInModal={handleSignInModal}
                     handleSignUpModal={handleSignUpModal}
-                    handleContactModal={handleContactModal}
                     handleProfileModal={handleProfileModal}
                     currentUser={currentUser}
                     handleLogoutConfirm={handleLogoutConfirm}
@@ -291,10 +283,10 @@ function App() {
               {isLoading && ArticlesError === "" && <PreLoader />}
               {cardsData.length === 0 && searchResults === true && <NotFound />}
               {ArticlesError === "Error" && searchResults === false && (
-                <ArticleError handleContactModal={handleContactModal} />
+                <ArticleError />
               )}
-              <About handleContactModal={handleContactModal} />
-              <Footer handleContactModal={handleContactModal} />
+              <About />
+              <Footer />
               {activeModal === "signIn" && (
                 <SignInModal
                   handleSignUpModal={handleSignUpModal}
@@ -308,9 +300,6 @@ function App() {
                   closeModal={closeModal}
                   handleSignup={handleSignup}
                 />
-              )}
-              {activeModal === "contact" && (
-                <ContactModal closeModal={closeModal} />
               )}
               {activeModal === "profile" && (
                 <ProfileModal
@@ -336,14 +325,12 @@ function App() {
               <Navbar
                 handleNavMenu={handleNavMenu}
                 handleProfileModal={handleProfileModal}
-                handleContactModal={handleContactModal}
                 currentUser={currentUser}
               />
               {activeModal === "navMenu" && (
                 <NavDropDown
                   isLoggedIn={isLoggedIn}
                   closeModal={closeModal}
-                  handleContactModal={handleContactModal}
                   handleProfileModal={handleProfileModal}
                   currentUser={currentUser}
                 />
@@ -356,9 +343,6 @@ function App() {
                 savedNewsArticles={savedNewsArticles}
                 handleDeleteArticle={handleDeleteArticle}
               />
-              {activeModal === "contact" && (
-                <ContactModal closeModal={closeModal} />
-              )}
               {activeModal === "profile" && (
                 <ProfileModal
                   closeModal={closeModal}
