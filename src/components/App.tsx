@@ -220,6 +220,7 @@ function App() {
       .then(({ data }) => {
         setSavedNewsArticles([...savedNewsArticles, data]);
         setSelectedArticleId(data._id);
+        console.log(savedNewsArticles);
       })
       .catch((err) => {
         console.log(err);

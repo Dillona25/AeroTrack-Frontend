@@ -28,14 +28,15 @@ export const NewsCard = (props: Props) => {
   };
 
   const isArticleSaved = props.savedNewsArticles?.some(
-    (article) => article._id === cardObj._id
+    (article) => article.title === cardObj.title
   );
 
   return (
     <div className="relative flex flex-col sm:h-[576px] w-[288px] sm:w-[400px] rounded-[20px] bg-white shadow-[rgba(0,_0,_0,_0.24)_0px_3px_8px]">
-      {props.isLoggedIn && !isArticleSaved && (
+      {props.isLoggedIn ? (
         <div className="bg-white h-10 w-10 absolute right-[16px] top-[16px] rounded-[10px] flex">
           <button
+            disabled={isArticleSaved}
             onClick={() =>
               props.handleSaveArticle?.({
                 author: props.cardObj.author,
@@ -47,9 +48,15 @@ export const NewsCard = (props: Props) => {
                 _id: props.cardObj._id,
               })
             }
-            className="bg-saveIcon z-10 hover:bg-saveIconHover h-6 w-6 m-auto"
+            className={`z-10 h-6 w-6 m-auto ${
+              isArticleSaved
+                ? "bg-saveIconSaved hover:bg-saveIconSaved hover:cursor-not-allowed"
+                : "bg-saveIcon"
+            } hover:bg-saveIconHover`}
           ></button>
         </div>
+      ) : (
+        ""
       )}
       {location.pathname === "/SavedArticles" && (
         <div className="bg-white h-10 w-10 absolute right-[16px] top-[16px] rounded-[10px] flex">

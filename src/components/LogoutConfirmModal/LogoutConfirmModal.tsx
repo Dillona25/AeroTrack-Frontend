@@ -2,6 +2,7 @@ import { Button } from "../Button/Button";
 import { Modal } from "../Modal/Modal";
 import { motion } from "framer-motion";
 import { useNavigate } from "react-router-dom";
+import Alert from "../../images/warning.png";
 
 type Props = {
   closeModal?: () => void;
@@ -29,20 +30,29 @@ export const LogoutConfirmModal = (props: Props) => {
         transition={{ duration: 0.2 }}
         className="py-10"
       >
-        <h1 className="font-normal text-[20px] sm:text-[35px] text-center">
+        <img
+          src={Alert}
+          alt="Alert Icon"
+          className="h-[75px] w-fit m-auto mb-5"
+        />
+        <h1 className="font-normal text-[24px] sm:text-[30px] text-center">
           Are you sure you want to logout?
         </h1>
         <button
           onClick={props.closeModal}
           className="bg-closeIcon h-6 w-6 absolute right-[15px] top-[15px]"
         ></button>
-        <div className="gap-4 pt-5 flex flex-col">
+        <div className="gap-4 pt-5 flex ">
           <Button
             className="bg-black"
-            text="Cancel"
+            text="No, Cancel"
             onClick={props.closeModal}
           />
-          <Button className="bg-red-500" text="Logout" onClick={handleLogout} />
+          <Button
+            className="bg-red-500"
+            text="Yes, Logout"
+            onClick={handleLogout}
+          />
         </div>
       </motion.div>
     </Modal>

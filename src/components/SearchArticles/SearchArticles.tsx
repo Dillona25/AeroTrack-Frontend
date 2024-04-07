@@ -30,6 +30,7 @@ export const SearchArticles = (props: Props) => {
           visibleCards={visibleCards}
           handleSaveArticle={props.handleSaveArticle}
           handleDeleteArticle={props.handleDeleteArticle}
+          savedNewsArticles={props.savedNewsArticles}
         />
         <Button
           onClick={handleShowMore}
