@@ -59,7 +59,7 @@ export const saveArticle = ({
 };
 
 export const deleteSaveArticles = (articleId: string, token: string) => {
-  return fetch(`${BASE_URL}/articles/:${articleId}`, {
+  return fetch(`${BASE_URL}/articles/${articleId}`, {
     method: "DELETE",
     headers: {
       "Content-Type": "application/json",

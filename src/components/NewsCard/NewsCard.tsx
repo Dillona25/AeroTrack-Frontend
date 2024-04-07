@@ -3,15 +3,11 @@ import { Article } from "../App";
 
 type Props = {
   isLoggedIn?: boolean;
-  src?: string;
-  title?: string;
-  description?: string;
-  author?: string;
-  date?: string;
   cardObj: Article;
   options?: string;
   handleSaveArticle?: (card: Article) => void;
   handleDeleteArticle?: (articleId: Article) => void;
+  savedNewsArticles?: Article[];
 };
 
 export const NewsCard = (props: Props) => {
@@ -31,9 +27,13 @@ export const NewsCard = (props: Props) => {
     return formattedDate;
   };
 
+  const isArticleSaved = props.savedNewsArticles?.some(
+    (article) => article._id === cardObj._id
+  );
+
   return (
     <div className="relative flex flex-col sm:h-[576px] w-[288px] sm:w-[400px] rounded-[20px] bg-white shadow-[rgba(0,_0,_0,_0.24)_0px_3px_8px]">
-      {props.isLoggedIn ? (
+      {props.isLoggedIn && !isArticleSaved && (
         <div className="bg-white h-10 w-10 absolute right-[16px] top-[16px] rounded-[10px] flex">
           <button
             onClick={() =>
@@ -50,8 +50,6 @@ export const NewsCard = (props: Props) => {
             className="bg-saveIcon z-10 hover:bg-saveIconHover h-6 w-6 m-auto"
           ></button>
         </div>
-      ) : (
-        ""
       )}
       {location.pathname === "/SavedArticles" && (
         <div className="bg-white h-10 w-10 absolute right-[16px] top-[16px] rounded-[10px] flex">
@@ -75,7 +73,7 @@ export const NewsCard = (props: Props) => {
         <img
           src={cardObj.urlToImage}
           alt={cardObj.title}
-          className="h-[196px] sm:h-[272px] rounded-t-[10px] shrink-0"
+          className="h-[196px] sm:h-[272px] rounded-t-[10px] shrink-0 object-cover"
         />
         <div className="flex flex-col sm:justify-between gap-2 px-4 py-5">
           <div className="px-2 bg-[#f5f6f7] w-fit rounded-md">

@@ -7,6 +7,7 @@ type Props = {
   isLoggedIn?: boolean;
   handleSaveArticle?: (card: Article) => void;
   handleDeleteArticle?: (articleId: Article) => void;
+  savedNewsArticles?: Article[];
 };
 
 export const NewsCardList = (props: Props) => {
@@ -20,6 +21,7 @@ export const NewsCardList = (props: Props) => {
         key={index}
         handleSaveArticle={props.handleSaveArticle}
         handleDeleteArticle={props.handleDeleteArticle}
+        savedNewsArticles={props.savedNewsArticles}
       />
     ));
 

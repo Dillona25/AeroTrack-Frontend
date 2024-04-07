@@ -9,12 +9,7 @@ import { SignInModal } from "./SignInModal/SignInModal";
 import { NavDropDown } from "./NavbarDropDown/NavbarDropDown";
 import { SignUpModal } from "./SignUpModal/SignUpModal";
 import { ContactModal } from "./ContactModal/ContactModal";
-import {
-  BrowserRouter as Router,
-  Routes,
-  Route,
-  useNavigate,
-} from "react-router-dom";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { SavedArticlesHeader } from "../routes/SavedArticlesHeader/SavedArticlesHeader";
 import { SavedArticles } from "../routes/SavedArticles/SavedArticles";
 import { ProfileModal } from "./ProfileModal/ProfileModal";
@@ -88,7 +83,7 @@ function App() {
   const [searchResults, setSearchResults] = useState(false);
   const [ArticlesError, setArticlesError] = useState("");
   const [savedNewsArticles, setSavedNewsArticles] = useState<Article[]>([]);
-  // @ts-ignore
+  // @ts-expect-error error no important as selectedArticleid is not used
   const [selectedArticleid, setSelectedArticleId] = useState(null);
 
   const handleNavMenu = () => {
@@ -167,14 +162,6 @@ function App() {
     }
   }, []);
 
-  // Logic to logout a user
-  const handleLogout = () => {
-    setIsLoggedIn(false);
-    localStorage.removeItem("jwt");
-    const navigate = useNavigate();
-    navigate("/");
-  };
-
   // Logic to login an existing user
   function handleLogin({ email, password }: loginProps) {
     auth
@@ -211,7 +198,7 @@ function App() {
         }
       })
       .catch((err) => {
-        console.error(err);
+        console.log(err);
       });
   }
 
@@ -231,10 +218,8 @@ function App() {
     saveArticle(card)
       .then((response) => response.json())
       .then(({ data }) => {
-        console.log(data);
         setSavedNewsArticles([...savedNewsArticles, data]);
         setSelectedArticleId(data._id);
-        console.log(savedNewsArticles);
       })
       .catch((err) => {
         console.log(err);
@@ -248,7 +233,6 @@ function App() {
           (article) => article._id !== articleId._id
         );
         setSavedNewsArticles(updatedArticles);
-        console.log("deleted");
       })
       .catch((error) => {
         console.error(error);
@@ -298,6 +282,7 @@ function App() {
                   cardsData={cardsData}
                   handleSaveArticle={handleSaveArticle}
                   handleDeleteArticle={handleDeleteArticle}
+                  savedNewsArticles={savedNewsArticles}
                 />
               )}
               {/* These will only appear when the API is searching or when there are
@@ -336,7 +321,8 @@ function App() {
               {activeModal === "logoutConfirm" && (
                 <LogoutConfirmModal
                   closeModal={closeModal}
-                  handleLogout={handleLogout}
+                  setIsLoggedIn={setIsLoggedIn}
+                  setCurrentUser={setCurrentUser}
                 />
               )}
             </div>
@@ -365,8 +351,10 @@ function App() {
                 savedNewsArticles={savedNewsArticles}
                 currentUser={currentUser}
               />
-              <SavedArticles savedNewsArticles={savedNewsArticles} />
-              <Footer handleContactModal={handleContactModal} />
+              <SavedArticles
+                savedNewsArticles={savedNewsArticles}
+                handleDeleteArticle={handleDeleteArticle}
+              />
               {activeModal === "contact" && (
                 <ContactModal closeModal={closeModal} />
               )}

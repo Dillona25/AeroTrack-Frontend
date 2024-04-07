@@ -58,7 +58,6 @@ export const ProfileModal = (props: Props) => {
             labelText="Name"
             placeholder="Name"
             register={register("name", {
-              required: "New name is required",
               minLength: {
                 value: 2,
                 message: "Use 2 or more characters",

@@ -1,21 +1,26 @@
 import { Button } from "../Button/Button";
 import { Modal } from "../Modal/Modal";
 import { motion } from "framer-motion";
+import { useNavigate } from "react-router-dom";
 
 type Props = {
   closeModal?: () => void;
   handleLogout?: () => void;
+  setIsLoggedIn?: (value: boolean) => void;
+  setCurrentUser?: (user: null) => void;
 };
 
 export const LogoutConfirmModal = (props: Props) => {
+  const navigate = useNavigate();
   const handleLogout = () => {
-    if (props.handleLogout) {
-      props.handleLogout();
-    }
-    if (props.closeModal) {
-      props.closeModal();
-    }
+    // Remove token from localStorage
+    localStorage.removeItem("jwt");
+    props.setIsLoggedIn?.(false);
+    props.setCurrentUser?.(null);
+    props.closeModal?.();
+    navigate("/");
   };
+
   return (
     <Modal>
       <motion.div

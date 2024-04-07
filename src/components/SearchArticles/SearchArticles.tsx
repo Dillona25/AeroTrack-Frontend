@@ -9,6 +9,7 @@ type Props = {
   isLoggedIn?: boolean;
   handleSaveArticle?: (card: Article) => void;
   handleDeleteArticle?: (articleId: Article) => void;
+  savedNewsArticles?: Article[];
 };
 
 export const SearchArticles = (props: Props) => {
