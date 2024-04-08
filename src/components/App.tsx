@@ -73,7 +73,7 @@ function App() {
   const [searchResults, setSearchResults] = useState(false);
   const [articlesError, setArticlesError] = useState("");
   const [savedNewsArticles, setSavedNewsArticles] = useState<Article[]>([]);
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  // @ts-ignore error not valid
   const [selectedArticleid, setSelectedArticleId] = useState(null);
   const { setCurrentUser } = useCurrentUser();
 
