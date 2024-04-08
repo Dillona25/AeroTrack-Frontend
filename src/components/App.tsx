@@ -73,8 +73,7 @@ function App() {
   const [searchResults, setSearchResults] = useState(false);
   const [articlesError, setArticlesError] = useState("");
   const [savedNewsArticles, setSavedNewsArticles] = useState<Article[]>([]);
-  // @ts-ignore error not valid
-  const [selectedArticleid, setSelectedArticleId] = useState(null);
+  const [_selectedArticleid, setSelectedArticleId] = useState(null);
   const { setCurrentUser } = useCurrentUser();
 
   const handleNavMenu = () => {
