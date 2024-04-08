@@ -4,7 +4,7 @@ import { Button } from "../Button/Button";
 import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
 import { useLocation } from "react-router-dom";
-import { currentUser } from "../App";
+import { useCurrentUser } from "../../store/currentUserContext";
 
 type navProps = {
   text?: string;
@@ -20,11 +20,12 @@ type menuProps = {
   handleProfileModal?: () => void;
   handleLogoutConfirm?: () => void;
   avatarUrl?: string;
-  currentUser?: currentUser | null;
 };
 
 export const NavDropDown = (props: menuProps) => {
   const location = useLocation();
+  const { currentUser } = useCurrentUser();
+
   return (
     <nav className="fixed inset-0 z-50 backdrop-blur-lg">
       <motion.div
@@ -38,12 +39,12 @@ export const NavDropDown = (props: menuProps) => {
           {props.isLoggedIn ? (
             <div className="flex items-center gap-4">
               <img
-                src={props.currentUser?.avatar}
+                src={currentUser?.avatar}
                 alt="profile Image"
                 className="w-[50px] h-[50px] object-cover rounded-[50%]"
               />
               <h1 className="text-[18px] font-normal">
-                Hello, {props.currentUser?.name}
+                Hello, {currentUser?.name}
               </h1>
             </div>
           ) : (

@@ -3,7 +3,7 @@ import { Form } from "../Form/Form";
 import { Button } from "../Button/Button";
 import { motion } from "framer-motion";
 import { useForm, SubmitHandler } from "react-hook-form";
-import { CurrentUser } from "../App";
+import { useCurrentUser } from "../../store/currentUserContext";
 
 type updateUserProps = {
   name: string;
@@ -13,11 +13,12 @@ type updateUserProps = {
 type Props = {
   closeModal?: () => void;
   setIsLOggedIn?: boolean;
-  currentUser?: CurrentUser | null;
   updateProfile?: (data: updateUserProps) => void;
 };
 
 export const ProfileModal = (props: Props) => {
+  const { currentUser } = useCurrentUser();
+
   const {
     register,
     setValue,
@@ -54,7 +55,7 @@ export const ProfileModal = (props: Props) => {
           <h1 className="font-normal mb-4 sm:text-[30px]">Edit Profile</h1>
           <img
             alt="Profile image"
-            src={props.currentUser?.avatar}
+            src={currentUser?.avatar}
             className="bg-black h-[225px] w-[225px] sm:h-[300px] sm:w-[300px] rounded-full object-cover m-auto mb-4"
           />
           {/* The onChnage logic is handling validation */}

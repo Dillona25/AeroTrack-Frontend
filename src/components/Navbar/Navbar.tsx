@@ -1,7 +1,7 @@
 import "../../vendor/fonts.css";
 import { useLocation } from "react-router-dom";
 import { Link } from "react-router-dom";
-import { useCurrentUser } from "../../hooks/useCurrentUser";
+import { useCurrentUser } from "../../store/currentUserContext";
 
 type Props = {
   handleNavMenu?: () => void;
