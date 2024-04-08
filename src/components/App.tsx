@@ -14,7 +14,7 @@ import { SavedArticles } from "../routes/SavedArticles/SavedArticles";
 import { ProfileModal } from "./ProfileModal/ProfileModal";
 import { PreLoader } from "./PreLoader/PreLoader";
 import { NotFound } from "./NotFound/Notfound";
-import { getArticles } from "../utils/newsApi";
+import { getArticles, processServerRes } from "../utils/newsApi";
 import { NoSearchYet } from "./NoSearchYet/NoSearchYet";
 import useEscapeKey from "../hooks/useEscapeKey";
 import { ArticleError } from "./ArticlesError/ArticlesError";
@@ -26,6 +26,8 @@ import {
   deleteSaveArticles,
 } from "../utils/MainApi";
 import { LogoutConfirmModal } from "./LogoutConfirmModal/LogoutConfirmModal";
+import { CurrentUserContextProvider } from "../store/currentUserProvider";
+import { useCurrentUser } from "../hooks/useCurrentUser";
 
 type GetArticlesParams = {
   fromDate: string;
@@ -45,26 +47,26 @@ export interface Article {
   _id: string;
 }
 
-type loginProps = {
+type LoginProps = {
   email: string;
   password: string;
 };
 
-type signupProps = {
+type SignupProps = {
   name: string;
   avatar: string;
   email: string;
   password: string;
 };
 
-export interface currentUser {
+export interface CurrentUser {
   name: string;
   avatar: string;
   email: string;
   password: string;
 }
 
-type updateUserProps = {
+type UpdateUserProps = {
   name: string;
   avatar: string;
 };
@@ -72,18 +74,19 @@ type updateUserProps = {
 function App() {
   const [activeModal, setActiveModal] = useState("");
   const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const [currentUser, setCurrentUser] = useState(() => {
-    const storedUser = localStorage.getItem("currentUser");
-    return storedUser ? JSON.parse(storedUser) : null;
-  });
+  // const [currentUser, setCurrentUser] = useState(() => {
+  //   const storedUser = localStorage.getItem("currentUser");
+  //   return storedUser ? JSON.parse(storedUser) : null;
+  // });
   const [cardsData, setCardsData] = useState<Article[]>([]);
   const [searchedArticles, setSearchedArticles] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [searchResults, setSearchResults] = useState(false);
-  const [ArticlesError, setArticlesError] = useState("");
+  const [articlesError, setArticlesError] = useState("");
   const [savedNewsArticles, setSavedNewsArticles] = useState<Article[]>([]);
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [selectedArticleid, setSelectedArticleId] = useState(null);
+  const { currentUser, setCurrentUser } = useCurrentUser();
 
   const handleNavMenu = () => {
     setActiveModal("navMenu");
@@ -151,14 +154,12 @@ function App() {
             setSavedNewsArticles(SavedArticles);
           });
         })
-        .catch((err) => {
-          console.error(err);
-        });
+        .catch(console.error);
     }
   }, []);
 
   // Logic to login an existing user
-  function handleLogin({ email, password }: loginProps) {
+  function handleLogin({ email, password }: LoginProps) {
     auth
       .authorize({ email, password })
       .then((res) => {
@@ -173,52 +174,43 @@ function App() {
                 setSavedNewsArticles(SavedArticles);
               });
             })
-            .catch((err) => {
-              console.error(err);
-            });
+            .catch(console.error);
         }
       })
-      .catch((err) => {
-        console.error(err);
-      });
+      .catch(console.error);
   }
 
   // Logic to register a new user
-  function handleSignup({ email, password, avatar, name }: signupProps) {
+  function handleSignup({ email, password, avatar, name }: SignupProps) {
     auth
       .registration({ name, avatar, email, password })
       .then((res) => {
         if (res) {
           handleLogin({ email, password });
+          console.log(currentUser);
         }
       })
-      .catch((err) => {
-        console.log(err);
-      });
+      .catch(console.error);
   }
 
   // Logic go update the profile
-  const updateProfile = ({ name, avatar }: updateUserProps) => {
+  const updateProfile = ({ name, avatar }: UpdateUserProps) => {
     updateUser({ name, avatar })
       .then(({ data }) => {
         setCurrentUser(data);
         return data;
       })
-      .catch((err) => {
-        console.error(err);
-      });
+      .catch(console.error);
   };
 
   const handleSaveArticle = (card: Article) => {
     saveArticle(card)
-      .then((response) => response.json())
+      .then(processServerRes)
       .then(({ data }) => {
         setSavedNewsArticles([...savedNewsArticles, data]);
         setSelectedArticleId(data._id);
       })
-      .catch((err) => {
-        console.log(err);
-      });
+      .catch(console.error);
   };
 
   const handleDeleteArticle = (articleId: Article) => {
@@ -229,132 +221,134 @@ function App() {
         );
         setSavedNewsArticles(updatedArticles);
       })
-      .catch((error) => {
-        console.error(error);
-      });
+      .catch(console.error);
   };
 
   return (
-    <Router>
-      <Routes>
-        <Route
-          path="/"
-          element={
-            <div>
-              <div className={`bg-MobileHeaderImage bg-cover bg-center`}>
+    <CurrentUserContextProvider>
+      <Router>
+        <Routes>
+          <Route
+            path="/"
+            element={
+              <div>
+                <div className={`bg-MobileHeaderImage bg-cover bg-center`}>
+                  <Navbar
+                    handleNavMenu={handleNavMenu}
+                    handleSignInModal={handleSignInModal}
+                    handleProfileModal={handleProfileModal}
+                    isLoggedIn={isLoggedIn}
+                    // currentUser={currentUser}
+                    handleLogoutConfirm={handleLogoutConfirm}
+                  />
+                  {activeModal === "navMenu" && (
+                    <NavDropDown
+                      isLoggedIn={isLoggedIn}
+                      closeModal={closeModal}
+                      handleSignInModal={handleSignInModal}
+                      handleSignUpModal={handleSignUpModal}
+                      handleProfileModal={handleProfileModal}
+                      // currentUser={currentUser}
+                      handleLogoutConfirm={handleLogoutConfirm}
+                    />
+                  )}
+                  {/* @ts-expect-error ignore error, error is not crucial */}
+                  <Hero handleSearch={handleSearch} />
+                </div>
+                {/* These will only appear for the user when they search and get
+              results */}
+                {searchResults === false && isLoading === false && (
+                  <NoSearchYet />
+                )}
+                {searchedArticles && cardsData.length > 0 && (
+                  <SearchArticles
+                    isLoggedIn={isLoggedIn}
+                    cardsData={cardsData}
+                    handleSaveArticle={handleSaveArticle}
+                    handleDeleteArticle={handleDeleteArticle}
+                    savedNewsArticles={savedNewsArticles}
+                  />
+                )}
+                {/* These will only appear when the API is searching or when there are
+              no results */}
+                {isLoading && articlesError === "" && <PreLoader />}
+                {cardsData.length === 0 && searchResults === true && (
+                  <NotFound />
+                )}
+                {articlesError === "Error" && searchResults === false && (
+                  <ArticleError />
+                )}
+                <About />
+                <Footer />
+                {activeModal === "signIn" && (
+                  <SignInModal
+                    handleSignUpModal={handleSignUpModal}
+                    closeModal={closeModal}
+                    handleLogin={handleLogin}
+                  />
+                )}
+                {activeModal === "signUp" && (
+                  <SignUpModal
+                    handleSignInModal={handleSignInModal}
+                    closeModal={closeModal}
+                    handleSignup={handleSignup}
+                  />
+                )}
+                {activeModal === "profile" && (
+                  <ProfileModal
+                    closeModal={closeModal}
+                    // currentUser={currentUser}
+                    updateProfile={updateProfile}
+                  />
+                )}
+                {activeModal === "logoutConfirm" && (
+                  <LogoutConfirmModal
+                    closeModal={closeModal}
+                    setIsLoggedIn={setIsLoggedIn}
+                    setCurrentUser={setCurrentUser}
+                  />
+                )}
+              </div>
+            }
+          />
+          <Route
+            path="/SavedArticles"
+            element={
+              <>
                 <Navbar
                   handleNavMenu={handleNavMenu}
-                  handleSignInModal={handleSignInModal}
                   handleProfileModal={handleProfileModal}
-                  isLoggedIn={isLoggedIn}
-                  currentUser={currentUser}
-                  handleLogoutConfirm={handleLogoutConfirm}
+                  // currentUser={currentUser}
                 />
                 {activeModal === "navMenu" && (
                   <NavDropDown
                     isLoggedIn={isLoggedIn}
                     closeModal={closeModal}
-                    handleSignInModal={handleSignInModal}
-                    handleSignUpModal={handleSignUpModal}
                     handleProfileModal={handleProfileModal}
-                    currentUser={currentUser}
-                    handleLogoutConfirm={handleLogoutConfirm}
+                    // currentUser={currentUser}
                   />
                 )}
-                {/* @ts-expect-error ignore error, error is not crucial */}
-                <Hero handleSearch={handleSearch} />
-              </div>
-              {/* These will only appear for the user when they search and get
-              results */}
-              {searchResults === false && isLoading === false && (
-                <NoSearchYet />
-              )}
-              {searchedArticles && cardsData.length > 0 && (
-                <SearchArticles
-                  isLoggedIn={isLoggedIn}
-                  cardsData={cardsData}
-                  handleSaveArticle={handleSaveArticle}
-                  handleDeleteArticle={handleDeleteArticle}
+                <SavedArticlesHeader
                   savedNewsArticles={savedNewsArticles}
+                  // currentUser={currentUser}
                 />
-              )}
-              {/* These will only appear when the API is searching or when there are
-              no results */}
-              {isLoading && ArticlesError === "" && <PreLoader />}
-              {cardsData.length === 0 && searchResults === true && <NotFound />}
-              {ArticlesError === "Error" && searchResults === false && (
-                <ArticleError />
-              )}
-              <About />
-              <Footer />
-              {activeModal === "signIn" && (
-                <SignInModal
-                  handleSignUpModal={handleSignUpModal}
-                  closeModal={closeModal}
-                  handleLogin={handleLogin}
+                <SavedArticles
+                  savedNewsArticles={savedNewsArticles}
+                  handleDeleteArticle={handleDeleteArticle}
                 />
-              )}
-              {activeModal === "signUp" && (
-                <SignUpModal
-                  handleSignInModal={handleSignInModal}
-                  closeModal={closeModal}
-                  handleSignup={handleSignup}
-                />
-              )}
-              {activeModal === "profile" && (
-                <ProfileModal
-                  closeModal={closeModal}
-                  currentUser={currentUser}
-                  updateProfile={updateProfile}
-                />
-              )}
-              {activeModal === "logoutConfirm" && (
-                <LogoutConfirmModal
-                  closeModal={closeModal}
-                  setIsLoggedIn={setIsLoggedIn}
-                  setCurrentUser={setCurrentUser}
-                />
-              )}
-            </div>
-          }
-        />
-        <Route
-          path="/SavedArticles"
-          element={
-            <>
-              <Navbar
-                handleNavMenu={handleNavMenu}
-                handleProfileModal={handleProfileModal}
-                currentUser={currentUser}
-              />
-              {activeModal === "navMenu" && (
-                <NavDropDown
-                  isLoggedIn={isLoggedIn}
-                  closeModal={closeModal}
-                  handleProfileModal={handleProfileModal}
-                  currentUser={currentUser}
-                />
-              )}
-              <SavedArticlesHeader
-                savedNewsArticles={savedNewsArticles}
-                currentUser={currentUser}
-              />
-              <SavedArticles
-                savedNewsArticles={savedNewsArticles}
-                handleDeleteArticle={handleDeleteArticle}
-              />
-              {activeModal === "profile" && (
-                <ProfileModal
-                  closeModal={closeModal}
-                  updateProfile={updateProfile}
-                  currentUser={currentUser}
-                />
-              )}
-            </>
-          }
-        />
-      </Routes>
-    </Router>
+                {activeModal === "profile" && (
+                  <ProfileModal
+                    closeModal={closeModal}
+                    updateProfile={updateProfile}
+                    // currentUser={currentUser}
+                  />
+                )}
+              </>
+            }
+          />
+        </Routes>
+      </Router>
+    </CurrentUserContextProvider>
   );
 }
 

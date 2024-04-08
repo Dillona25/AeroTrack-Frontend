@@ -3,7 +3,7 @@ import { Form } from "../Form/Form";
 import { Button } from "../Button/Button";
 import { motion } from "framer-motion";
 import { useForm, SubmitHandler } from "react-hook-form";
-import { currentUser } from "../App";
+import { CurrentUser } from "../App";
 
 type updateUserProps = {
   name: string;
@@ -13,7 +13,7 @@ type updateUserProps = {
 type Props = {
   closeModal?: () => void;
   setIsLOggedIn?: boolean;
-  currentUser?: currentUser | null;
+  currentUser?: CurrentUser | null;
   updateProfile?: (data: updateUserProps) => void;
 };
 
@@ -31,8 +31,12 @@ export const ProfileModal = (props: Props) => {
   });
 
   const onSubmit: SubmitHandler<{ name: string; avatar: string }> = (data) => {
-    props.updateProfile?.({ name: data.name, avatar: data.avatar });
-    props.closeModal?.();
+    try {
+      props.updateProfile?.({ name: data.name, avatar: data.avatar });
+      props.closeModal?.();
+    } catch (error) {
+      console.error;
+    }
   };
 
   return (

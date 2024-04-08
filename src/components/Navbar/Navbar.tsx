@@ -1,7 +1,7 @@
 import "../../vendor/fonts.css";
 import { useLocation } from "react-router-dom";
 import { Link } from "react-router-dom";
-import { currentUser } from "../App";
+import { useCurrentUser } from "../../hooks/useCurrentUser";
 
 type Props = {
   handleNavMenu?: () => void;
@@ -10,11 +10,11 @@ type Props = {
   handleProfileModal?: () => void;
   handleLogoutConfirm?: () => void;
   avatarUrl?: string;
-  currentUser?: currentUser | null;
 };
 
 export const Navbar = (props: Props) => {
   const location = useLocation();
+  const { currentUser } = useCurrentUser();
 
   return (
     <nav>
@@ -71,7 +71,7 @@ export const Navbar = (props: Props) => {
               {props.isLoggedIn ? (
                 <img
                   alt="profile img"
-                  src={props.currentUser?.avatar}
+                  src={currentUser?.avatar}
                   className="h-12 w-12 rounded-full object-cover ml-6"
                 />
               ) : (
@@ -114,7 +114,7 @@ export const Navbar = (props: Props) => {
               </Link>
               <img
                 alt="profile img"
-                src={props.currentUser?.avatar}
+                src={currentUser?.avatar}
                 className="h-12 w-12 rounded-full ml-6 object-cover"
               />
             </div>
