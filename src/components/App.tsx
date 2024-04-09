@@ -147,7 +147,7 @@ function App() {
   }, []);
 
   // Logic to login an existing user
-  function handleLogin({ email, password }: LoginProps) {
+  const handleLogin = ({ email, password }: LoginProps) => {
     auth
       .authorize({ email, password })
       .then((res) => {
@@ -166,7 +166,7 @@ function App() {
         }
       })
       .catch(console.error);
-  }
+  };
 
   // Logic to register a new user
   function handleSignup({ email, password, avatar, name }: SignupProps) {

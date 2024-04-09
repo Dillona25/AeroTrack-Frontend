@@ -80,15 +80,15 @@ export const NewsCard = (props: Props) => {
         <img
           src={cardObj.urlToImage}
           alt={cardObj.title}
-          className="h-[196px] sm:h-[272px] rounded-t-[10px] shrink-0 object-cover"
+          className="h-[196px] w-full sm:h-[272px] rounded-t-[10px] shrink-0 object-cover"
         />
         <div className="flex flex-col sm:justify-between gap-2 px-4 py-5">
-          <div className="px-2 bg-[#f5f6f7] w-fit rounded-md">
-            <p className="hidden sm:block font-bold font-RobotoSlab line-clamp-1 text-[18px] text-[#84898b] ">
+          <div className="px-2 bg-[#f5f6f7] max-w-fit rounded-md line-clamp-1">
+            <p className="hidden sm:block font-bold font-RobotoSlab text-[18px] text-[#84898b] ">
               {cardObj.author}
             </p>
           </div>
-          <h1 className="font-RobotoSlab font-normal text-[22px] sm:text-[26px] leading-[24px] sm:leading-[30px] line-clamp-2">
+          <h1 className="font-RobotoSlab font-normal text-[22px] sm:text-[26px] leading-[24px] sm:leading-[30px] line-clamp-1">
             {cardObj.title}
           </h1>
           <p className="font-normal line-clamp-4 sm:line-clamp-5">
