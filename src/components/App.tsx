@@ -293,10 +293,10 @@ function App() {
             </div>
           }
         />
-        <ProtectedRoute
+        <Route
           path="/SavedArticles"
           element={
-            <>
+            <ProtectedRoute isLoggedIn={isLoggedIn}>
               <Navbar
                 handleNavMenu={handleNavMenu}
                 handleProfileModal={handleProfileModal}
@@ -319,9 +319,8 @@ function App() {
                   updateProfile={updateProfile}
                 />
               )}
-            </>
+            </ProtectedRoute>
           }
-          isLoggedIn={isLoggedIn}
         />
       </Routes>
     </Router>
