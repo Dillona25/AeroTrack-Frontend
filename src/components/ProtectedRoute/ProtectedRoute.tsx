@@ -1,14 +1,11 @@
 import { ReactNode } from "react";
-import { Route, Navigate } from "react-router-dom";
+import { Navigate } from "react-router-dom";
 
-export const ProtectedRoute = (
-  path: string,
-  element: ReactNode,
-  isLoggedIn?: boolean
-) => {
-  return isLoggedIn ? (
-    <Route path={path} element={element} />
-  ) : (
-    <Navigate to="/" />
-  );
+type Props = {
+  children?: ReactNode;
+  isLoggedIn?: boolean;
+};
+
+export const ProtectedRoute = ({ children, isLoggedIn }: Props) => {
+  return isLoggedIn ? children : <Navigate to="/" />;
 };
