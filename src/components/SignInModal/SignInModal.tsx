@@ -1,18 +1,20 @@
 import { Modal } from "../Modal/Modal";
 import { Form } from "../Form/Form";
 import { Button } from "../Button/Button";
-import { useForm } from "react-hook-form";
+import { useForm, SubmitHandler } from "react-hook-form";
 import { motion } from "framer-motion";
 
 type Props = {
   handleSignUpModal?: () => void;
   closeModal?: () => void;
+  handleLogin?: (credentials: { email: string; password: string }) => void;
 };
 
 export const SignInModal = (props: Props) => {
   const {
     register,
     setValue,
+    handleSubmit,
     formState: { errors, isValid },
   } = useForm({
     defaultValues: {
@@ -20,6 +22,13 @@ export const SignInModal = (props: Props) => {
       password: "",
     },
   });
+
+  const onSubmit: SubmitHandler<{ email: string; password: string }> = (
+    data
+  ) => {
+    props.handleLogin?.(data);
+    props.closeModal?.();
+  };
 
   return (
     <Modal>
@@ -33,7 +42,7 @@ export const SignInModal = (props: Props) => {
           onClick={props.closeModal}
           className="bg-closeIcon h-6 w-6 absolute right-[15px] top-[15px]"
         ></button>
-        <Form>
+        <Form onSubmit={handleSubmit(onSubmit)}>
           {/* The onChnage logic is handling validation */}
           <Form.TextInput
             labelText="Email"
@@ -53,6 +62,7 @@ export const SignInModal = (props: Props) => {
           {errors.email && <Form.ErrorMessage message={errors.email.message} />}
           {/* The onChnage logic is handling validation */}
           <Form.TextInput
+            type="password"
             labelText="Password"
             placeholder="Password"
             register={register("password", {

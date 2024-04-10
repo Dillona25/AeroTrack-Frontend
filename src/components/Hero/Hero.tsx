@@ -47,7 +47,7 @@ export const Hero = (props: Props) => {
         </p>
       </div>
       {/* This div only appears on desktop */}
-      <div className="flex flex-col sm:relative">
+      <form onSubmit={handleSearchSubmit} className="flex flex-col sm:relative">
         <SearchBar
           placeholder="Search Aviation Articles"
           className="sm:py-5 sm:rounded-full mb-2"
@@ -59,7 +59,7 @@ export const Hero = (props: Props) => {
           onClick={handleSearchSubmit}
           className="sm:absolute sm:py-5 sm:rounded-full sm:w-[150px] sm:right-0 mt-4 sm:mt-0"
         />
-      </div>
+      </form>
     </header>
   );
 };

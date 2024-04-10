@@ -2,18 +2,27 @@ import { Modal } from "../Modal/Modal";
 import { Form } from "../Form/Form";
 import { Button } from "../Button/Button";
 import { motion } from "framer-motion";
-import { useForm } from "react-hook-form";
-import Avatar from "../../images/About.png";
+import { useForm, SubmitHandler } from "react-hook-form";
+import { useCurrentUser } from "../../store/currentUserContext";
+
+type updateUserProps = {
+  name: string;
+  avatar: string;
+};
 
 type Props = {
   closeModal?: () => void;
   setIsLOggedIn?: boolean;
+  updateProfile?: (data: updateUserProps) => void;
 };
 
 export const ProfileModal = (props: Props) => {
+  const { currentUser } = useCurrentUser();
+
   const {
     register,
     setValue,
+    handleSubmit,
     formState: { errors, isValid },
   } = useForm({
     defaultValues: {
@@ -21,6 +30,15 @@ export const ProfileModal = (props: Props) => {
       avatar: "",
     },
   });
+
+  const onSubmit: SubmitHandler<{ name: string; avatar: string }> = (data) => {
+    try {
+      props.updateProfile?.({ name: data.name, avatar: data.avatar });
+      props.closeModal?.();
+    } catch (error) {
+      console.error;
+    }
+  };
 
   return (
     <Modal>
@@ -33,11 +51,11 @@ export const ProfileModal = (props: Props) => {
           onClick={props.closeModal}
           className="bg-closeIcon h-6 w-6 absolute right-[15px] top-[15px]"
         ></button>
-        <Form>
+        <Form onSubmit={handleSubmit(onSubmit)}>
           <h1 className="font-normal mb-4 sm:text-[30px]">Edit Profile</h1>
           <img
             alt="Profile image"
-            src={Avatar}
+            src={currentUser?.avatar}
             className="bg-black h-[225px] w-[225px] sm:h-[300px] sm:w-[300px] rounded-full object-cover m-auto mb-4"
           />
           {/* The onChnage logic is handling validation */}
@@ -45,7 +63,6 @@ export const ProfileModal = (props: Props) => {
             labelText="Name"
             placeholder="Name"
             register={register("name", {
-              required: "New name is required",
               minLength: {
                 value: 2,
                 message: "Use 2 or more characters",
@@ -63,11 +80,6 @@ export const ProfileModal = (props: Props) => {
             placeholder="Avatar Url"
             register={register("avatar", {
               required: "New avatar is required",
-              pattern: {
-                value:
-                  /^https?:\/\/(?:www\.)?[-a-zA-Z0-9@:%._+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b(?:[-a-zA-Z0-9()@:%_+.~#?&=]*)$/,
-                message: "Invalid URL",
-              },
             })}
             onChange={(evt) => {
               const target = evt.target as HTMLInputElement;

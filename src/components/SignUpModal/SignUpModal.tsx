@@ -1,18 +1,25 @@
 import { Modal } from "../Modal/Modal";
 import { Form } from "../Form/Form";
 import { Button } from "../Button/Button";
-import { useForm } from "react-hook-form";
+import { useForm, SubmitHandler } from "react-hook-form";
 import { motion } from "framer-motion";
 
 type Props = {
   handleSignInModal?: () => void;
   closeModal?: () => void;
+  handleSignup?: (credentials: {
+    name: string;
+    avatar: string;
+    email: string;
+    password: string;
+  }) => void;
 };
 
 export const SignUpModal = (props: Props) => {
   const {
     register,
     setValue,
+    handleSubmit,
     formState: { errors, isValid },
   } = useForm({
     defaultValues: {
@@ -22,6 +29,16 @@ export const SignUpModal = (props: Props) => {
       password: "",
     },
   });
+
+  const onSubmit: SubmitHandler<{
+    email: string;
+    password: string;
+    name: string;
+    avatar: string;
+  }> = (data) => {
+    props.handleSignup?.(data);
+    props.closeModal?.();
+  };
 
   return (
     <Modal>
@@ -35,7 +52,7 @@ export const SignUpModal = (props: Props) => {
           onClick={props.closeModal}
           className="bg-closeIcon h-6 w-6 absolute right-[15px] top-[15px]"
         ></button>
-        <Form>
+        <Form onSubmit={handleSubmit(onSubmit)}>
           {/* The onChnage logic is handling validation */}
           <Form.TextInput
             labelText="Name"
@@ -59,11 +76,6 @@ export const SignUpModal = (props: Props) => {
             placeholder="Avatar Url"
             register={register("avatar", {
               required: "New avatar is required",
-              pattern: {
-                value:
-                  /^https?:\/\/(?:www\.)?[-a-zA-Z0-9@:%._+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b(?:[-a-zA-Z0-9()@:%_+.~#?&=]*)$/,
-                message: "Invalid URL",
-              },
             })}
             onChange={(evt) => {
               const target = evt.target as HTMLInputElement;
@@ -92,6 +104,7 @@ export const SignUpModal = (props: Props) => {
           {errors.email && <Form.ErrorMessage message={errors.email.message} />}
           {/* The onChnage logic is handling validation */}
           <Form.TextInput
+            type="password"
             labelText="Password"
             placeholder="Password"
             register={register("password", {

@@ -1,4 +1,4 @@
-import { ChangeEventHandler, FormEventHandler, ReactNode } from "react";
+import { ChangeEventHandler, FormEventHandler, ReactNode, Ref } from "react";
 import { FieldError, Merge, FieldErrorsImpl } from "react-hook-form";
 
 type FormProps = {
@@ -14,7 +14,7 @@ type FormProps = {
   onChange?: ChangeEventHandler;
   placeholder?: string;
   register?: FormProps;
-  ref?: any;
+  ref?: Ref<HTMLFormElement>;
 };
 
 type MessageProps = {

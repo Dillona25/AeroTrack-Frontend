@@ -19,6 +19,7 @@ export default {
       menuBlack: "url('../src/Assets/menuBlack.svg')",
       closeIcon: "url('../src/Assets/close.svg')",
       saveIcon: "url('../src/Assets/bookmark.svg')",
+      saveIconSaved: "url('../src/Assets/bookmarkSaved.svg')",
       deleteIcon: "url('../src/Assets/trash.svg')",
       deleteHover: "url('../src/Assets/trashBlack.svg')",
       saveIconHover: "url('../src/Assets/bookmarkBlack.svg')",

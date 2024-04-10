@@ -1,18 +1,20 @@
 import "../../vendor/fonts.css";
 import { useLocation } from "react-router-dom";
 import { Link } from "react-router-dom";
-import Avatar from "../../images/About.png";
+import { useCurrentUser } from "../../store/currentUserContext";
 
 type Props = {
   handleNavMenu?: () => void;
   handleSignInModal?: () => void;
   isLoggedIn?: boolean;
   handleProfileModal?: () => void;
-  handleContactModal?: () => void;
+  handleLogoutConfirm?: () => void;
+  avatarUrl?: string;
 };
 
 export const Navbar = (props: Props) => {
   const location = useLocation();
+  const { currentUser } = useCurrentUser();
 
   return (
     <nav>
@@ -52,7 +54,10 @@ export const Navbar = (props: Props) => {
               )}
               {/* If the user is logged in, we display a button to logout, otherwise we display a sign in button */}
               {props.isLoggedIn ? (
-                <button className="hidden lg:block border-white border-[1px] py-3 w-40 rounded-full font-Roboto lg:text-[18px]">
+                <button
+                  onClick={props.handleLogoutConfirm}
+                  className="hidden lg:block border-white border-[1px] py-3 w-40 rounded-full font-Roboto lg:text-[18px]"
+                >
                   Logout
                 </button>
               ) : (
@@ -66,7 +71,7 @@ export const Navbar = (props: Props) => {
               {props.isLoggedIn ? (
                 <img
                   alt="profile img"
-                  src={Avatar}
+                  src={currentUser?.avatar}
                   className="h-12 w-12 rounded-full object-cover ml-6"
                 />
               ) : (
@@ -107,13 +112,10 @@ export const Navbar = (props: Props) => {
               <Link to="/" className="hidden lg:block mr-[42px] ">
                 Home
               </Link>
-              <button className="hidden lg:block border-black border-[1px] py-3 w-40 rounded-full font-Roboto lg:text-[18px]">
-                Logout
-              </button>
               <img
                 alt="profile img"
-                src={Avatar}
-                className="h-12 w-12 rounded-full ml-6"
+                src={currentUser?.avatar}
+                className="h-12 w-12 rounded-full ml-6 object-cover"
               />
             </div>
           </div>

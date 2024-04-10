@@ -7,6 +7,9 @@ import { Article } from "../App";
 type Props = {
   cardsData: Article[];
   isLoggedIn?: boolean;
+  handleSaveArticle?: (card: Article) => void;
+  handleDeleteArticle?: (articleId: Article) => void;
+  savedNewsArticles?: Article[];
 };
 
 export const SearchArticles = (props: Props) => {
@@ -25,6 +28,9 @@ export const SearchArticles = (props: Props) => {
           isLoggedIn={props.isLoggedIn}
           cardsData={props.cardsData}
           visibleCards={visibleCards}
+          handleSaveArticle={props.handleSaveArticle}
+          handleDeleteArticle={props.handleDeleteArticle}
+          savedNewsArticles={props.savedNewsArticles}
         />
         <Button
           onClick={handleShowMore}

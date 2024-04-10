@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 // Component imports
 import { Navbar } from "./Navbar/Navbar";
 import { Hero } from "./Hero/Hero";
@@ -8,17 +8,26 @@ import { About } from "./About/About";
 import { SignInModal } from "./SignInModal/SignInModal";
 import { NavDropDown } from "./NavbarDropDown/NavbarDropDown";
 import { SignUpModal } from "./SignUpModal/SignUpModal";
-import { ContactModal } from "./ContactModal/ContactModal";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { SavedArticlesHeader } from "../routes/SavedArticlesHeader/SavedArticlesHeader";
 import { SavedArticles } from "../routes/SavedArticles/SavedArticles";
 import { ProfileModal } from "./ProfileModal/ProfileModal";
 import { PreLoader } from "./PreLoader/PreLoader";
 import { NotFound } from "./NotFound/Notfound";
-import { getArticles } from "../utils/newsApi";
+import { getArticles, processServerRes } from "../utils/newsApi";
 import { NoSearchYet } from "./NoSearchYet/NoSearchYet";
 import useEscapeKey from "../hooks/useEscapeKey";
 import { ArticleError } from "./ArticlesError/ArticlesError";
+import * as auth from "../utils/authApi";
+import {
+  updateUser,
+  saveArticle,
+  getSavedArticles,
+  deleteSaveArticles,
+} from "../utils/MainApi";
+import { LogoutConfirmModal } from "./LogoutConfirmModal/LogoutConfirmModal";
+import { useCurrentUser } from "../store/currentUserContext";
+import { ProtectedRoute } from "./ProtectedRoute/ProtectedRoute";
 
 type GetArticlesParams = {
   fromDate: string;
@@ -29,29 +38,44 @@ type GetArticlesParams = {
 
 // A types object for thr Article that can be easily passed and used where needed
 export interface Article {
-  source: Source;
-  author: null;
+  author: string;
   title: string;
   description: string;
   url: string;
   urlToImage: string;
   publishedAt: string;
-  content: string;
+  _id: string;
 }
 
-export interface Source {
-  id: string;
+type LoginProps = {
+  email: string;
+  password: string;
+};
+
+type SignupProps = {
   name: string;
-}
+  avatar: string;
+  email: string;
+  password: string;
+};
+
+type UpdateUserProps = {
+  name: string;
+  avatar: string;
+};
 
 function App() {
   const [activeModal, setActiveModal] = useState("");
-  const [isLoggedIn] = useState(true);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+
   const [cardsData, setCardsData] = useState<Article[]>([]);
   const [searchedArticles, setSearchedArticles] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [searchResults, setSearchResults] = useState(false);
-  const [ArticlesError, setArticlesError] = useState("");
+  const [articlesError, setArticlesError] = useState("");
+  const [savedNewsArticles, setSavedNewsArticles] = useState<Article[]>([]);
+  const [_selectedArticleid, setSelectedArticleId] = useState(null);
+  const { setCurrentUser } = useCurrentUser();
 
   const handleNavMenu = () => {
     setActiveModal("navMenu");
@@ -65,12 +89,12 @@ function App() {
     setActiveModal("signUp");
   };
 
-  const handleContactModal = () => {
-    setActiveModal("contact");
-  };
-
   const handleProfileModal = () => {
     setActiveModal("profile");
+  };
+
+  const handleLogoutConfirm = () => {
+    setActiveModal("logoutConfirm");
   };
 
   const handleArticlesConflictError = () => {
@@ -104,7 +128,89 @@ function App() {
       });
   };
 
-  // Logic to save cards will go here on backend setup
+  // Checking for token
+  useEffect(() => {
+    // Setting jwt to the token from local storage
+    const jwt = localStorage.getItem("jwt");
+    if (jwt) {
+      localStorage.setItem("jwt", jwt);
+      auth
+        .checkToken(jwt)
+        .then((res) => {
+          setIsLoggedIn(true);
+          setCurrentUser(res.data);
+          getSavedArticles(jwt).then((SavedArticles) => {
+            setSavedNewsArticles(SavedArticles);
+          });
+        })
+        .catch(console.error);
+    }
+  }, []);
+
+  // Logic to login an existing user
+  const handleLogin = ({ email, password }: LoginProps) => {
+    auth
+      .authorize({ email, password })
+      .then((res) => {
+        if (res) {
+          localStorage.setItem("jwt", res.token);
+          auth
+            .checkToken(res.token)
+            .then((data) => {
+              setCurrentUser(data.data);
+              setIsLoggedIn(true);
+              getSavedArticles(res.token).then((SavedArticles) => {
+                setSavedNewsArticles(SavedArticles);
+              });
+            })
+            .catch(console.error);
+        }
+      })
+      .catch(console.error);
+  };
+
+  // Logic to register a new user
+  function handleSignup({ email, password, avatar, name }: SignupProps) {
+    auth
+      .registration({ name, avatar, email, password })
+      .then((res) => {
+        if (res) {
+          handleLogin({ email, password });
+        }
+      })
+      .catch(console.error);
+  }
+
+  // Logic go update the profile
+  const updateProfile = ({ name, avatar }: UpdateUserProps) => {
+    updateUser({ name, avatar })
+      .then(({ data }) => {
+        setCurrentUser(data);
+        return data;
+      })
+      .catch(console.error);
+  };
+
+  const handleSaveArticle = (card: Article) => {
+    saveArticle(card)
+      .then(processServerRes)
+      .then(({ data }) => {
+        setSavedNewsArticles([...savedNewsArticles, data]);
+        setSelectedArticleId(data._id);
+      })
+      .catch(console.error);
+  };
+
+  const handleDeleteArticle = (articleId: Article) => {
+    deleteSaveArticles(articleId._id, localStorage.getItem("jwt") || "")
+      .then(() => {
+        const updatedArticles = savedNewsArticles.filter(
+          (article) => article._id !== articleId._id
+        );
+        setSavedNewsArticles(updatedArticles);
+      })
+      .catch(console.error);
+  };
 
   return (
     <Router>
@@ -118,8 +224,8 @@ function App() {
                   handleNavMenu={handleNavMenu}
                   handleSignInModal={handleSignInModal}
                   handleProfileModal={handleProfileModal}
-                  handleContactModal={handleContactModal}
                   isLoggedIn={isLoggedIn}
+                  handleLogoutConfirm={handleLogoutConfirm}
                 />
                 {activeModal === "navMenu" && (
                   <NavDropDown
@@ -127,8 +233,8 @@ function App() {
                     closeModal={closeModal}
                     handleSignInModal={handleSignInModal}
                     handleSignUpModal={handleSignUpModal}
-                    handleContactModal={handleContactModal}
                     handleProfileModal={handleProfileModal}
+                    handleLogoutConfirm={handleLogoutConfirm}
                   />
                 )}
                 {/* @ts-expect-error ignore error, error is not crucial */}
@@ -140,34 +246,49 @@ function App() {
                 <NoSearchYet />
               )}
               {searchedArticles && cardsData.length > 0 && (
-                <SearchArticles isLoggedIn={isLoggedIn} cardsData={cardsData} />
+                <SearchArticles
+                  isLoggedIn={isLoggedIn}
+                  cardsData={cardsData}
+                  handleSaveArticle={handleSaveArticle}
+                  handleDeleteArticle={handleDeleteArticle}
+                  savedNewsArticles={savedNewsArticles}
+                />
               )}
               {/* These will only appear when the API is searching or when there are
               no results */}
-              {isLoading && ArticlesError === "" && <PreLoader />}
+              {isLoading && articlesError === "" && <PreLoader />}
               {cardsData.length === 0 && searchResults === true && <NotFound />}
-              {ArticlesError === "Error" && searchResults === false && (
-                <ArticleError handleContactModal={handleContactModal} />
+              {articlesError === "Error" && searchResults === false && (
+                <ArticleError />
               )}
-              <About handleContactModal={handleContactModal} />
-              <Footer handleContactModal={handleContactModal} />
+              <About />
+              <Footer />
               {activeModal === "signIn" && (
                 <SignInModal
                   handleSignUpModal={handleSignUpModal}
                   closeModal={closeModal}
+                  handleLogin={handleLogin}
                 />
               )}
               {activeModal === "signUp" && (
                 <SignUpModal
                   handleSignInModal={handleSignInModal}
                   closeModal={closeModal}
+                  handleSignup={handleSignup}
                 />
               )}
-              {activeModal === "contact" && (
-                <ContactModal closeModal={closeModal} />
-              )}
               {activeModal === "profile" && (
-                <ProfileModal closeModal={closeModal} />
+                <ProfileModal
+                  closeModal={closeModal}
+                  updateProfile={updateProfile}
+                />
+              )}
+              {activeModal === "logoutConfirm" && (
+                <LogoutConfirmModal
+                  closeModal={closeModal}
+                  setIsLoggedIn={setIsLoggedIn}
+                  setCurrentUser={setCurrentUser}
+                />
               )}
             </div>
           }
@@ -175,30 +296,30 @@ function App() {
         <Route
           path="/SavedArticles"
           element={
-            <>
+            <ProtectedRoute isLoggedIn={isLoggedIn}>
               <Navbar
                 handleNavMenu={handleNavMenu}
                 handleProfileModal={handleProfileModal}
-                handleContactModal={handleContactModal}
               />
               {activeModal === "navMenu" && (
                 <NavDropDown
                   isLoggedIn={isLoggedIn}
                   closeModal={closeModal}
-                  handleContactModal={handleContactModal}
                   handleProfileModal={handleProfileModal}
                 />
               )}
-              <SavedArticlesHeader cardsData={cardsData} />
-              <SavedArticles cardsData={cardsData} />
-              <Footer handleContactModal={handleContactModal} />
-              {activeModal === "contact" && (
-                <ContactModal closeModal={closeModal} />
-              )}
+              <SavedArticlesHeader savedNewsArticles={savedNewsArticles} />
+              <SavedArticles
+                savedNewsArticles={savedNewsArticles}
+                handleDeleteArticle={handleDeleteArticle}
+              />
               {activeModal === "profile" && (
-                <ProfileModal closeModal={closeModal} />
+                <ProfileModal
+                  closeModal={closeModal}
+                  updateProfile={updateProfile}
+                />
               )}
-            </>
+            </ProtectedRoute>
           }
         />
       </Routes>
