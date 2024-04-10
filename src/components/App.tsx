@@ -27,6 +27,7 @@ import {
 } from "../utils/MainApi";
 import { LogoutConfirmModal } from "./LogoutConfirmModal/LogoutConfirmModal";
 import { useCurrentUser } from "../store/currentUserContext";
+import { ProtectedRoute } from "./ProtectedRoute/ProtectedRoute";
 
 type GetArticlesParams = {
   fromDate: string;
@@ -292,7 +293,7 @@ function App() {
             </div>
           }
         />
-        <Route
+        <ProtectedRoute
           path="/SavedArticles"
           element={
             <>
@@ -320,6 +321,7 @@ function App() {
               )}
             </>
           }
+          isLoggedIn={isLoggedIn}
         />
       </Routes>
     </Router>
