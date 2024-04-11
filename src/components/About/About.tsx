@@ -12,16 +12,17 @@ export const About = () => {
         <h1 className="font-normal lg:text-[40px] lg:mt-8">About the Author</h1>
         <p className="font-normal text-[16px] lg:text-[18px]">
           Hello 👋 Im Dillon, a full-stack engineer proficient in
-          JavaScript/TypeScript, React, Node, and Express. I should mention, I
-          also love aviation!
+          JavaScript/TypeScript, React, Node, and Express.
           <br />
-          <br />
-          In March of 2024 I graduated TripleTens Software engineering bootcamp.
-          Im passionate about problem solving through code and a relentless
-          pursuit of non-stop learning. I have work history that brings a wealth
-          of experience in leadership, project management and collaboration with
-          a proven track record of delivering efficient, and impactful
-          solutions.
+          Growing up I always had asiprations of becoming a pilot. In highschool
+          I completed two years of ground school and passed my FAA learners
+          permit exam needed to begin flying and getting my private pilots
+          license. Unfortunately I was never able to pass the thrid class
+          medical exam due to an extensive medical history. What I always knew
+          in the back of my head was now a reality: I would never be able to
+          become a pilot due to my medical history. Now in 2024 I am a full
+          stack engineer coupling my two passions of aviation and software
+          development.
         </p>
       </div>
     </section>
