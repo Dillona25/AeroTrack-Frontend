@@ -15,6 +15,7 @@ type FormProps = {
   placeholder?: string;
   register?: FormProps;
   ref?: Ref<HTMLFormElement>;
+  className?: string;
 };
 
 type MessageProps = {
@@ -38,6 +39,7 @@ Form.TextInput = ({
   name,
   onChange,
   placeholder,
+  className,
 }: FormProps) => {
   return (
     <>
@@ -48,7 +50,7 @@ Form.TextInput = ({
         name={name}
         placeholder={placeholder}
         onChange={onChange}
-        className="bg-slate-200 text-black p-3 rounded-[10px] font-Roboto border-black border-[1px]"
+        className={`bg-slate-200 text-black p-3 rounded-[10px] font-Roboto border-black border-[1px] ${className}`}
       ></input>
     </>
   );

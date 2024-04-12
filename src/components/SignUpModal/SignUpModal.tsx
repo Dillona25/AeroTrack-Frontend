@@ -73,7 +73,7 @@ export const SignUpModal = (props: Props) => {
           {/* The onChnage logic is handling validation */}
           <Form.TextInput
             labelText="Avatar"
-            placeholder="Avatar Url"
+            placeholder="Avatar Link"
             register={register("avatar", {
               required: "New avatar is required",
             })}
