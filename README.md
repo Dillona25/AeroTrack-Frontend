@@ -16,3 +16,10 @@ Ive always had a passion for aviation. To do this day I still find myself waking
 ## Live site
 
 🌐 https://www.avinews.twilightparadox.com/ 🛩️
+
+## How to run locally
+
+1.) Clone this repo `git@github.com:Dillona25/AviNews.git` and clone the backend repo as well `git@github.com:Dillona25/AviNews-Backend.git`
+2.) Open the frontend and run it with `npm run dev`
+3.) Open and run the backend in a second window with your IDE using `npm run dev`. As a result in your temrinal you should see that the app is listening on port 3001.
+4.) Once you have the frontend and backend running at the same time, you can use the project as expected.
