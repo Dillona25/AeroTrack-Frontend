@@ -23,7 +23,7 @@ export const Navbar = (props: Props) => {
         <>
           <div className="flex justify-between p-4 border-b-[1px] border-white text-white font-RobotoSlab lg:px-[104px] lg:items-center lg:border-opacity-50">
             <p className="text-white font-RobotoSlab lg:text-[20px]">
-              AviNews Explorer
+              AeroTrack
             </p>
             <button
               onClick={props.handleNavMenu}
@@ -85,7 +85,7 @@ export const Navbar = (props: Props) => {
         <>
           <div className="bg-white flex justify-between p-4 border-b-[1px] border-black text-black font-RobotoSlab lg:px-[104px] lg:items-center lg:border-opacity-50">
             <Link to="/" className="text-black font-RobotoSlab lg:text-[20px]">
-              AviNews Explorer
+              AeroTrack
             </Link>
             <button
               onClick={props.handleNavMenu}
