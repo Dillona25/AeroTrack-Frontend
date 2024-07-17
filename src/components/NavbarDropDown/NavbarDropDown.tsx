@@ -72,13 +72,21 @@ export const NavDropDown = (props: menuProps) => {
                 </Link>
               )}
               {location.pathname === "/" && (
-                <Link
-                  to="/SavedArticles"
-                  onClick={props.closeModal}
-                  className="p-2 text-[14px] text-center bg-[#dbdbdb] mx-4 rounded-[10px] shadow-[rgba(0,_0,_0,_0.24)_0px_3px_8px]"
-                >
-                  Saved Articles
-                </Link>
+                <>
+                  <Link
+                    to="/SavedArticles"
+                    onClick={props.closeModal}
+                    className="p-2 text-[14px] text-center bg-[#dbdbdb] mx-4 rounded-[10px] shadow-[rgba(0,_0,_0,_0.24)_0px_3px_8px]"
+                  >
+                    Saved Articles
+                  </Link>
+                  <a
+                    onClick={props.closeModal}
+                    className="p-2 text-[14px] text-center bg-[#dbdbdb] mx-4 rounded-[10px] shadow-[rgba(0,_0,_0,_0.24)_0px_3px_8px]"
+                  >
+                    Saved Flights
+                  </a>
+                </>
               )}
               <NavButton
                 onClick={props.handleProfileModal}

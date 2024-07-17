@@ -50,7 +50,7 @@ export const Hero = (props: Props) => {
       {/* This div only appears on desktop */}
       <form onSubmit={handleSearchSubmit} className="flex flex-col sm:relative">
         <SearchBar
-          placeholder="Search for flights or news"
+          placeholder="Search airports or news articles"
           className="sm:py-5 sm:rounded-full mb-2"
           onChange={handleSearchBarChange}
           value={searchValue}

@@ -43,12 +43,17 @@ export const Navbar = (props: Props) => {
               )}
               {/* if the user is logged in we show saved articles, otherwise we show nothing */}
               {props.isLoggedIn ? (
-                <Link
-                  to="/SavedArticles"
-                  className="text-center hidden lg:block mr-[42px]"
-                >
-                  Saved Articles
-                </Link>
+                <>
+                  <Link
+                    to="/SavedArticles"
+                    className="text-center hidden lg:block mr-[42px]"
+                  >
+                    Saved Articles
+                  </Link>
+                  <a className="text-center hidden lg:block mr-[42px]">
+                    Saved Flights
+                  </a>
+                </>
               ) : (
                 ""
               )}
