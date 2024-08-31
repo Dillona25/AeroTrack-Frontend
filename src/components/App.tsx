@@ -28,11 +28,6 @@ import {
 import { LogoutConfirmModal } from "./LogoutConfirmModal/LogoutConfirmModal";
 import { useCurrentUser } from "../store/currentUserContext";
 import { ProtectedRoute } from "./ProtectedRoute/ProtectedRoute";
-import {
-  fetchDepartureData,
-  fetchArrivalData,
-  FlightRoute,
-} from "../utils/flightDataApi";
 import { FlightTable } from "./FlightTable/FlightTable";
 import { processServerResponse } from "../utils/processServerResponse";
 
@@ -83,9 +78,6 @@ function App() {
   const [_selectedArticleid, setSelectedArticleId] = useState(null);
   const { setCurrentUser } = useCurrentUser();
   const [flightTables, setFlightTables] = useState(false);
-  const [departures, setDepartures] = useState<FlightRoute[]>([]);
-  const [arrivals, setArrivals] = useState<FlightRoute[]>([]);
-
   const handleNavMenu = () => {
     setActiveModal("navMenu");
   };
@@ -124,10 +116,6 @@ function App() {
     pageSize,
     userInput,
   }: GetArticlesParams) => {
-    // Todo These need to be true all the time not just when we initally call the function
-    if (flightTables === true) {
-      setFlightTables(false);
-    }
     setIsLoading(true);
     getArticles({ fromDate, toDate, pageSize, userInput })
       .then((res) => {
@@ -225,28 +213,6 @@ function App() {
       .catch(console.error);
   };
 
-  const getFlightData = async (airportCode: string) => {
-    if (flightTables === false) {
-      setIsLoading(true);
-    }
-
-    // Todo These need to be true all the time not just when we initally call the function
-
-    if (searchResults === true) {
-      setSearchResults(false);
-    }
-
-    const departures = await fetchDepartureData(airportCode);
-    console.log("Departures:", departures);
-    const arrivals = await fetchArrivalData(airportCode);
-    console.log("Arrivals:", arrivals);
-
-    setDepartures(departures);
-    setArrivals(arrivals);
-    setFlightTables(true);
-    setIsLoading(false);
-  };
-
   return (
     <Router>
       <Routes>
@@ -272,16 +238,11 @@ function App() {
                     handleLogoutConfirm={handleLogoutConfirm}
                   />
                 )}
-                <Hero
-                  handleSearch={handleSearch}
-                  getFlightData={getFlightData}
-                />
+                <Hero handleSearch={handleSearch} />
               </div>
               {/* These will only appear for the user when they search and get
               results */}
-              {flightTables && (
-                <FlightTable departures={departures} arrivals={arrivals} />
-              )}
+              {flightTables && <FlightTable />}
               {searchResults === false &&
                 flightTables === false &&
                 isLoading === false && <NoSearchYet />}
