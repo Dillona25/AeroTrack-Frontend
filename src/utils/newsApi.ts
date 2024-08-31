@@ -1,4 +1,5 @@
 import { NEWS_BASE_URL } from "./constants";
+import { processServerResponse } from "./processServerResponse";
 
 // Types for each parameter that we have for the request
 type GetArticlesParams = {
@@ -6,24 +7,6 @@ type GetArticlesParams = {
   toDate: string;
   pageSize: number;
   userInput?: string;
-};
-
-export const processServerRes = (res: Response) => {
-  if (res.ok) {
-    return res.json();
-  }
-  switch (res.status) {
-    case 400:
-      return Promise.reject(new Error("Bad request"));
-    case 401:
-      return Promise.reject(new Error("Incorect Email or Password"));
-    case 404:
-      return Promise.reject(new Error("Not found"));
-    case 409:
-      return Promise.reject(new Error("Email already in use"));
-    default:
-      return Promise.reject(new Error(`Error ${res.status}`));
-  }
 };
 
 // Search query in which does its best to condense the user input to aviation articles related to their input
@@ -46,5 +29,5 @@ export const getArticles = ({
         authorization: ApiKey,
       }
     }`
-  ).then(processServerRes);
+  ).then(processServerResponse);
 };

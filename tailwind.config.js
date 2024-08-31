@@ -8,8 +8,14 @@ export default {
         RobotoSlab: ["Roboto Slab", "sans-serif"],
       },
       animation: {
-        bounce200: "bounce 1s infinite 200ms",
-        bounce400: "bounce 1s infinite 400ms",
+        leftToRight: "leftToRight 6s ease-in-out infinite",
+      },
+      keyframes: {
+        leftToRight: {
+          "0%": { transform: "translateX(-100%)" },
+          "50%": { transform: "translateX(100%)" },
+          "100%": { transform: "translateX(-100%)" },
+        },
       },
     },
     backgroundImage: {

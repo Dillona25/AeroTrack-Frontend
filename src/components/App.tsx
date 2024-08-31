@@ -14,7 +14,7 @@ import { SavedArticles } from "../routes/SavedArticles/SavedArticles";
 import { ProfileModal } from "./ProfileModal/ProfileModal";
 import { PreLoader } from "./PreLoader/PreLoader";
 import { NotFound } from "./NotFound/Notfound";
-import { getArticles, processServerRes } from "../utils/newsApi";
+import { getArticles } from "../utils/newsApi";
 import { NoSearchYet } from "./NoSearchYet/NoSearchYet";
 import useEscapeKey from "../hooks/useEscapeKey";
 import { ArticleError } from "./ArticlesError/ArticlesError";
@@ -28,6 +28,13 @@ import {
 import { LogoutConfirmModal } from "./LogoutConfirmModal/LogoutConfirmModal";
 import { useCurrentUser } from "../store/currentUserContext";
 import { ProtectedRoute } from "./ProtectedRoute/ProtectedRoute";
+import {
+  fetchDepartureData,
+  fetchArrivalData,
+  FlightRoute,
+} from "../utils/flightDataApi";
+import { FlightTable } from "./FlightTable/FlightTable";
+import { processServerResponse } from "../utils/processServerResponse";
 
 type GetArticlesParams = {
   fromDate: string;
@@ -67,7 +74,6 @@ type UpdateUserProps = {
 function App() {
   const [activeModal, setActiveModal] = useState("");
   const [isLoggedIn, setIsLoggedIn] = useState(false);
-
   const [cardsData, setCardsData] = useState<Article[]>([]);
   const [searchedArticles, setSearchedArticles] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
@@ -76,6 +82,9 @@ function App() {
   const [savedNewsArticles, setSavedNewsArticles] = useState<Article[]>([]);
   const [_selectedArticleid, setSelectedArticleId] = useState(null);
   const { setCurrentUser } = useCurrentUser();
+  const [flightTables, setFlightTables] = useState(false);
+  const [departures, setDepartures] = useState<FlightRoute[]>([]);
+  const [arrivals, setArrivals] = useState<FlightRoute[]>([]);
 
   const handleNavMenu = () => {
     setActiveModal("navMenu");
@@ -115,6 +124,10 @@ function App() {
     pageSize,
     userInput,
   }: GetArticlesParams) => {
+    // Todo These need to be true all the time not just when we initally call the function
+    if (flightTables === true) {
+      setFlightTables(false);
+    }
     setIsLoading(true);
     getArticles({ fromDate, toDate, pageSize, userInput })
       .then((res) => {
@@ -193,7 +206,7 @@ function App() {
 
   const handleSaveArticle = (card: Article) => {
     saveArticle(card)
-      .then(processServerRes)
+      .then(processServerResponse)
       .then(({ data }) => {
         setSavedNewsArticles([...savedNewsArticles, data]);
         setSelectedArticleId(data._id);
@@ -210,6 +223,28 @@ function App() {
         setSavedNewsArticles(updatedArticles);
       })
       .catch(console.error);
+  };
+
+  const getFlightData = async (airportCode: string) => {
+    if (flightTables === false) {
+      setIsLoading(true);
+    }
+
+    // Todo These need to be true all the time not just when we initally call the function
+
+    if (searchResults === true) {
+      setSearchResults(false);
+    }
+
+    const departures = await fetchDepartureData(airportCode);
+    console.log("Departures:", departures);
+    const arrivals = await fetchArrivalData(airportCode);
+    console.log("Arrivals:", arrivals);
+
+    setDepartures(departures);
+    setArrivals(arrivals);
+    setFlightTables(true);
+    setIsLoading(false);
   };
 
   return (
@@ -237,14 +272,19 @@ function App() {
                     handleLogoutConfirm={handleLogoutConfirm}
                   />
                 )}
-                {/* @ts-expect-error ignore error, error is not crucial */}
-                <Hero handleSearch={handleSearch} />
+                <Hero
+                  handleSearch={handleSearch}
+                  getFlightData={getFlightData}
+                />
               </div>
               {/* These will only appear for the user when they search and get
               results */}
-              {searchResults === false && isLoading === false && (
-                <NoSearchYet />
+              {flightTables && (
+                <FlightTable departures={departures} arrivals={arrivals} />
               )}
+              {searchResults === false &&
+                flightTables === false &&
+                isLoading === false && <NoSearchYet />}
               {searchedArticles && cardsData.length > 0 && (
                 <SearchArticles
                   isLoggedIn={isLoggedIn}

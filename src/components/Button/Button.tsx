@@ -7,6 +7,7 @@ type Props = {
   className?: string;
   onClick?: MouseEventHandler;
   disabled?: boolean;
+  type?: string;
 };
 
 // "React.FC" stand for functional component so here I am defining that this is a functional component and I am deifning props directly in our parameters
