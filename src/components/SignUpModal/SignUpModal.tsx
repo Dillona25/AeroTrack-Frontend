@@ -3,6 +3,7 @@ import { Form } from "../Form/Form";
 import { Button } from "../Button/Button";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { motion } from "framer-motion";
+import { checkEmailExists } from "../../utils/authApi";
 
 type Props = {
   handleSignInModal?: () => void;
@@ -20,6 +21,7 @@ export const SignUpModal = (props: Props) => {
     register,
     setValue,
     handleSubmit,
+    setError,
     formState: { errors, isValid },
   } = useForm({
     defaultValues: {
@@ -35,9 +37,22 @@ export const SignUpModal = (props: Props) => {
     password: string;
     name: string;
     avatar: string;
-  }> = (data) => {
-    props.handleSignup?.(data);
-    props.closeModal?.();
+  }> = async (data) => {
+    try {
+      const result = await checkEmailExists(data.email);
+
+      if (result.exists) {
+        setError("email", {
+          type: "manual",
+          message: "Email already exists. Please use a different email.",
+        });
+      } else {
+        props.handleSignup?.(data);
+        props.closeModal?.();
+      }
+    } catch (error) {
+      console.error("Error during signup:", error);
+    }
   };
 
   return (
@@ -53,7 +68,7 @@ export const SignUpModal = (props: Props) => {
           className="bg-closeIcon h-6 w-6 absolute right-[15px] top-[15px]"
         ></button>
         <Form onSubmit={handleSubmit(onSubmit)}>
-          {/* The onChnage logic is handling validation */}
+          {/* Name input */}
           <Form.TextInput
             labelText="Name"
             placeholder="Name"
@@ -70,7 +85,8 @@ export const SignUpModal = (props: Props) => {
             }}
           />
           {errors.name && <Form.ErrorMessage message={errors.name.message} />}
-          {/* The onChnage logic is handling validation */}
+
+          {/* Avatar input */}
           <Form.TextInput
             labelText="Avatar"
             placeholder="Avatar Link"
@@ -85,7 +101,8 @@ export const SignUpModal = (props: Props) => {
           {errors.avatar && (
             <Form.ErrorMessage message={errors.avatar.message} />
           )}
-          {/* The onChnage logic is handling validation */}
+
+          {/* Email input */}
           <Form.TextInput
             labelText="Email"
             placeholder="Email"
@@ -102,7 +119,8 @@ export const SignUpModal = (props: Props) => {
             }}
           />
           {errors.email && <Form.ErrorMessage message={errors.email.message} />}
-          {/* The onChnage logic is handling validation */}
+
+          {/* Password input */}
           <Form.TextInput
             type="password"
             labelText="Password"
@@ -122,7 +140,8 @@ export const SignUpModal = (props: Props) => {
           {errors.password && (
             <Form.ErrorMessage message={errors.password.message} />
           )}
-          {/* If the inputs are valid, button is enabled otherwise its disabled */}
+
+          {/* Signup button */}
           <Button
             text="Signup"
             className={`bg-black mt-3 ${

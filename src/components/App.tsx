@@ -28,7 +28,6 @@ import {
 import { LogoutConfirmModal } from "./LogoutConfirmModal/LogoutConfirmModal";
 import { useCurrentUser } from "../store/currentUserContext";
 import { ProtectedRoute } from "./ProtectedRoute/ProtectedRoute";
-import { FlightTable } from "./FlightTable/FlightTable";
 import { processServerResponse } from "../utils/processServerResponse";
 
 type GetArticlesParams = {
@@ -77,7 +76,6 @@ function App() {
   const [savedNewsArticles, setSavedNewsArticles] = useState<Article[]>([]);
   const [_selectedArticleid, setSelectedArticleId] = useState(null);
   const { setCurrentUser } = useCurrentUser();
-  const [flightTables, setFlightTables] = useState(false);
   const handleNavMenu = () => {
     setActiveModal("navMenu");
   };
@@ -238,14 +236,14 @@ function App() {
                     handleLogoutConfirm={handleLogoutConfirm}
                   />
                 )}
+                {/* @ts-ignore */}
                 <Hero handleSearch={handleSearch} />
               </div>
               {/* These will only appear for the user when they search and get
               results */}
-              {flightTables && <FlightTable />}
-              {searchResults === false &&
-                flightTables === false &&
-                isLoading === false && <NoSearchYet />}
+              {searchResults === false && isLoading === false && (
+                <NoSearchYet />
+              )}
               {searchedArticles && cardsData.length > 0 && (
                 <SearchArticles
                   isLoggedIn={isLoggedIn}

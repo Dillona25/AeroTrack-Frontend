@@ -65,3 +65,19 @@ export const checkToken = (token: string) => {
       throw err;
     });
 };
+
+// Function to check if the email exists
+export const checkEmailExists = (email: string) => {
+  return fetch(`${BASE_URL}/users/check-email`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({ email }),
+  })
+    .then(processServerResponse)
+    .catch((err) => {
+      console.error("Error checking email:", err);
+      throw err;
+    });
+};
