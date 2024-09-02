@@ -81,3 +81,19 @@ export const checkEmailExists = (email: string) => {
       throw err;
     });
 };
+
+// Function to check if the passwords match
+export const checkPasswords = (email: string, password: string) => {
+  return fetch(`${BASE_URL}/users/check-password`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({ email, password }),
+  })
+    .then(processServerResponse)
+    .catch((err) => {
+      console.error("Invalid Email or Password", err);
+      throw err;
+    });
+};

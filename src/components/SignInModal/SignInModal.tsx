@@ -3,6 +3,7 @@ import { Form } from "../Form/Form";
 import { Button } from "../Button/Button";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { motion } from "framer-motion";
+import { checkPasswords } from "../../utils/authApi";
 
 type Props = {
   handleSignUpModal?: () => void;
@@ -15,6 +16,7 @@ export const SignInModal = (props: Props) => {
     register,
     setValue,
     handleSubmit,
+    setError,
     formState: { errors, isValid },
   } = useForm({
     defaultValues: {
@@ -23,13 +25,24 @@ export const SignInModal = (props: Props) => {
     },
   });
 
-  const onSubmit: SubmitHandler<{ email: string; password: string }> = (
+  const onSubmit: SubmitHandler<{ email: string; password: string }> = async (
     data
   ) => {
-    props.handleLogin?.(data);
-    props.closeModal?.();
-  };
+    try {
+      const isValidPassword = await checkPasswords(data.email, data.password);
 
+      if (isValidPassword) {
+        props.handleLogin?.(data);
+        props.closeModal?.();
+      }
+    } catch (err) {
+      console.error("Error during login:", err);
+      setError("password", {
+        type: "manual",
+        message: "Invalid email or password",
+      });
+    }
+  };
   return (
     <Modal>
       <motion.div
@@ -43,7 +56,6 @@ export const SignInModal = (props: Props) => {
           className="bg-closeIcon h-6 w-6 absolute right-[15px] top-[15px]"
         ></button>
         <Form onSubmit={handleSubmit(onSubmit)}>
-          {/* The onChnage logic is handling validation */}
           <Form.TextInput
             labelText="Email"
             placeholder="Email"
@@ -60,7 +72,7 @@ export const SignInModal = (props: Props) => {
             }}
           />
           {errors.email && <Form.ErrorMessage message={errors.email.message} />}
-          {/* The onChnage logic is handling validation */}
+
           <Form.TextInput
             type="password"
             labelText="Password"
@@ -80,7 +92,7 @@ export const SignInModal = (props: Props) => {
           {errors.password && (
             <Form.ErrorMessage message={errors.password.message} />
           )}
-          {/* If the inputs are valid, button is enabled otherwise its disabled */}
+
           <Button
             text="Login"
             className={`bg-black mt-3 ${
