@@ -1,5 +1,5 @@
-import { API_NEWS_KEY, NEWS_BASE_URL } from "./apiKeys";
 import { processServerResponse } from "./processServerResponse";
+const newsKey = import.meta.env.VITE_API_NEWS_KEY;
 
 // Types for each parameter that we have for the request
 type GetArticlesParams = {
@@ -22,11 +22,11 @@ export const getArticles = ({
 }: GetArticlesParams) => {
   const query = searchQuery({ userInput, fromDate, toDate, pageSize });
   return fetch(
-    `${NEWS_BASE_URL}/everything/?q=${query}&apiKey=${API_NEWS_KEY}&$from=${fromDate}&to=${toDate}$pageSize=${pageSize}, {
+    `https://nomoreparties.co/news/v2/everything/?q=${query}&apiKey=${newsKey}&$from=${fromDate}&to=${toDate}$pageSize=${pageSize}, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
-        authorization: ApiKey,
+        authorization: newsKey,
       }
     }`
   ).then(processServerResponse);
