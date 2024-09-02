@@ -3,7 +3,6 @@ import { Button } from "../Button/Button";
 import "../../vendor/fonts.css";
 import { FormEvent, useState } from "react";
 import { motion } from "framer-motion";
-import { getTimetable } from "../../utils/flightDataApi";
 
 type GetArticlesParams = {
   fromDate?: string;
@@ -35,7 +34,6 @@ export const Hero = (props: Props) => {
         pageSize: 100,
       });
     } else if (activeForm === "flights") {
-      getTimetable();
     }
     setSearchValue("");
   };

@@ -1,4 +1,4 @@
-import { BASE_URL } from "./constants";
+import { BASE_URL } from "./apiKeys";
 import { processServerResponse } from "./processServerResponse";
 
 type registrationProps = {

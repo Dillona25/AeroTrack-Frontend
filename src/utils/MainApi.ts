@@ -1,5 +1,5 @@
 import { Article } from "../components/App";
-import { BASE_URL } from "./constants";
+import { BASE_URL } from "./apiKeys";
 import { processServerResponse } from "./processServerResponse";
 
 type updateUserProps = {

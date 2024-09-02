@@ -29,6 +29,10 @@ import { LogoutConfirmModal } from "./LogoutConfirmModal/LogoutConfirmModal";
 import { useCurrentUser } from "../store/currentUserContext";
 import { ProtectedRoute } from "./ProtectedRoute/ProtectedRoute";
 import { processServerResponse } from "../utils/processServerResponse";
+import {
+  RecommendedNews,
+  RecommenedNews,
+} from "./RecommenedNews/RecommenedNews";
 
 type GetArticlesParams = {
   fromDate: string;
@@ -241,6 +245,7 @@ function App() {
               </div>
               {/* These will only appear for the user when they search and get
               results */}
+              {/* <RecommendedNews /> */}
               {searchResults === false && isLoading === false && (
                 <NoSearchYet />
               )}
