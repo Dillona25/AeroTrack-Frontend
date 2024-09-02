@@ -1,6 +1,12 @@
 ## AviNews
 
-Ive always had a passion for aviation. To do this day I still find myself waking up in the mornings enjoying a drink and reading the most reent aviation news. I will never stop following the industry. For that reason I created a full staxk website that allows me to do just that completely for free.
+Ive always had a passion for aviation. To do this day I still find myself waking up in the mornings enjoying a drink and reading the most recent aviation news. AviNews is a website that allows you to do just that. Users can create an account and browse the latest aviaiton related news. Users can also save articles they may want to read later.
+
+Find the live site here
+
+```bash
+https://www.avinews.twilightparadox.com/
+```
 
 ## Tools used
 
@@ -13,16 +19,48 @@ Ive always had a passion for aviation. To do this day I still find myself waking
 ![MongoDB](https://img.shields.io/badge/MongoDB-%234ea94b.svg?style=for-the-badge&logo=mongodb&logoColor=white)
 ![Google Cloud](https://img.shields.io/badge/GoogleCloud-%234285F4.svg?style=for-the-badge&logo=google-cloud&logoColor=white)
 
-## Live site
+## Run Locally
 
-🌐 https://www.avinews.twilightparadox.com/ 🛩️
+Clone the project frontend
 
-## How to run locally
+```bash
+  git clone git@github.com:Dillona25/AviNews.git
+```
 
-1. Clone this repo `git@github.com:Dillona25/AviNews.git` and clone the backend repo as well `git@github.com:Dillona25/AviNews-Backend.git`
-   </br>
-2. Open the frontend and run it with `npm run dev`
-   </br>
-3. Open and run the backend in a second window with your IDE using `npm run dev`. As a result in your temrinal you should see that the app is listening on port 3001.
-   </br>
-4. Once you have the frontend and backend running at the same time, you can use the project as expected.
+Clone the project backend
+
+```bash
+  git clone git@github.com:Dillona25/AviNews-Backend.git
+```
+
+Open the backend in your IDE and install dependencies
+
+```bash
+  npm install
+```
+
+Start the backend locally
+
+```bash
+  npm run dev
+```
+
+- Open the frontend in a new IDE window while keeping the backend window open and running
+
+Install frontend dependencies
+
+```bash
+  npm install
+```
+
+Start the frontend locally
+
+```bash
+  npm run dev
+```
+
+You should now be able to use the full stack website to its fullest capabilities. If you have issues making and account, or signing in, ensure the backend is running in the background.
+
+## Currently Working On 🧑🏼‍💻
+
+- As of 9/02/2024: Currently I am working on adding a feature to the site that allows users to not only ready news articles but also track flight data. I am currently working on finding a compatible and affordable API to do this. Additionally, I am working to add a "Recommended News" section as well as a section that tracks the top Aviation Stock prices and performance. I am pushing to have these updates released 10/01/2924.
