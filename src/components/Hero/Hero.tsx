@@ -13,6 +13,7 @@ type GetArticlesParams = {
 
 type Props = {
   handleSearch: (params: GetArticlesParams) => void;
+  getFlightData: (airportCode: string) => void;
 };
 
 export const Hero = (props: Props) => {
@@ -34,6 +35,7 @@ export const Hero = (props: Props) => {
         pageSize: 100,
       });
     } else if (activeForm === "flights") {
+      props.getFlightData(searchValue);
     }
     setSearchValue("");
   };

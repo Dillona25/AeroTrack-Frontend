@@ -33,6 +33,11 @@ import {
   RecommendedNews,
   RecommenedNews,
 } from "./RecommenedNews/RecommenedNews";
+import {
+  fetchArrivalData,
+  fetchDepartureData,
+  FlightData,
+} from "../utils/flightDataApi";
 
 type GetArticlesParams = {
   fromDate: string;
@@ -79,6 +84,8 @@ function App() {
   const [articlesError, setArticlesError] = useState("");
   const [savedNewsArticles, setSavedNewsArticles] = useState<Article[]>([]);
   const [_selectedArticleid, setSelectedArticleId] = useState(null);
+  const [departures, setDepartures] = useState<FlightData[]>([]);
+  const [arrivals, setArrivals] = useState<FlightData[]>([]);
   const { setCurrentUser } = useCurrentUser();
   const handleNavMenu = () => {
     setActiveModal("navMenu");
@@ -215,6 +222,17 @@ function App() {
       .catch(console.error);
   };
 
+  const getFlightData = async (airportCode: string) => {
+    const departures = await fetchDepartureData(airportCode);
+    console.log("Departures:", departures);
+    const arrivals = await fetchArrivalData(airportCode);
+    console.log("Arrivals:", arrivals);
+
+    setDepartures(departures);
+    setArrivals(arrivals);
+    setIsLoading(false);
+  };
+
   return (
     <Router>
       <Routes>
@@ -241,7 +259,10 @@ function App() {
                   />
                 )}
                 {/* @ts-ignore */}
-                <Hero handleSearch={handleSearch} />
+                <Hero
+                  handleSearch={handleSearch}
+                  getFlightData={getFlightData}
+                />
               </div>
               {/* These will only appear for the user when they search and get
               results */}

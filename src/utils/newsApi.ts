@@ -31,3 +31,21 @@ export const getArticles = ({
     }`
   ).then(processServerResponse);
 };
+
+// Request to get the top articles for recommeneded
+export const getTopArticles = ({
+  fromDate,
+  toDate,
+  pageSize,
+}: GetArticlesParams) => {
+  const query = searchQuery({ fromDate, toDate, pageSize });
+  return fetch(
+    `https://nomoreparties.co/news/v2/top-headlines/?q=${query}&apiKey=${newsKey}&$from=${fromDate}&to=${toDate}$pageSize=${pageSize}, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        authorization: newsKey,
+      }
+    }`
+  ).then(processServerResponse);
+};
