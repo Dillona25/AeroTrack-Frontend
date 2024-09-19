@@ -1,4 +1,12 @@
-export const FlightTable = () => {
+interface FlightTableProps {
+  departures: any[];
+  arrivals: any[];
+}
+
+export const FlightTable: React.FC<FlightTableProps> = ({
+  departures,
+  arrivals,
+}) => {
   return (
     <section className="py-8 bg-[#f5f6f7] px-4">
       <div className="max-w-[1600px] m-auto flex flex-wrap justify-center gap-4">
@@ -23,14 +31,32 @@ export const FlightTable = () => {
             </tr>
           </thead>
           <tbody>
-            <tr className="text-center font-Roboto text-base">
-              <td className="py-2 px-4 border-b"></td>
-              <td className="py-2 px-4 border-b"></td>
-              <td className="py-2 px-4 border-b"></td>
-              <td className="py-2 px-4 border-b"></td>
-              <td className="py-2 px-4 border-b"></td>
-              <td className="py-2 px-4 border-b"></td>
-            </tr>
+            {departures.map((departure) => (
+              <tr
+                className="text-center font-Roboto text-base"
+                key={departure.flight.iataNumber}
+              >
+                <td className="py-2 px-4 border-b">
+                  {new Date(
+                    departure.departure.actualTime ||
+                      departure.departure.scheduledTime
+                  ).toLocaleTimeString()}
+                </td>
+                <td className="py-2 px-4 border-b">
+                  {departure.departure.gate}
+                </td>
+                <td className="py-2 px-4 border-b">{departure.airline.name}</td>
+                <td className="py-2 px-4 border-b">
+                  {departure.flight.iataNumber}
+                </td>
+                <td className="py-2 px-4 border-b">
+                  {departure.departure.iataCode}
+                </td>
+                <td className="py-2 px-4 border-b">
+                  {departure.arrival.iataCode}
+                </td>
+              </tr>
+            ))}
           </tbody>
         </table>
 
@@ -55,14 +81,29 @@ export const FlightTable = () => {
             </tr>
           </thead>
           <tbody>
-            <tr className="text-center font-Roboto text-base">
-              <td className="py-2 px-4 border-b"></td>
-              <td className="py-2 px-4 border-b"></td>
-              <td className="py-2 px-4 border-b"></td>
-              <td className="py-2 px-4 border-b"></td>
-              <td className="py-2 px-4 border-b"></td>
-              <td className="py-2 px-4 border-b"></td>
-            </tr>
+            {arrivals.map((arrival) => (
+              <tr
+                className="text-center font-Roboto text-base"
+                key={arrival.flight.iataNumber}
+              >
+                <td className="py-2 px-4 border-b">
+                  {new Date(
+                    arrival.arrival.actualTime || arrival.arrival.scheduledTime
+                  ).toLocaleTimeString()}
+                </td>
+                <td className="py-2 px-4 border-b">{arrival.arrival.gate}</td>
+                <td className="py-2 px-4 border-b">{arrival.airline.name}</td>
+                <td className="py-2 px-4 border-b">
+                  {arrival.flight.iataNumber}
+                </td>
+                <td className="py-2 px-4 border-b">
+                  {arrival.departure.iataCode}
+                </td>
+                <td className="py-2 px-4 border-b">
+                  {arrival.arrival.iataCode}
+                </td>
+              </tr>
+            ))}
           </tbody>
         </table>
       </div>

@@ -10,7 +10,7 @@ export interface FlightData {
 }
 
 export const fetchDepartureData = async (airportCode: string) => {
-  const url = `https://aviation-edge.com/v2/public/timetable?key=${apiKey}&iataCode=${airportCode}&type=departure`;
+  const url = `https://aviation-edge.com/v2/public/timetable?key=${apiKey}&iataCode=${airportCode}&type=departure&limit=20`;
 
   try {
     const response = await fetch(url);
@@ -26,7 +26,7 @@ export const fetchDepartureData = async (airportCode: string) => {
 };
 
 export const fetchArrivalData = async (airportCode: string) => {
-  const url = `https://aviation-edge.com/v2/public/timetable?key=${apiKey}&iataCode=${airportCode}&type=arrival`;
+  const url = `https://aviation-edge.com/v2/public/timetable?key=${apiKey}&iataCode=${airportCode}&type=arrival&limit=20`;
 
   try {
     const response = await fetch(url);

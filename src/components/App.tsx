@@ -30,14 +30,11 @@ import { useCurrentUser } from "../store/currentUserContext";
 import { ProtectedRoute } from "./ProtectedRoute/ProtectedRoute";
 import { processServerResponse } from "../utils/processServerResponse";
 import {
-  RecommendedNews,
-  RecommenedNews,
-} from "./RecommenedNews/RecommenedNews";
-import {
   fetchArrivalData,
   fetchDepartureData,
   FlightData,
 } from "../utils/flightDataApi";
+import { FlightTable } from "./FlightTable/FlightTable";
 
 type GetArticlesParams = {
   fromDate: string;
@@ -86,6 +83,7 @@ function App() {
   const [_selectedArticleid, setSelectedArticleId] = useState(null);
   const [departures, setDepartures] = useState<FlightData[]>([]);
   const [arrivals, setArrivals] = useState<FlightData[]>([]);
+  const [showFlightTable, setShowFlightTable] = useState(false);
   const { setCurrentUser } = useCurrentUser();
   const handleNavMenu = () => {
     setActiveModal("navMenu");
@@ -222,15 +220,25 @@ function App() {
       .catch(console.error);
   };
 
+  // Fetch flight data
   const getFlightData = async (airportCode: string) => {
-    const departures = await fetchDepartureData(airportCode);
-    console.log("Departures:", departures);
-    const arrivals = await fetchArrivalData(airportCode);
-    console.log("Arrivals:", arrivals);
+    setIsLoading(true);
+    try {
+      const [departuresData, arrivalsData] = await Promise.all([
+        fetchDepartureData(airportCode),
+        fetchArrivalData(airportCode),
+      ]);
 
-    setDepartures(departures);
-    setArrivals(arrivals);
-    setIsLoading(false);
+      if (departuresData && arrivalsData) {
+        setDepartures(departuresData);
+        setArrivals(arrivalsData);
+        setShowFlightTable(true); // Show table when data is fetched
+      }
+    } catch (error) {
+      console.error("Error fetching flight data:", error);
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (
@@ -266,10 +274,12 @@ function App() {
               </div>
               {/* These will only appear for the user when they search and get
               results */}
-              {/* <RecommendedNews /> */}
-              {searchResults === false && isLoading === false && (
-                <NoSearchYet />
+              {showFlightTable && (
+                <FlightTable departures={departures} arrivals={arrivals} />
               )}
+              {searchResults === false &&
+                showFlightTable === false &&
+                isLoading === false && <NoSearchYet />}
               {searchedArticles && cardsData.length > 0 && (
                 <SearchArticles
                   isLoggedIn={isLoggedIn}
