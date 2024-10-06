@@ -220,25 +220,30 @@ function App() {
       .catch(console.error);
   };
 
-  // Fetch flight data
   const getFlightData = async (airportCode: string) => {
     setIsLoading(true);
-    try {
-      const [departuresData, arrivalsData] = await Promise.all([
-        fetchDepartureData(airportCode),
-        fetchArrivalData(airportCode),
-      ]);
+    const departures = await fetchDepartureData(airportCode);
+    departures.forEach((response: any) => {
+      console.log("Departures", response);
+    });
 
-      if (departuresData && arrivalsData) {
-        setDepartures(departuresData);
-        setArrivals(arrivalsData);
-        setShowFlightTable(true); // Show table when data is fetched
-      }
-    } catch (error) {
-      console.error("Error fetching flight data:", error);
-    } finally {
-      setIsLoading(false);
-    }
+    const arrivals = await fetchArrivalData(airportCode);
+    arrivals.forEach((response: any) => {
+      console.log("Arrivals", response);
+    });
+    setIsLoading(false);
+    setDepartures(departures);
+    setArrivals(arrivals);
+    setShowFlightTable(true);
+    setIsLoading(false);
+  };
+
+  const clearResults = () => {
+    setCardsData([]);
+    setSearchedArticles(false);
+    setDepartures([]);
+    setArrivals([]);
+    setShowFlightTable(false);
   };
 
   return (
@@ -270,6 +275,7 @@ function App() {
                 <Hero
                   handleSearch={handleSearch}
                   getFlightData={getFlightData}
+                  clearResults={clearResults}
                 />
               </div>
               {/* These will only appear for the user when they search and get
@@ -277,9 +283,11 @@ function App() {
               {showFlightTable && (
                 <FlightTable departures={departures} arrivals={arrivals} />
               )}
+
               {searchResults === false &&
                 showFlightTable === false &&
                 isLoading === false && <NoSearchYet />}
+
               {searchedArticles && cardsData.length > 0 && (
                 <SearchArticles
                   isLoggedIn={isLoggedIn}
@@ -292,10 +300,16 @@ function App() {
               {/* These will only appear when the API is searching or when there are
               no results */}
               {isLoading && articlesError === "" && <PreLoader />}
-              {cardsData.length === 0 && searchResults === true && <NotFound />}
+
+              {cardsData.length === 0 &&
+                searchResults === true &&
+                showFlightTable === false &&
+                !isLoading && <NotFound />}
+
               {articlesError === "Error" && searchResults === false && (
                 <ArticleError />
               )}
+
               <About />
               <Footer />
               {activeModal === "signIn" && (

@@ -31,11 +31,8 @@ export const FlightTable: React.FC<FlightTableProps> = ({
             </tr>
           </thead>
           <tbody>
-            {departures.map((departure) => (
-              <tr
-                className="text-center font-Roboto text-base"
-                key={departure.flight.iataNumber}
-              >
+            {departures.map((departure, index) => (
+              <tr className="text-center font-Roboto text-base" key={index}>
                 <td className="py-2 px-4 border-b">
                   {new Date(
                     departure.departure.actualTime ||
@@ -47,7 +44,7 @@ export const FlightTable: React.FC<FlightTableProps> = ({
                 </td>
                 <td className="py-2 px-4 border-b">{departure.airline.name}</td>
                 <td className="py-2 px-4 border-b">
-                  {departure.flight.iataNumber}
+                  {departure.flight.number}
                 </td>
                 <td className="py-2 px-4 border-b">
                   {departure.departure.iataCode}
@@ -81,11 +78,8 @@ export const FlightTable: React.FC<FlightTableProps> = ({
             </tr>
           </thead>
           <tbody>
-            {arrivals.map((arrival) => (
-              <tr
-                className="text-center font-Roboto text-base"
-                key={arrival.flight.iataNumber}
-              >
+            {arrivals.map((arrival, index) => (
+              <tr className="text-center font-Roboto text-base" key={index}>
                 <td className="py-2 px-4 border-b">
                   {new Date(
                     arrival.arrival.actualTime || arrival.arrival.scheduledTime
@@ -93,9 +87,7 @@ export const FlightTable: React.FC<FlightTableProps> = ({
                 </td>
                 <td className="py-2 px-4 border-b">{arrival.arrival.gate}</td>
                 <td className="py-2 px-4 border-b">{arrival.airline.name}</td>
-                <td className="py-2 px-4 border-b">
-                  {arrival.flight.iataNumber}
-                </td>
+                <td className="py-2 px-4 border-b">{arrival.flight.number}</td>
                 <td className="py-2 px-4 border-b">
                   {arrival.departure.iataCode}
                 </td>

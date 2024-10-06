@@ -14,6 +14,7 @@ type GetArticlesParams = {
 type Props = {
   handleSearch: (params: GetArticlesParams) => void;
   getFlightData: (airportCode: string) => void;
+  clearResults: () => void;
 };
 
 export const Hero = (props: Props) => {
@@ -41,6 +42,7 @@ export const Hero = (props: Props) => {
   };
 
   const handleNewSearchTypeClick = () => {
+    props.clearResults();
     setActiveForm(null);
   };
 
