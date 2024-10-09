@@ -40,7 +40,9 @@ export const FlightTable: React.FC<FlightTableProps> = ({
                   ).toLocaleTimeString()}
                 </td>
                 <td className="py-2 px-4 border-b">
-                  {departure.departure.gate}
+                  {departure.departure.gate === "null"
+                    ? "N/A"
+                    : departure.departure.gate}
                 </td>
                 <td className="py-2 px-4 border-b">{departure.airline.name}</td>
                 <td className="py-2 px-4 border-b">
