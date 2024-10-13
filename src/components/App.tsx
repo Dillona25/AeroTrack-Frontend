@@ -121,7 +121,7 @@ function App() {
     fromDate = "",
     toDate = "",
     pageSize,
-    userInput,
+    userInput = "",
   }: GetArticlesParams) => {
     setIsLoading(true);
     getArticles({ fromDate, toDate, pageSize, userInput })
