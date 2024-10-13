@@ -37,8 +37,8 @@ import {
 import { FlightTable } from "./FlightTable/FlightTable";
 
 type GetArticlesParams = {
-  fromDate: string;
-  toDate: string;
+  fromDate?: string;
+  toDate?: string;
   pageSize: number;
   userInput: string;
 };
@@ -271,8 +271,9 @@ function App() {
                     handleLogoutConfirm={handleLogoutConfirm}
                   />
                 )}
-                {/* @ts-ignore */}
+
                 <Hero
+                  /* @ts-ignore */
                   handleSearch={handleSearch}
                   getFlightData={getFlightData}
                   clearResults={clearResults}
