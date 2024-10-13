@@ -20,7 +20,7 @@ export default {
     },
     backgroundImage: {
       DesktopPlane: "url('../src/Images/DesktopPlane.avif')",
-      MobileHeaderImage: "url('../Src/Images/MobileHeaderImage.png')",
+      MobileHeaderImage: "url('../src/Images/MobileHeaderImage.png')",
       menu: "url('../src/Assets/menu.svg')",
       menuBlack: "url('../src/Assets/menuBlack.svg')",
       closeIcon: "url('../src/Assets/close.svg')",
