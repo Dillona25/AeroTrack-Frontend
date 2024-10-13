@@ -118,8 +118,8 @@ function App() {
 
   // Logic to handle Searching articles
   const handleSearch = ({
-    fromDate,
-    toDate,
+    fromDate = "",
+    toDate = "",
     pageSize,
     userInput,
   }: GetArticlesParams) => {
