@@ -53,8 +53,9 @@ export const Hero = (props: Props) => {
           Top aviation news and flight tracking!
         </h1>
         <p className="text-white font-normal w-[288px] sm:w-full sm:text-[18px]">
-          Have a case of FOMO or needing status on a flight? Worry no more. We
-          are your source for the top recent aviation news and flight tracking.
+          Built for people who love aviation, by people who love aviation.
+          AeroTrack allows you to stay up to date on recent news in the aviation
+          world as well as track flights.
         </p>
       </div>
       {activeForm === null && (

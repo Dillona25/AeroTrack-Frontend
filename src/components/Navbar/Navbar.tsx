@@ -22,7 +22,9 @@ export const Navbar = (props: Props) => {
       {location.pathname === "/" && (
         <>
           <div className="flex justify-between p-4 border-b-[1px] border-white text-white font-RobotoSlab lg:px-[104px] lg:items-center lg:border-opacity-50">
-            <p className="text-white font-RobotoSlab lg:text-[20px]">AviNews</p>
+            <p className="text-white font-RobotoSlab lg:text-[20px]">
+              AeroTrack
+            </p>
             <button
               onClick={props.handleNavMenu}
               className="bg-menu border-none h-6 w-6 lg:hidden"
