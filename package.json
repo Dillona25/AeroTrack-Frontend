@@ -1,5 +1,5 @@
 {
-  "homepage": "https://www.AeroTrack.twilightparadox.com/",
+  "homepage": "https://www.aerotrack.twilightparadox.com/",
   "name": "avinews-frontend",
   "private": true,
   "version": "0.0.0",
@@ -10,7 +10,7 @@
     "build": "tsc && vite build",
     "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
     "preview": "vite preview",
-    "deploy": "npm run build && scp -r ./dist/* dillyb00by49@AeroTrack.twilightparadox.com:/home/dillyb00by49/AeroTrack-Frontend"
+    "deploy": "npm run build && scp -r ./dist/* dillyb00by49@aerotrack.twilightparadox.com:/home/dillyb00by49/AeroTrack-Frontend"
   },
   "dependencies": {
     "@emailjs/browser": "^4.3.3",
