@@ -15,6 +15,7 @@ type Props = {
   handleSearch: (params: GetArticlesParams) => void;
   getFlightData: (airportCode: string) => void;
   clearResults: () => void;
+  handleSearchFlightModal: () => void;
 };
 
 export const Hero = (props: Props) => {
@@ -71,7 +72,7 @@ export const Hero = (props: Props) => {
           <motion.button
             initial={{ scale: 0, opacity: 0 }}
             animate={{ scale: 1, opacity: 1 }}
-            onClick={() => setActiveForm("flights")}
+            onClick={props.handleSearchFlightModal}
             className="rounded-full w-full m-auto py-5 text-center bg-white text-black shadow-[rgba(0,_0,_0,_0.24)_0px_3px_8px] "
           >
             Search Flights
