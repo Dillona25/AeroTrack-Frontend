@@ -36,6 +36,7 @@ import {
 } from "../utils/flightDataApi";
 import { FlightTable } from "./FlightTable/FlightTable";
 import { FlightSearchModal } from "./FlightSearchModal/FlightSearchModal";
+import FlightSearchResults from "./FlightSearchResults/FlightSearchResults";
 
 type GetArticlesParams = {
   fromDate?: string;
@@ -85,7 +86,6 @@ function App() {
   const [departures, setDepartures] = useState<FlightData[]>([]);
   const [arrivals, setArrivals] = useState<FlightData[]>([]);
   const [showFlightTable, setShowFlightTable] = useState(false);
-  const [showFlightModal, setShowFlightModal] = useState("");
   const { setCurrentUser } = useCurrentUser();
   const handleNavMenu = () => {
     setActiveModal("navMenu");
@@ -109,10 +109,6 @@ function App() {
 
   const handleArticlesConflictError = () => {
     setArticlesError("Error");
-  };
-
-  const handleShowFlightSearchModal = () => {
-    setActiveModal("flightSearchModal");
   };
 
   const closeModal = () => {
@@ -283,7 +279,6 @@ function App() {
                   handleSearch={handleSearch}
                   getFlightData={getFlightData}
                   clearResults={clearResults}
-                  handleSearchFlightModal={handleShowFlightSearchModal}
                 />
               </div>
               {/* These will only appear for the user when they search and get
@@ -291,6 +286,8 @@ function App() {
               {showFlightTable && (
                 <FlightTable departures={departures} arrivals={arrivals} />
               )}
+
+              <FlightSearchResults />
 
               {searchResults === false &&
                 showFlightTable === false &&
@@ -346,9 +343,6 @@ function App() {
                   setIsLoggedIn={setIsLoggedIn}
                   setCurrentUser={setCurrentUser}
                 />
-              )}
-              {activeModal === "flightSearchModal" && (
-                <FlightSearchModal closeModal={closeModal} />
               )}
             </div>
           }
