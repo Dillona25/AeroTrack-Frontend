@@ -32,10 +32,10 @@ import { processServerResponse } from "../utils/processServerResponse";
 import {
   fetchArrivalData,
   fetchDepartureData,
-  FlightData,
+  fetchDepartureAirport,
+  fetchArrivalAirport,
 } from "../utils/flightDataApi";
-import { FlightTable } from "./FlightTable/FlightTable";
-import { FlightSearchModal } from "./FlightSearchModal/FlightSearchModal";
+import { FlightSearchModal } from "./FlightTrackModal/FlightTrackModal";
 import FlightSearchResults from "./FlightSearchResults/FlightSearchResults";
 
 type GetArticlesParams = {
@@ -83,8 +83,6 @@ function App() {
   const [articlesError, setArticlesError] = useState("");
   const [savedNewsArticles, setSavedNewsArticles] = useState<Article[]>([]);
   const [_selectedArticleid, setSelectedArticleId] = useState(null);
-  const [departures, setDepartures] = useState<FlightData[]>([]);
-  const [arrivals, setArrivals] = useState<FlightData[]>([]);
   const [showFlightTable, setShowFlightTable] = useState(false);
   const { setCurrentUser } = useCurrentUser();
   const handleNavMenu = () => {
@@ -109,6 +107,10 @@ function App() {
 
   const handleArticlesConflictError = () => {
     setArticlesError("Error");
+  };
+
+  const handleShowFlightSearchModal = () => {
+    setActiveModal("flightSearchModal");
   };
 
   const closeModal = () => {
@@ -222,30 +224,36 @@ function App() {
       .catch(console.error);
   };
 
-  const getFlightData = async (airportCode: string) => {
-    setIsLoading(true);
-    const departures = await fetchDepartureData(airportCode);
+  const getFlightData = async (flight_icao: string) => {
+    const departures = await fetchDepartureData(flight_icao);
     departures.forEach((response: any) => {
       console.log("Departures", response);
     });
 
-    const arrivals = await fetchArrivalData(airportCode);
+    const arrivals = await fetchArrivalData(flight_icao);
     arrivals.forEach((response: any) => {
       console.log("Arrivals", response);
     });
-    setIsLoading(false);
-    setDepartures(departures);
-    setArrivals(arrivals);
-    setShowFlightTable(true);
-    setIsLoading(false);
   };
 
   const clearResults = () => {
     setCardsData([]);
     setSearchedArticles(false);
-    setDepartures([]);
-    setArrivals([]);
     setShowFlightTable(false);
+  };
+
+  const handleFetchDepartureAirport = async (airportCode: string) => {
+    const DepAirport = await fetchDepartureAirport(airportCode);
+    DepAirport.forEach((response: any) => {
+      console.log(response);
+    });
+  };
+
+  const handleFetchArrivalAirport = async (airportCode: string) => {
+    const ArrivalAirport = await fetchArrivalAirport(airportCode);
+    ArrivalAirport.forEach((response: any) => {
+      console.log(response);
+    });
   };
 
   return (
@@ -261,7 +269,6 @@ function App() {
                   handleSignInModal={handleSignInModal}
                   handleProfileModal={handleProfileModal}
                   isLoggedIn={isLoggedIn}
-                  handleLogoutConfirm={handleLogoutConfirm}
                 />
                 {activeModal === "navMenu" && (
                   <NavDropDown
@@ -279,19 +286,17 @@ function App() {
                   handleSearch={handleSearch}
                   getFlightData={getFlightData}
                   clearResults={clearResults}
+                  handleSearchFlightModal={handleShowFlightSearchModal}
                 />
               </div>
               {/* These will only appear for the user when they search and get
               results */}
-              {showFlightTable && (
-                <FlightTable departures={departures} arrivals={arrivals} />
-              )}
 
               <FlightSearchResults />
 
-              {searchResults === false &&
-                showFlightTable === false &&
-                isLoading === false && <NoSearchYet />}
+              {searchResults === false && isLoading === false && (
+                <NoSearchYet />
+              )}
 
               {searchedArticles && cardsData.length > 0 && (
                 <SearchArticles
@@ -335,6 +340,7 @@ function App() {
                 <ProfileModal
                   closeModal={closeModal}
                   updateProfile={updateProfile}
+                  handleLogoutConfirm={handleLogoutConfirm}
                 />
               )}
               {activeModal === "logoutConfirm" && (
@@ -342,6 +348,14 @@ function App() {
                   closeModal={closeModal}
                   setIsLoggedIn={setIsLoggedIn}
                   setCurrentUser={setCurrentUser}
+                />
+              )}
+              {activeModal === "flightSearchModal" && (
+                <FlightSearchModal
+                  closeModal={closeModal}
+                  fetchArrivalAirport={handleFetchArrivalAirport}
+                  fetchDepartureAirport={handleFetchDepartureAirport}
+                  getFlightData={getFlightData}
                 />
               )}
             </div>

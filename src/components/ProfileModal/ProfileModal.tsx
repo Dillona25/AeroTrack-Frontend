@@ -14,6 +14,7 @@ type Props = {
   closeModal?: () => void;
   setIsLOggedIn?: boolean;
   updateProfile?: (data: updateUserProps) => void;
+  handleLogoutConfirm: () => void;
 };
 
 export const ProfileModal = (props: Props) => {
@@ -96,6 +97,11 @@ export const ProfileModal = (props: Props) => {
               isValid ? "" : "opacity-50 cursor-not-allowed"
             }`}
             disabled={!isValid}
+          />
+          <Button
+            onClick={props.handleLogoutConfirm}
+            text="Logout"
+            className="bg-red-500"
           />
         </Form>
       </motion.div>

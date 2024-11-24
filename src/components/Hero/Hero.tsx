@@ -15,6 +15,7 @@ type Props = {
   handleSearch: (params: GetArticlesParams) => void;
   getFlightData: (airportCode: string) => void;
   clearResults: () => void;
+  handleSearchFlightModal: () => void;
 };
 
 export const Hero = (props: Props) => {
@@ -50,12 +51,11 @@ export const Hero = (props: Props) => {
     <header className="mt-7 px-4 py-[32px] sm:py-[80px] flex flex-col sm:max-w-[650px] sm:m-auto">
       <div className="gap-4 flex flex-col sm:gap-8">
         <h1 className="text-white text-[36px] font-normal leading-[44px] w-[288px] sm:w-full sm:text-[60px] sm:mt-[80px] sm:leading-[64px]">
-          Top aviation news and flight tracking!
+          Your Gateway to the Skies
         </h1>
         <p className="text-white font-normal w-[288px] sm:w-full sm:text-[18px]">
-          Built for people who love aviation, by people who love aviation.
-          AeroTrack allows you to stay up to date on recent news in the aviation
-          world as well as track flights.
+          Effortlessly track flights, explore the latest aviation news, and save
+          your future adventures—all in one streamlined platform.
         </p>
       </div>
       {activeForm === null && (
@@ -71,10 +71,10 @@ export const Hero = (props: Props) => {
           <motion.button
             initial={{ scale: 0, opacity: 0 }}
             animate={{ scale: 1, opacity: 1 }}
-            onClick={() => setActiveForm("flights")}
+            onClick={props.handleSearchFlightModal}
             className="rounded-full w-full m-auto py-5 text-center bg-white text-black shadow-[rgba(0,_0,_0,_0.24)_0px_3px_8px] "
           >
-            Search Flights
+            Track Flight
           </motion.button>
         </div>
       )}
@@ -111,7 +111,7 @@ export const Hero = (props: Props) => {
             animate={{ scale: 1, opacity: 1 }}
           >
             <SearchBar
-              placeholder="Enter your flight number Ex. AS3245"
+              placeholder="Track flights with airport code"
               className="sm:py-5 sm:rounded-full "
               onChange={handleSearchBarChange}
               value={searchValue}

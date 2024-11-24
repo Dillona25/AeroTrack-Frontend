@@ -1,11 +1,9 @@
-import { FlightMap } from "../FlightMap/FlightMap";
-
 export const FlightSearchResults = () => {
   return (
     <section className="max-w-[1600px] m-auto py-8">
-      <div className="flex justify-center items-center">
+      <div className="flex justify-center items-center px-5">
         <div className="flex justify-center gap-10 flex-grow">
-          <FlightMap />
+          {/* <FlightMap /> */}
           <div className="flex flex-col flex-1">
             <h1 className="text-[36px] font-RobotoSlab">Alaska Airlines</h1>
             <h2 className="text-[30px] font-RobotoSlab mb-5">Flight: AS2345</h2>
@@ -20,13 +18,25 @@ export const FlightSearchResults = () => {
                 <span className="text-[36px] font-RobotoSlab">PDX</span>
               </div>
             </div>
-            <div className="flex justify-between mt-5">
-              <span className="text-xl">Departure time:</span>
-              <span className="text-xl">Arrival Time:</span>
+            <div className="flex justify-between">
+              <span className="text-gray-400">Denver International</span>
+              <span className="text-gray-400">Portland International</span>
             </div>
             <div className="flex justify-between mt-5">
-              <span className="text-xl">Departure Gate:</span>
-              <span className="text-xl">Arrival Gate:</span>
+              <span className="text-xl">
+                Departure time:<span className="text-green-600"> 8:23 AM</span>
+              </span>
+              <span className="text-xl">
+                Arrival Time:<span className="text-green-600"> 11:30 PM</span>
+              </span>
+            </div>
+            <div className="flex justify-between mt-5">
+              <span className="text-xl">
+                Departure Gate:<span className="font-bold text-3xl"> A7</span>
+              </span>
+              <span className="text-xl">
+                Arrival Gate:<span className="font-bold text-3xl"> C19</span>
+              </span>
             </div>
           </div>
         </div>
