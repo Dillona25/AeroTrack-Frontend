@@ -1,7 +1,7 @@
-export const FlightSearchResults = () => {
+export const FlightTrackResults = () => {
   return (
     <section className="max-w-[1600px] m-auto py-8">
-      <div className="flex justify-center items-center px-5">
+      <div className="flex justify-center items-center px-">
         <div className="flex justify-center gap-10 flex-grow">
           {/* <FlightMap /> */}
           <div className="flex flex-col flex-1">
@@ -45,4 +45,4 @@ export const FlightSearchResults = () => {
   );
 };
 
-export default FlightSearchResults;
+export default FlightTrackResults;

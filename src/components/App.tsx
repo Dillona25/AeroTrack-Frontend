@@ -36,7 +36,7 @@ import {
   fetchArrivalAirport,
 } from "../utils/flightDataApi";
 import { FlightSearchModal } from "./FlightTrackModal/FlightTrackModal";
-import FlightSearchResults from "./FlightSearchResults/FlightSearchResults";
+import FlightTrackResults from "./FlightTrackResults/FlightTrackResults";
 
 type GetArticlesParams = {
   fromDate?: string;
@@ -83,7 +83,6 @@ function App() {
   const [articlesError, setArticlesError] = useState("");
   const [savedNewsArticles, setSavedNewsArticles] = useState<Article[]>([]);
   const [_selectedArticleid, setSelectedArticleId] = useState(null);
-  const [showFlightTable, setShowFlightTable] = useState(false);
   const { setCurrentUser } = useCurrentUser();
   const handleNavMenu = () => {
     setActiveModal("navMenu");
@@ -225,21 +224,13 @@ function App() {
   };
 
   const getFlightData = async (flight_icao: string) => {
-    const departures = await fetchDepartureData(flight_icao);
-    departures.forEach((response: any) => {
-      console.log("Departures", response);
-    });
-
-    const arrivals = await fetchArrivalData(flight_icao);
-    arrivals.forEach((response: any) => {
-      console.log("Arrivals", response);
-    });
+    fetchDepartureData(flight_icao);
+    fetchArrivalData(flight_icao);
   };
 
   const clearResults = () => {
     setCardsData([]);
     setSearchedArticles(false);
-    setShowFlightTable(false);
   };
 
   const handleFetchDepartureAirport = async (airportCode: string) => {
@@ -292,7 +283,7 @@ function App() {
               {/* These will only appear for the user when they search and get
               results */}
 
-              <FlightSearchResults />
+              <FlightTrackResults />
 
               {searchResults === false && isLoading === false && (
                 <NoSearchYet />
@@ -313,7 +304,6 @@ function App() {
 
               {cardsData.length === 0 &&
                 searchResults === true &&
-                showFlightTable === false &&
                 !isLoading && <NotFound />}
 
               {articlesError === "Error" && searchResults === false && (
@@ -385,6 +375,7 @@ function App() {
                 <ProfileModal
                   closeModal={closeModal}
                   updateProfile={updateProfile}
+                  handleLogoutConfirm={handleLogoutConfirm}
                 />
               )}
             </ProtectedRoute>
