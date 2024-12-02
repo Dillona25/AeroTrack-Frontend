@@ -1,41 +1,94 @@
+import { useFlightData } from "../../store/flightDataContext";
+
 export const FlightTrackResults = () => {
+  const { flightData } = useFlightData();
+
+  if (!flightData) {
+    return null;
+  }
+
+  function timeConversion(dateTime: string): string {
+    const date = new Date(dateTime);
+    let hours: number = date.getHours();
+    let minutes: number = date.getMinutes();
+
+    const ampm: string = hours >= 12 ? "pm" : "am";
+
+    hours = hours % 12;
+    hours = hours ? hours : 12;
+
+    minutes = minutes < 10 ? Number("0" + minutes) : minutes;
+
+    return `${hours}:${minutes < 10 ? "0" + minutes : minutes} ${ampm}`;
+  }
+
   return (
-    <section className="max-w-[1600px] m-auto py-8">
-      <div className="flex justify-center items-center px-">
+    <section className="py-8 bg-[#f5f6f7]">
+      <div className="flex justify-center items-center max-w-[1600px] m-auto">
         <div className="flex justify-center gap-10 flex-grow">
-          {/* <FlightMap /> */}
+          <div className="bg-gray-400 rounded-md h-[350px] w-[700px]"></div>
           <div className="flex flex-col flex-1">
-            <h1 className="text-[36px] font-RobotoSlab">Alaska Airlines</h1>
-            <h2 className="text-[30px] font-RobotoSlab mb-5">Flight: AS2345</h2>
+            <h1 className="text-[36px] font-RobotoSlab">
+              {flightData.airline.name}
+            </h1>
+            <h2 className="text-[30px] font-RobotoSlab mb-5">
+              {flightData.flight.icaoNumber}
+            </h2>
             <div className="flex items-center">
               <div className="flex flex-col">
-                <span className="text-gray-400">Departing</span>
-                <span className="text-[36px] font-RobotoSlab">DEN</span>
+                {flightData.status === "active" ? (
+                  <span className="text-gray-400">Departed From</span>
+                ) : (
+                  <span className="text-gray-400">Departing From</span>
+                )}
+                <span className="text-[36px] font-RobotoSlab">
+                  {flightData.departure.iataCode}
+                </span>
               </div>
               <span className="border-b-[2px] border-black mx-4 mt-5 flex-1"></span>
               <div className="flex flex-col">
-                <span className="text-gray-400">Arriving at</span>
-                <span className="text-[36px] font-RobotoSlab">PDX</span>
+                {flightData.status === "landed" ? (
+                  <span className="text-gray-400">Landed at</span>
+                ) : (
+                  <span className="text-gray-400">Arriving at</span>
+                )}
+                <span className="text-[36px] font-RobotoSlab">
+                  {flightData.arrival.iataCode}
+                </span>
               </div>
             </div>
-            <div className="flex justify-between">
-              <span className="text-gray-400">Denver International</span>
-              <span className="text-gray-400">Portland International</span>
+            <div className="flex justify-between mt-5">
+              <span className="text-xl">
+                Departure time:
+                <span className="text-green-600">
+                  {" "}
+                  {timeConversion(flightData.departure.scheduledTime)}
+                </span>
+              </span>
+              <span className="text-xl">
+                Arrival Time:
+                <span className="text-green-600">
+                  {" "}
+                  {timeConversion(flightData.arrival.scheduledTime)}
+                </span>
+              </span>
             </div>
             <div className="flex justify-between mt-5">
               <span className="text-xl">
-                Departure time:<span className="text-green-600"> 8:23 AM</span>
+                Departure Gate:
+                <span className="font-bold text-3xl">
+                  {" "}
+                  {flightData.departure.gate
+                    ? flightData.departure.gate
+                    : "N/A"}
+                </span>
               </span>
               <span className="text-xl">
-                Arrival Time:<span className="text-green-600"> 11:30 PM</span>
-              </span>
-            </div>
-            <div className="flex justify-between mt-5">
-              <span className="text-xl">
-                Departure Gate:<span className="font-bold text-3xl"> A7</span>
-              </span>
-              <span className="text-xl">
-                Arrival Gate:<span className="font-bold text-3xl"> C19</span>
+                Arrival Gate:
+                <span className="font-bold text-3xl">
+                  {" "}
+                  {flightData.arrival.gate ? flightData.arrival.gate : "N/A"}
+                </span>
               </span>
             </div>
           </div>

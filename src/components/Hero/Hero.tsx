@@ -15,7 +15,6 @@ type Props = {
   handleSearch: (params: GetArticlesParams) => void;
   getFlightData: (airportCode: string) => void;
   clearResults: () => void;
-  handleSearchFlightModal: () => void;
 };
 
 export const Hero = (props: Props) => {
@@ -71,10 +70,10 @@ export const Hero = (props: Props) => {
           <motion.button
             initial={{ scale: 0, opacity: 0 }}
             animate={{ scale: 1, opacity: 1 }}
-            onClick={props.handleSearchFlightModal}
+            onClick={() => setActiveForm("flights")}
             className="rounded-full w-full m-auto py-5 text-center bg-white text-black shadow-[rgba(0,_0,_0,_0.24)_0px_3px_8px] "
           >
-            Track Flight
+            Track Current Flight
           </motion.button>
         </div>
       )}
@@ -111,7 +110,7 @@ export const Hero = (props: Props) => {
             animate={{ scale: 1, opacity: 1 }}
           >
             <SearchBar
-              placeholder="Track flights with airport code"
+              placeholder="Enter the flight Number Ex. ASA2376"
               className="sm:py-5 sm:rounded-full "
               onChange={handleSearchBarChange}
               value={searchValue}

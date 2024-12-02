@@ -29,14 +29,9 @@ import { LogoutConfirmModal } from "./LogoutConfirmModal/LogoutConfirmModal";
 import { useCurrentUser } from "../store/currentUserContext";
 import { ProtectedRoute } from "./ProtectedRoute/ProtectedRoute";
 import { processServerResponse } from "../utils/processServerResponse";
-import {
-  fetchArrivalData,
-  fetchDepartureData,
-  fetchDepartureAirport,
-  fetchArrivalAirport,
-} from "../utils/flightDataApi";
-import { FlightSearchModal } from "./FlightTrackModal/FlightTrackModal";
+import { fetchFlightData } from "../utils/flightDataApi";
 import FlightTrackResults from "./FlightTrackResults/FlightTrackResults";
+import { useFlightData } from "../store/flightDataContext";
 
 type GetArticlesParams = {
   fromDate?: string;
@@ -80,9 +75,11 @@ function App() {
   const [searchedArticles, setSearchedArticles] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [searchResults, setSearchResults] = useState(false);
+  const [flightDataResults, setFlightDataResults] = useState(false);
   const [articlesError, setArticlesError] = useState("");
   const [savedNewsArticles, setSavedNewsArticles] = useState<Article[]>([]);
   const [_selectedArticleid, setSelectedArticleId] = useState(null);
+  const [flightDataError, setFlightDataError] = useState(false);
   const { setCurrentUser } = useCurrentUser();
   const handleNavMenu = () => {
     setActiveModal("navMenu");
@@ -106,10 +103,6 @@ function App() {
 
   const handleArticlesConflictError = () => {
     setArticlesError("Error");
-  };
-
-  const handleShowFlightSearchModal = () => {
-    setActiveModal("flightSearchModal");
   };
 
   const closeModal = () => {
@@ -223,28 +216,27 @@ function App() {
       .catch(console.error);
   };
 
+  const { setFlightData } = useFlightData();
+
   const getFlightData = async (flight_icao: string) => {
-    fetchDepartureData(flight_icao);
-    fetchArrivalData(flight_icao);
+    try {
+      let flightData = await fetchFlightData(flight_icao);
+
+      // TODO: Do something with a faulty flight record
+      console.log(flightData.success);
+
+      // Extract the first response or a specific response if needed
+      const selectedFlightData = flightData[0];
+      setFlightData(selectedFlightData);
+      setFlightDataResults(true);
+    } catch (error) {
+      console.error("Error fetching flight data:", error);
+    }
   };
 
   const clearResults = () => {
     setCardsData([]);
     setSearchedArticles(false);
-  };
-
-  const handleFetchDepartureAirport = async (airportCode: string) => {
-    const DepAirport = await fetchDepartureAirport(airportCode);
-    DepAirport.forEach((response: any) => {
-      console.log(response);
-    });
-  };
-
-  const handleFetchArrivalAirport = async (airportCode: string) => {
-    const ArrivalAirport = await fetchArrivalAirport(airportCode);
-    ArrivalAirport.forEach((response: any) => {
-      console.log(response);
-    });
   };
 
   return (
@@ -277,7 +269,6 @@ function App() {
                   handleSearch={handleSearch}
                   getFlightData={getFlightData}
                   clearResults={clearResults}
-                  handleSearchFlightModal={handleShowFlightSearchModal}
                 />
               </div>
               {/* These will only appear for the user when they search and get
@@ -285,9 +276,9 @@ function App() {
 
               <FlightTrackResults />
 
-              {searchResults === false && isLoading === false && (
-                <NoSearchYet />
-              )}
+              {flightDataResults === false &&
+                searchResults === false &&
+                isLoading === false && <NoSearchYet />}
 
               {searchedArticles && cardsData.length > 0 && (
                 <SearchArticles
@@ -306,9 +297,9 @@ function App() {
                 searchResults === true &&
                 !isLoading && <NotFound />}
 
-              {articlesError === "Error" && searchResults === false && (
-                <ArticleError />
-              )}
+              {articlesError === "Error" &&
+                searchResults === false &&
+                flightDataError === true && <ArticleError />}
 
               <About />
               <Footer />
@@ -338,14 +329,6 @@ function App() {
                   closeModal={closeModal}
                   setIsLoggedIn={setIsLoggedIn}
                   setCurrentUser={setCurrentUser}
-                />
-              )}
-              {activeModal === "flightSearchModal" && (
-                <FlightSearchModal
-                  closeModal={closeModal}
-                  fetchArrivalAirport={handleFetchArrivalAirport}
-                  fetchDepartureAirport={handleFetchDepartureAirport}
-                  getFlightData={getFlightData}
                 />
               )}
             </div>
