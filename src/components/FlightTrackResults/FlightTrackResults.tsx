@@ -24,9 +24,8 @@ export const FlightTrackResults = () => {
 
   return (
     <section className="py-8 bg-[#f5f6f7]">
-      <div className="flex justify-center items-center max-w-[1600px] m-auto">
+      <div className="flex justify-center items-center max-w-[1200px] m-auto">
         <div className="flex justify-center gap-10 flex-grow">
-          <div className="bg-gray-400 rounded-md h-[350px] w-[700px]"></div>
           <div className="flex flex-col flex-1">
             <h1 className="text-[36px] font-RobotoSlab">
               {flightData.airline.name}

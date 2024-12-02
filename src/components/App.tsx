@@ -32,6 +32,7 @@ import { processServerResponse } from "../utils/processServerResponse";
 import { fetchFlightData } from "../utils/flightDataApi";
 import FlightTrackResults from "./FlightTrackResults/FlightTrackResults";
 import { useFlightData } from "../store/flightDataContext";
+import { FlightDataNotFound } from "./FlightDataNotFound/FlightDataNotFound";
 
 type GetArticlesParams = {
   fromDate?: string;
@@ -78,8 +79,8 @@ function App() {
   const [flightDataResults, setFlightDataResults] = useState(false);
   const [articlesError, setArticlesError] = useState("");
   const [savedNewsArticles, setSavedNewsArticles] = useState<Article[]>([]);
+  const [flightNotFound, setFlightNotFound] = useState(false);
   const [_selectedArticleid, setSelectedArticleId] = useState(null);
-  const [flightDataError, setFlightDataError] = useState(false);
   const { setCurrentUser } = useCurrentUser();
   const handleNavMenu = () => {
     setActiveModal("navMenu");
@@ -216,19 +217,27 @@ function App() {
       .catch(console.error);
   };
 
+  // context for our flight data
   const { setFlightData } = useFlightData();
 
   const getFlightData = async (flight_icao: string) => {
     try {
+      setIsLoading(true);
       let flightData = await fetchFlightData(flight_icao);
 
-      // TODO: Do something with a faulty flight record
-      console.log(flightData.success);
+      // TODO: Use a state here to display a component on the frontend when there is an error
+      if (flightData.success === false) {
+        console.error("No Record Found");
+        setFlightNotFound(true);
+        setIsLoading(false);
+        return;
+      }
 
       // Extract the first response or a specific response if needed
       const selectedFlightData = flightData[0];
       setFlightData(selectedFlightData);
       setFlightDataResults(true);
+      setIsLoading(false);
     } catch (error) {
       console.error("Error fetching flight data:", error);
     }
@@ -278,7 +287,8 @@ function App() {
 
               {flightDataResults === false &&
                 searchResults === false &&
-                isLoading === false && <NoSearchYet />}
+                isLoading === false &&
+                flightNotFound === false && <NoSearchYet />}
 
               {searchedArticles && cardsData.length > 0 && (
                 <SearchArticles
@@ -297,9 +307,13 @@ function App() {
                 searchResults === true &&
                 !isLoading && <NotFound />}
 
-              {articlesError === "Error" &&
-                searchResults === false &&
-                flightDataError === true && <ArticleError />}
+              {flightNotFound === true && flightDataResults === false && (
+                <FlightDataNotFound />
+              )}
+
+              {articlesError === "Error" && searchResults === false && (
+                <ArticleError />
+              )}
 
               <About />
               <Footer />
