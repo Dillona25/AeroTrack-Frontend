@@ -35,6 +35,7 @@ import {
   FlightData,
 } from "../utils/flightDataApi";
 import { FlightTable } from "./FlightTable/FlightTable";
+import { WelcomePage } from "./WelcomePage/WelcomePage";
 
 type GetArticlesParams = {
   fromDate?: string;
@@ -252,7 +253,15 @@ function App() {
         <Route
           path="/"
           element={
-            <div>
+            <>
+              <WelcomePage />
+            </>
+          }
+        />
+        <Route
+          path="/home"
+          element={
+            <ProtectedRoute isLoggedIn={isLoggedIn}>
               <div className={`bg-MobileHeaderImage bg-cover bg-center`}>
                 <Navbar
                   handleNavMenu={handleNavMenu}
@@ -340,7 +349,7 @@ function App() {
                   setCurrentUser={setCurrentUser}
                 />
               )}
-            </div>
+            </ProtectedRoute>
           }
         />
         <Route

@@ -19,7 +19,7 @@ export const Navbar = (props: Props) => {
   return (
     <nav>
       {/* This is the Navbar for the exact path */}
-      {location.pathname === "/" && (
+      {location.pathname === "/home" && (
         <>
           <div className="flex justify-between p-4 border-b-[1px] border-white text-white font-RobotoSlab lg:px-[104px] lg:items-center lg:border-opacity-50">
             <p className="text-white font-RobotoSlab lg:text-[20px]">
