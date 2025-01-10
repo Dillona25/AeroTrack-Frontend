@@ -254,7 +254,10 @@ function App() {
           path="/"
           element={
             <>
-              <WelcomePage />
+              <WelcomePage
+                handleSignInModal={handleSignInModal}
+                handleSignUpModal={handleSignUpModal}
+              />
             </>
           }
         />

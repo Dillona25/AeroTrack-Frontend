@@ -1,7 +1,12 @@
 import { Button } from "../Button/Button";
 import { Footer } from "../Footer/Footer";
 
-export const WelcomePage = () => {
+type Props = {
+  handleSignInModal?: () => void;
+  handleSignUpModal?: () => void;
+};
+
+export const WelcomePage = (props: Props) => {
   return (
     <>
       <div className="h-screen flex flex-col">
@@ -19,9 +24,10 @@ export const WelcomePage = () => {
               </p>
             </div>
             <div className="flex flex-col md:flex-row gap-4 mt-10 w-3/4">
-              <Button text="Login" />
+              <Button text="Login" onClick={props.handleSignInModal} />
               <Button
                 text="Signup"
+                onClick={props.handleSignUpModal}
                 className=" border-white border-[1px] bg-transparent hover:bg-white hover:text-black ease-in-out duration-[.5s]"
               />
             </div>
