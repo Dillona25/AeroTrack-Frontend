@@ -5,7 +5,7 @@ Ive always had a passion for aviation. To do this day I still find myself waking
 Find the live site here
 
 ```bash
-https://www.avinews.twilightparadox.com/
+https://www.aerotrack.twilightparadox.com/
 ```
 
 ## Tools used
